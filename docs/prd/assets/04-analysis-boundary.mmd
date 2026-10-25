@@ -1,0 +1,11 @@
+flowchart TB
+  A[原始需求] --> B[生成 / 复制提示词]
+  B --> C[外部豆包对话]
+  C --> D[用户手动复制回填]
+  A --> E[也可直接人工整理]
+  D --> F[确认 AI 描述]
+  E --> F
+  F --> G[系统异步拆解]
+  G --> H[保存并展示工作项树]
+  classDef human fill:#fff2df,stroke:#c69a58,color:#704d1e
+  class D,E,F human

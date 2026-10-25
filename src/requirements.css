@@ -1,0 +1,266 @@
+.requirements-page .page-head {
+  align-items: center;
+  padding-top: 30px;
+  padding-bottom: 24px;
+}
+
+.requirements-page .toolbar {
+  padding-inline: max(36px, calc((100vw - 212px - 1360px) / 2 + 36px));
+}
+
+.requirements-page .list-shell {
+  margin-top: 20px;
+}
+
+.requirements-page .list-header,
+.requirements-page .requirement-row {
+  grid-template-columns: minmax(320px, 1.8fr) 112px 190px 120px 184px;
+  column-gap: 16px;
+  padding-inline: 18px;
+}
+
+.requirements-page .list-header {
+  height: 42px;
+  background: #f4f6f9;
+  color: #788397;
+  font-weight: 600;
+}
+
+.requirements-page .requirement-row {
+  min-height: 74px;
+  color: #687489;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 140ms ease;
+}
+
+.requirements-page .requirement-row:hover,
+.requirements-page .requirement-row:focus-visible {
+  background: #f9fbff;
+}
+
+.requirements-page .requirement-row:focus-visible {
+  box-shadow: inset 0 0 0 2px rgba(66, 104, 246, 0.45);
+}
+
+.requirements-page .req-title {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+}
+
+.requirements-page .req-title:hover strong {
+  color: var(--blue);
+}
+
+.requirements-page .req-title > span {
+  min-width: 0;
+}
+
+.requirements-page .req-title strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 140ms ease;
+}
+
+.requirements-page .req-title small {
+  color: #929cad;
+}
+
+.requirements-page .scale {
+  white-space: nowrap;
+}
+
+.requirements-page .updated-at {
+  white-space: nowrap;
+}
+
+.requirements-page .stage-cell {
+  display: flex;
+  align-items: center;
+}
+
+.requirements-page .row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.requirements-page .requirements-state {
+  min-height: 210px;
+  border: 1px solid var(--border);
+  border-top: 0;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #7a8597;
+}
+
+.requirements-page .requirements-state strong {
+  color: #273247;
+  font-size: 13px;
+}
+
+.requirements-page .requirements-state small {
+  font-size: 12px;
+}
+
+.requirements-page .requirements-state.error > svg {
+  color: #d14b4b;
+}
+
+.requirements-page .requirements-state .ghost {
+  margin-top: 6px;
+}
+
+.requirements-page .row-actions button {
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #536079;
+}
+
+.requirements-page .publish-entry {
+  padding: 0 10px;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.requirements-page .publish-entry:hover {
+  border-color: #b9c7fb;
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.requirements-page .cancel-entry {
+  padding: 0 10px;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.requirements-page .cancel-entry:hover:not(:disabled) {
+  border-color: #f1b4b4;
+  background: #fff4f3;
+  color: #cf3f3f;
+}
+
+.requirements-page .delete-entry {
+  width: 32px;
+  padding: 0;
+}
+
+.requirements-page .delete-entry:hover:not(:disabled) {
+  border-color: #f1b4b4;
+  background: #fff4f3;
+  color: #cf3f3f;
+}
+
+.delete-confirm-text {
+  margin: 4px 0 14px;
+  color: #687489;
+  font-size: 13px;
+}
+
+.delete-confirm-target {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #e4e9f1;
+  border-radius: 6px;
+  background: #f7f9fc;
+  color: #273247;
+  font-weight: 600;
+}
+
+.requirements-page .open-entry {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: #8d98aa;
+}
+
+@media (max-width: 1180px) {
+  .requirements-page .list-header,
+  .requirements-page .requirement-row {
+    grid-template-columns: minmax(260px, 1.5fr) 104px 150px 110px 176px;
+  }
+
+  .requirements-page .list-header > span:nth-child(4),
+  .requirements-page .requirement-row > .updated-at {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .requirements-page .page-head {
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .requirements-page .page-head h1 {
+    font-size: 22px;
+  }
+
+  .requirements-page .page-head .primary {
+    min-width: 104px;
+    flex-shrink: 0;
+    padding-inline: 12px;
+    white-space: nowrap;
+  }
+
+  .requirements-page .toolbar {
+    padding-inline: 18px;
+  }
+
+  .requirements-page .search {
+    width: min(100%, 360px);
+  }
+
+  .requirements-page .list-shell {
+    padding-inline: 12px;
+  }
+
+  .requirements-page .requirement-row {
+    min-height: 108px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .requirements-page .requirement-row > span:nth-child(2) {
+    display: block;
+    justify-self: end;
+  }
+
+  .requirements-page .requirement-row > .scale,
+  .requirements-page .requirement-row > .updated-at {
+    display: none;
+  }
+
+  .requirements-page .row-actions {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid #edf0f5;
+  }
+}

@@ -1,0 +1,26 @@
+.settings-content { max-width: 860px; margin: 0 auto; padding: 36px; }
+.settings-content > h1 { margin: 0 0 8px; font-size: 25px; }
+.settings-subtitle, .settings-summary p { color: var(--muted); font-size: 13px; margin: 0; }
+.settings-summary { display: flex; align-items: center; gap: 18px; margin: 28px 0; }
+.settings-summary h2 { font-size: 18px; margin: 0 0 6px; }
+.settings-section { padding: 26px 0; border-top: 1px solid var(--border); }
+.settings-section h2 { font-size: 16px; margin: 0 0 22px; }
+.settings-section .ant-form { max-width: 420px; }
+.settings-section .ant-alert { margin-bottom: 16px; }
+.settings-mobile-entry { display: none; }
+.account-identity { margin: 20px 0; }
+.account-identity h3 { font-size: 14px; }
+.account-inline-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.account-inline-controls .ant-select { min-width: 130px; }
+.account-admin-editor { margin: 20px 0; }
+.settings-section .ant-select + .ant-form, .settings-section .ant-table-wrapper + .ant-form { margin-top: 20px; }
+.settings-security-list { list-style: none; padding: 0; margin: 16px 0; }
+.settings-security-list li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.settings-security-list strong { font-size: 14px; margin-right: 10px; }
+.settings-security-list p, .settings-security-list time { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+.settings-security-list time { white-space: nowrap; }
+@media (max-width: 760px) {
+  .settings-content { padding: 24px 18px; }
+  .settings-security-list li { flex-wrap: wrap; }
+  .settings-mobile-entry { display: block; position: fixed; right: 14px; bottom: 16px; z-index: 25; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; color: var(--blue); }
+}

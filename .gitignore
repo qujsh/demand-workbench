@@ -1,0 +1,28 @@
+# 依赖和构建产物
+node_modules/
+dist/
+*.tsbuildinfo
+
+# 本地环境配置（保留可提交的配置示例）
+.env
+.env.*
+!.env.example
+*.local
+
+# 日志和测试产物
+*.log
+coverage/
+playwright-report/
+test-results/
+.playwright-cli/
+
+# 系统和 IDE 本地文件
+.DS_Store
+._*
+.idea/
+
+# 本地设计参考和导出产物
+design-reference/
+/output/
+
+
