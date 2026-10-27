@@ -9,21 +9,22 @@ export function buildPublicProject(
   selected: Set<string>,
   title: string,
   summary: string,
+  whole = false,
 ): PublicProject {
   function prune(nodes: WorkItemNode[], path: string): ProjectTask[] {
     return nodes.flatMap((node, index) => {
       const id = `${path}-${index + 1}`;
       const children = prune(node.children ?? [], id);
-      if (!selected.has(node.id) && !children.length) return [];
+      if (!whole && !selected.has(node.id) && !children.length) return [];
       return [
         {
-          id,
+          id: whole ? node.id : id,
           type: node.type,
           name: node.name,
           description: node.description || null,
-          role: node.role || null,
-          startDate: node.startDate || null,
-          endDate: node.endDate || null,
+          role: whole ? null : node.role || null,
+          startDate: whole ? null : node.startDate || null,
+          endDate: whole ? null : node.endDate || null,
           children,
         },
       ];
@@ -84,6 +85,14 @@ export const unitLabels: Record<string, string> = {
   item: '件',
 };
 export function rewardLabel(content: PublicContent): string {
+  if (content.details?.rewards.length)
+    return content.details.rewards
+      .map((r) =>
+        r.type === 'cash'
+          ? `¥${r.amountMin ?? '待填'}${r.pricing === 'range' ? `–${r.amountMax ?? '待填'}` : ''} / ${r.unit || '项目'}`
+          : `${r.title}${r.type === 'goods' ? ` × ${r.quantity ?? '待填'}${r.unit || ''}` : ''}`,
+      )
+      .join(' + ');
   const amount = (n: number | null) =>
     n === null ? '' : n.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
   const unit = ` / ${unitLabels[content.unit]}`;

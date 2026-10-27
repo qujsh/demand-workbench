@@ -1,6 +1,7 @@
 import type { PublicContent } from '../api/taskContentApi';
 export function emptyTaskContent(): PublicContent {
   return {
+    details: { goal: '', collaboration: '', scopeConfirmed: false, rewards: [] },
     title: '',
     summary: '',
     categoryCode: '',
@@ -8,7 +9,7 @@ export function emptyTaskContent(): PublicContent {
     cityCode: null,
     cityName: null,
     workMode: 'remote',
-    rewardType: 'negotiable',
+    rewardType: 'cash',
     amountMin: null,
     amountMax: null,
     currency: 'CNY',

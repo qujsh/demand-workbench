@@ -35,7 +35,27 @@ export const projectSchema = z.object({
   tasks: z.array(projectTaskSchema),
 });
 export type PublicProject = z.infer<typeof projectSchema>;
+export const rewardItemSchema = z.object({
+  type: z.enum(['cash', 'goods', 'service']),
+  title: z.string(),
+  pricing: z.string().nullable(),
+  amountMin: z.number().nullable(),
+  amountMax: z.number().nullable(),
+  unit: z.string().nullable(),
+  quantity: z.number().nullable(),
+  condition: z.string().nullable(),
+  description: z.string().nullable(),
+  handover: z.string().nullable(),
+});
+export type RewardItem = z.infer<typeof rewardItemSchema>;
+export const detailSchema = z.object({
+  goal: z.string(),
+  collaboration: z.string().nullable(),
+  scopeConfirmed: z.boolean(),
+  rewards: z.array(rewardItemSchema),
+});
 export const contentSchema = z.object({
+  details: detailSchema.nullable().optional(),
   project: projectSchema.nullable().optional(),
   title: z.string(),
   summary: z.string(),
@@ -44,7 +64,16 @@ export const contentSchema = z.object({
   cityCode: z.string().nullable(),
   cityName: z.string().nullable(),
   workMode: z.enum(['remote', 'onsite', 'hybrid']),
-  rewardType: z.enum(['fixed', 'range', 'negotiable', 'non_cash']),
+  rewardType: z.enum([
+    'fixed',
+    'range',
+    'negotiable',
+    'non_cash',
+    'cash',
+    'goods',
+    'service',
+    'mixed',
+  ]),
   amountMin: z.number().nullable(),
   amountMax: z.number().nullable(),
   currency: z.literal('CNY'),
@@ -79,7 +108,7 @@ export const getTaskMediaMetadata = (mediaNo: string, signal?: AbortSignal) =>
   );
 const uploadSchema = z.object({
   mediaNo: z.string(),
-  type: z.enum(['image', 'video']),
+  type: z.enum(['image', 'video', 'file']),
   previewUrl: z.string(),
 });
 export async function uploadTaskMedia(file: File) {

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DatePicker, Select, Modal } from 'antd';
+import { DatePicker, Select, Modal, Checkbox } from 'antd';
 import dayjs from 'dayjs';
 import { Icon } from './Icons';
-import { PublishWorkItemSummary } from '../features/publishing/components/PublishWorkItemSummary';
 import {
   buildPublicProject,
   publicationContent,
@@ -19,6 +18,7 @@ import { usePublishSummary } from '../features/publishing/hooks/usePublishSummar
 import { TaskCategorySelect } from '../features/publishing/components/TaskCategorySelect';
 import { TaskContentFields } from '../features/publishing/components/TaskContentFields';
 import { emptyTaskContent } from '../features/publishing/components/taskContentDefaults';
+import { RecruitmentManagement } from '../features/publishing/components/RecruitmentManagement';
 import { PublicationHistory } from '../features/publishing/components/PublicationHistory';
 import { usePublishTask } from '../features/publishing/hooks/usePublishTask';
 
@@ -35,6 +35,7 @@ const flattenNodes = (nodes) =>
   nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
 
 export default function PublishWizard({ requirement, selected, modules, onBack, onDone }) {
+  const [fullPreview, setFullPreview] = useState(false);
   const [modal, modalHolder] = Modal.useModal();
   const publishSummary = usePublishSummary(requirement.id);
   const publishTask = usePublishTask(requirement.id);
@@ -82,7 +83,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
   });
   const project =
     data.content.project ??
-    buildPublicProject(workItemTree, includedIds, requirement.title, data.summary);
+    buildPublicProject(workItemTree, includedIds, requirement.title, data.summary, true);
   const publicContent = publicationContent(data, includedItems, project);
   const budgetLabel = rewardLabel(publicContent);
   const sourceLabel = publishSummary.status === 'success' ? 'AI 已生成' : 'AI 正在生成';
@@ -140,6 +141,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
     }
   };
   const confirmPublish = async () => {
+    if (!data.content.details?.scopeConfirmed) return notify('请先确认整份 AI 工作范围');
     if (!data.title.trim() || !data.summary.trim()) return notify('请填写任务标题和任务简介');
     try {
       await publishTask.save(taskPayload('published'));
@@ -204,6 +206,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
         </button>
       </header>
 
+      {publishTask.data?.version > 0 && <RecruitmentManagement taskNo={publishTask.data.taskNo} />}
       <div className="wizard-steps compact-steps">
         {steps.map((label, index) => (
           <button
@@ -304,7 +307,14 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                   onChange={(next) =>
                     setData((current) => ({
                       ...current,
-                      content: { ...current.content, project: next },
+                      content: {
+                        ...current.content,
+                        project: next,
+                        details: {
+                          ...(current.content.details || emptyTaskContent().details),
+                          scopeConfirmed: false,
+                        },
+                      },
                     }))
                   }
                   onRefresh={() =>
@@ -312,22 +322,38 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                       ...current,
                       content: {
                         ...current.content,
+                        details: {
+                          ...(current.content.details || emptyTaskContent().details),
+                          scopeConfirmed: false,
+                        },
                         project: buildPublicProject(
                           workItemTree,
                           includedIds,
                           project.title,
                           project.summary,
+                          true,
                         ),
                       },
                     }))
                   }
                 />
-                <PublishWorkItemSummary
-                  tree={workItemTree}
-                  includedIds={includedIds}
-                  includedCount={includedItems.length}
-                  isLoading={decompositionQuery.isPending}
-                />
+                <Checkbox
+                  checked={data.content.details?.scopeConfirmed ?? false}
+                  onChange={(e) =>
+                    setData((current) => ({
+                      ...current,
+                      content: {
+                        ...current.content,
+                        details: {
+                          ...(current.content.details || emptyTaskContent().details),
+                          scopeConfirmed: e.target.checked,
+                        },
+                      },
+                    }))
+                  }
+                >
+                  已逐项确认整份 AI 拆解，发布范围中的全部工作均需实现
+                </Checkbox>
               </>
             )}
 
@@ -379,11 +405,11 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                 </div>
                 <div className="form-grid">
                   <label>
-                    报酬补充说明（非现金报酬请描述内容）
+                    回报补充说明（选填）
                     <input
                       value={data.budget}
                       onChange={(event) => set('budget', event.target.value)}
-                      placeholder="补充结算说明，或描述非现金报酬内容"
+                      placeholder="补充双方需要了解的回报约定"
                     />
                   </label>
                   <label>
@@ -529,7 +555,9 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
 
         <aside className="preview publish-preview">
           <header>
-            <span>任务预览</span>
+            <button className="ghost" onClick={() => setFullPreview(true)}>
+              打开完整详情预览
+            </button>
             <b>{requirement.id}</b>
           </header>
           <PublicTaskPreview
@@ -542,6 +570,22 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
           />
         </aside>
       </div>
+      <Modal
+        title="完整任务详情预览"
+        open={fullPreview}
+        onCancel={() => setFullPreview(false)}
+        width={1120}
+        footer={null}
+      >
+        <PublicTaskPreview
+          content={publicContent}
+          categoryName={
+            categoryQuery.data?.find((c) => c.code === data.category)?.name || data.category
+          }
+          recruitCount={Number(data.recruitCount) || 0}
+          experience={data.experience}
+        />
+      </Modal>
       {publishTask.data && (
         <PublicationHistory
           requirementNo={requirement.id}

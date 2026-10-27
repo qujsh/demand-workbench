@@ -1,10 +1,10 @@
 import type { ProjectTask } from '../api/taskContentApi';
-const labels = { module: '模块', feature: '功能', work: '任务', subtask: '子任务' };
+const labels = { module: '模块', feature: '功能', work: '工作项', subtask: '子任务' };
 export function PublicProjectTree({ tasks }: { tasks: ProjectTask[] }) {
   return (
     <div className="publication-project-tree">
       {tasks.map((task) => (
-        <details key={task.id} open>
+        <details key={task.id}>
           <summary>
             <span>{labels[task.type]}</span>
             <strong>{task.name}</strong>

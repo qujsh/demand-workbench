@@ -63,7 +63,7 @@ export function PublicationHistory({
         open={selected !== undefined}
         onCancel={() => setSelected(undefined)}
         footer={<Button onClick={() => setSelected(undefined)}>关闭</Button>}
-        width={720}
+        width={1120}
       >
         {snapshot.isPending ? (
           <Spin />

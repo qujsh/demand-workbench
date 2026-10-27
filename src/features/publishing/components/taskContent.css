@@ -184,3 +184,83 @@
     overflow-y: visible;
   }
 }
+
+/* 完整详情与编辑器保持工作台蓝色、细边框的视觉语言。 */
+.publication-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(220px, 3fr);
+  gap: 24px;
+  align-items: start;
+}
+.publication-detail-layout article {
+  min-width: 0;
+}
+.publication-detail-layout h2 {
+  font-size: 24px;
+  line-height: 1.4;
+}
+.publication-reward-card {
+  position: sticky;
+  top: 16px;
+  padding: 18px;
+  border: 1px solid #e4e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+.publication-reward-card section {
+  padding: 12px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+.publication-reward-card h4 {
+  margin: 8px 0;
+}
+.publication-acceptance {
+  margin: 20px 0;
+  border: 1px solid #e4e8f0;
+  padding: 14px;
+  border-radius: 6px;
+}
+.publication-acceptance summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.reward-edit-card {
+  border: 1px solid #e4e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.reward-fields label {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+.reward-fields .ant-input-number {
+  width: 100%;
+}
+@media (max-width: 1000px) {
+  .publication-detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .publication-reward-card {
+    position: static;
+  }
+}
+
+.recruitment-management {
+  border: 1px solid #e4e8f0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: #fff;
+  margin: 16px 24px;
+}
+
+.publish-preview .publication-detail-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+.publish-preview .publication-reward-card {
+  position: static;
+}
+.publish-preview .publication-body h2 {
+  font-size: 21px;
+}

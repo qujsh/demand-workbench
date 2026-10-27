@@ -4,6 +4,7 @@ import type { PublicContent } from '../api/taskContentApi';
 import { uploadTaskMedia } from '../api/taskContentApi';
 import { buildApiUrl } from '../../../shared/api/httpClient';
 import './taskContent.css';
+import { RewardFields } from './RewardFields';
 const options = (items: [string, string][]) => items.map(([value, label]) => ({ value, label }));
 export function TaskContentFields({
   value,
@@ -50,72 +51,40 @@ export function TaskContentFields({
   return (
     <div className="task-content-fields">
       {holder}
-      <h3>任务报酬与交付</h3>
-      <div className="form-grid">
-        <label>
-          报酬类型
-          <Select
-            className="publish-select"
-            value={value.rewardType}
-            options={options([
-              ['negotiable', '面议'],
-              ['fixed', '固定金额'],
-              ['range', '金额区间'],
-              ['non_cash', '非现金'],
-            ])}
-            onChange={(next) =>
-              onChange({ ...value, rewardType: next, amountMin: null, amountMax: null })
-            }
-          />
-        </label>
-        <label>
-          计价单位
-          <Select
-            className="publish-select"
-            value={value.unit}
-            options={options([
-              ['project', '项目'],
-              ['hour', '小时'],
-              ['day', '天'],
-              ['time', '次'],
-              ['item', '件'],
-            ])}
-            onChange={(next) => set('unit', next)}
-          />
-        </label>
-      </div>
-      {['fixed', 'range'].includes(value.rewardType) && (
-        <div className="form-grid">
-          <label>
-            金额／下限（人民币）
-            <InputNumber
-              aria-label="金额下限"
-              min={0}
-              precision={2}
-              value={value.amountMin}
-              onChange={(next) =>
-                onChange({
-                  ...value,
-                  amountMin: next,
-                  amountMax: value.rewardType === 'fixed' ? next : value.amountMax,
-                })
-              }
-            />
-          </label>
-          {value.rewardType === 'range' && (
-            <label>
-              金额上限
-              <InputNumber
-                aria-label="金额上限"
-                min={0}
-                precision={2}
-                value={value.amountMax}
-                onChange={(next) => set('amountMax', next)}
-              />
-            </label>
-          )}
-        </div>
-      )}
+      <h3>任务目标与回报</h3>
+      <label>
+        任务目标（选填）
+        <textarea
+          maxLength={5000}
+          value={value.details?.goal ?? ''}
+          onChange={(e) =>
+            set('details', {
+              goal: e.target.value,
+              collaboration: value.details?.collaboration ?? '',
+              scopeConfirmed: value.details?.scopeConfirmed ?? false,
+              rewards: value.details?.rewards ?? [],
+            })
+          }
+          placeholder="希望这次工作解决什么问题、达到什么效果"
+        />
+      </label>
+      <RewardFields value={value} onChange={onChange} />
+      <label>
+        时间与协作说明
+        <textarea
+          maxLength={2000}
+          value={value.details?.collaboration ?? ''}
+          onChange={(e) =>
+            set('details', {
+              goal: value.details?.goal ?? '',
+              collaboration: e.target.value,
+              scopeConfirmed: value.details?.scopeConfirmed ?? false,
+              rewards: value.details?.rewards ?? [],
+            })
+          }
+          placeholder="例如：远程沟通，每周一次进度同步，开始时间可协商"
+        />
+      </label>
       {workMode !== '远程' && (
         <div className="form-grid">
           <label>
@@ -168,31 +137,25 @@ export function TaskContentFields({
       >
         允许新人参与
       </Checkbox>
-      {(['scope', 'deliverables', 'acceptance'] as const).map((field, index) => (
+      {(['deliverables', 'acceptance'] as const).map((field, index) => (
         <LineField
           key={field}
-          label={
-            [
-              '工作范围（每行一项，留空使用已选工作项名称）',
-              '交付成果（每行一项）',
-              '验收要求（每行一项）',
-            ][index]!
-          }
+          label={['交付成果（每行一项）', '验收要求（每行一项）'][index]!}
           value={value[field]}
           onChange={(next) => set(field, next)}
         />
       ))}
-      <h3>任务图片与视频</h3>
+      <h3>任务参考素材</h3>
       <p>
-        只上传用于任务展示的媒体，内部需求附件不会自动展示。支持 JPEG / PNG / WebP、MP4；单文件最多
-        50MB，最多8个媒体，视频需图片封面。
+        只上传用于任务展示的媒体，内部需求附件不会自动展示。支持 JPEG / PNG /
+        WebP、MP4、PDF、ZIP；单文件最多 50MB，最多8个媒体，视频需图片封面。
       </p>
       <div className="task-content-upload">
         <label>
-          添加图片／视频
+          添加图片／视频／文件
           <input
             type="file"
-            accept="image/jpeg,image/png,image/webp,video/mp4"
+            accept="image/jpeg,image/png,image/webp,video/mp4,application/pdf,application/zip"
             disabled={uploading || value.mediaNos.length >= 8}
             onChange={(event) => void upload(event.currentTarget, false)}
           />

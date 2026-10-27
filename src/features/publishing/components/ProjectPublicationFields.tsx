@@ -36,13 +36,13 @@ export function ProjectPublicationFields({
       <div className="publish-section-heading">
         <strong>拟公开的项目任务 · {countProjectTasks(value.tasks)} 项</strong>
         <Button size="small" onClick={onRefresh}>
-          从当前已选工作项更新
+          从整份 AI 拆解更新
         </Button>
       </div>
       {value.tasks.length ? (
         <PublicProjectTree tasks={value.tasks} />
       ) : (
-        <p>暂未选择项目任务，可继续发布。</p>
+        <p>尚无工作范围，请先完成 AI 拆解。</p>
       )}
     </section>
   );
