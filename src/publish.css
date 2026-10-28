@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   color: #929cad;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0;
 }
 
@@ -41,7 +41,7 @@
 
 .compact-steps > button.active {
   color: #172033;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .compact-steps > button.active b,
@@ -107,13 +107,13 @@
 .publish-step-context small {
   margin-bottom: 3px;
   color: #8a95a7;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .publish-step-context strong {
   color: #344057;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .publish-step-context strong span {
@@ -131,14 +131,14 @@
 .compact-wizard-layout label em {
   color: #e14d4d;
   font-style: normal;
-  font-size: 10px;
+  font-size: 12px;
   margin-left: 3px;
 }
 
 .compact-wizard-layout label > small {
   display: block;
   color: #929cad;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 6px;
 }
 
@@ -166,7 +166,7 @@
 .compact-wizard-layout .publish-select .ant-select-selection-item,
 .compact-wizard-layout .publish-date-picker input {
   color: #253044;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .compact-wizard-layout label .publish-select input,
@@ -209,7 +209,7 @@
   align-items: center;
   gap: 5px;
   color: #7f8a9d;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -229,7 +229,7 @@
   border-radius: 5px;
   background: #fff;
   color: #b43f3f;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .compact-wizard-layout textarea[readonly] {
@@ -240,13 +240,13 @@
 
 .source-notice strong {
   color: #34425c;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .source-notice small {
   margin-top: 3px;
   color: #77849b;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .publish-section-heading {
@@ -268,18 +268,18 @@
 
 .publish-section-heading strong {
   color: #29354a;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .publish-section-heading small {
   color: #929cad;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 3px;
 }
 
 .publish-section-heading > span {
   color: #6f7b90;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .publish-section-heading .ant-btn {
@@ -287,7 +287,7 @@
   margin: 0 0 -5px 8px;
   padding-inline: 7px;
   color: var(--blue);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -307,7 +307,7 @@
   gap: 18px;
   border-top: 1px solid #edf0f5;
   color: #59667b;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.7;
 }
 
@@ -318,7 +318,7 @@
 .publish-scope-title {
   flex: 0 0 72px;
   color: #29354a;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .publish-scope-content {
@@ -356,7 +356,7 @@
 .publish-summary-status {
   padding: 24px 16px;
   color: #8390a5;
-  font-size: 11px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -378,7 +378,7 @@
   padding: 0 0 12px;
   border-bottom: 1px solid var(--border);
   color: #667389;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .publish-work-detail-head b {
@@ -434,18 +434,18 @@
   border-radius: 4px;
   background: #f0f3f8;
   color: #738096;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .publish-detail-node-main strong {
   color: #2e3a50;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .publish-detail-node > p {
   margin: 1px 0 0 44px;
   color: #7b8799;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
 }
 
@@ -492,14 +492,14 @@
 
 .work-item-content strong {
   color: #263249;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .work-item-content small {
   margin-top: 3px;
   overflow: hidden;
   color: #7e899b;
-  font-size: 10px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -507,7 +507,7 @@
 .work-item-content p {
   margin: 6px 0 0;
   color: #69758a;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -546,12 +546,12 @@
 
 .publish-work-empty strong {
   color: #59667b;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .publish-work-empty small {
   margin-top: 3px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .publish-review-list {
@@ -566,7 +566,7 @@
   align-items: center;
   gap: 14px;
   border-top: 1px solid #edf0f5;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .publish-review-list > div:first-child {
@@ -587,7 +587,7 @@
 
 .publish-preview header b {
   color: #8290a5;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -599,7 +599,7 @@
 
 .preview-scope-group {
   color: #68758a;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.65;
 }
 
@@ -607,7 +607,7 @@
   display: block;
   margin-bottom: 2px;
   color: #344057;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .preview-scope-group p {
@@ -626,7 +626,7 @@
 .preview-empty,
 .preview-more {
   color: #98a1b0 !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 
 @media (max-width: 760px) {
@@ -717,3 +717,27 @@
     max-height: calc(100vh - 72px);
   }
 }
+
+/* 分类选择与操作使用相同高度，间距由整行承担。 */
+.task-category-control { display:flex; gap:8px; align-items:center; margin-top:7px; }
+.compact-wizard-layout .task-category-control .publish-select { flex:1; min-width:0; margin-top:0; height:38px; }
+.task-category-control > button { height:38px; flex-shrink:0; }
+.sidebar-config { margin-top:14px; padding-top:12px; border-top:1px solid #2b333e; }
+.sidebar .config-chevron { margin-left:auto; }
+.sidebar button.sidebar-subitem { padding-left:39px; position:relative; }
+.category-page { min-height:100vh; background:var(--page-bg, #f5f6fa); }
+.category-content { max-width:1060px; margin:32px auto; padding:0 28px; }
+.category-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+.category-heading h1 { font-size:24px; font-weight:500; margin:0 0 8px; }
+.category-heading p { color:var(--muted); margin:0; }
+.category-create { background:white; padding:22px; border:1px solid var(--border); border-radius:8px; margin-bottom:20px; }
+.category-create-row { display:flex; gap:10px; max-width:540px; margin-top:12px; }
+.category-create p { color:var(--muted); font-size:12px; margin:10px 0 0; }
+
+.category-list-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.category-edit-fields { display:grid; gap:18px; padding-top:8px; }
+.category-edit-fields > div > span:first-child { display:block; margin-bottom:8px; }
+.category-edit-note, .category-edit-fields small { color:var(--muted); font-size:12px; }
+.category-edit-fields small { display:block; margin-top:6px; }
+.category-edit-fields .category-status-field { display:flex; gap:16px; align-items:center; }
+.category-edit-fields .category-status-field > span:first-child { margin:0; }

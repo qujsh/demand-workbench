@@ -19,7 +19,7 @@ export const workItemNodeSchema: z.ZodType<WorkItemNode> = z.lazy(() =>
     type: z.enum(['module', 'feature', 'work', 'subtask']),
     name: z.string(),
     description: z.string().nullish().transform(value => value ?? ''),
-    status: z.enum(['未开始', '待开发', '进行中', '待验收', '已完成']).nullish().transform(value => value ?? '未开始'),
+    status: z.enum(['未开始', '进行中', '待验收', '已完成']).nullish().transform(value => value ?? '未开始'),
     role: z.string().nullish().transform(value => value ?? '未分配'),
     priority: prioritySchema,
     startDate: z.string().nullable().optional(),

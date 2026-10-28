@@ -57,7 +57,7 @@ export function usePublishSummary(requirementNo: string) {
 
   return {
     content: streamedContent || query.data?.content || '',
-    status: streamStatus !== 'idle' ? streamStatus : query.data?.status ?? 'pending',
+    status: streamStatus !== 'idle' ? streamStatus : query.error ? 'failed' : query.data?.status ?? 'pending',
     isLoading: query.isLoading,
     error: streamError ?? query.error,
     retry,

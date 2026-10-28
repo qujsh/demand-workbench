@@ -1,5 +1,5 @@
 export type WorkItemType = 'module' | 'feature' | 'work' | 'subtask';
-export type WorkItemStatus = '未开始' | '待开发' | '进行中' | '待验收' | '已完成';
+export type WorkItemStatus = '未开始' | '进行中' | '待验收' | '已完成';
 export type WorkItemPriority = '' | '高' | '中' | '低';
 export type RequirementStage = '草稿' | '已发布' | '已取消';
 

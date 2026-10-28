@@ -106,11 +106,11 @@
 
 .requirements-page .requirements-state strong {
   color: #273247;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .requirements-page .requirements-state small {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .requirements-page .requirements-state.error > svg {
@@ -135,7 +135,7 @@
 .requirements-page .publish-entry {
   padding: 0 10px;
   gap: 5px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -149,7 +149,7 @@
 .requirements-page .cancel-entry {
   padding: 0 10px;
   gap: 5px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -174,7 +174,7 @@
 .delete-confirm-text {
   margin: 4px 0 14px;
   color: #687489;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .delete-confirm-target {

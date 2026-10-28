@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Icon } from './Icons';
 import { useAuth } from '../features/auth/authContext';
 import { Link } from 'react-router-dom';
@@ -10,6 +11,7 @@ const items = [
 ];
 
 export default function Sidebar({ view, onChange }) {
+  const [configOpen, setConfigOpen] = useState(true);
   const { user, logout } = useAuth();
   const initial = user.nickname.slice(0, 1).toUpperCase();
   return <aside className="sidebar">
@@ -19,6 +21,14 @@ export default function Sidebar({ view, onChange }) {
       {items.map(([icon,label,key]) => <button key={key} className={view===key?'active':''} onClick={()=>onChange(key)}>
         <Icon name={icon}/><span>{label}</span>{key==='requirements'&&<em>4</em>}
       </button>)}
+      <div className="sidebar-config">
+        <button aria-expanded={configOpen} onClick={() => setConfigOpen(!configOpen)}>
+          <Icon name="Settings"/><span>配置中心</span><Icon className="config-chevron" name={configOpen ? 'ChevronDown' : 'ChevronRight'} size={14}/>
+        </button>
+        {configOpen && <button className={`sidebar-subitem ${view === 'categories' ? 'active' : ''}`} onClick={() => onChange('categories')}>
+          <Icon name="ListFilter" size={16}/><span>分类管理</span>
+        </button>}
+      </div>
     </nav>
     <div className="sidebar-bottom">
       <button className={view === 'settings' ? 'active' : ''} onClick={() => onChange('settings')}><Icon name="Settings"/><span>个人设置</span></button>

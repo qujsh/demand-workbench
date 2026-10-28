@@ -14,9 +14,10 @@ const RequirementList = lazy(() => import('./components/RequirementList'));
 const AnalysisWorkbench = lazy(() => import('./components/AnalysisWorkbench'));
 const Planning = lazy(() => import('./components/Planning'));
 const PublishWizard = lazy(() => import('./components/PublishWizard'));
+const CategoryManagement = lazy(() => import('./features/publishing/pages/CategoryManagement'));
 const SettingsPage = lazy(() => import('./features/auth/pages/SettingsPage'));
 
-type View = 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings';
+type View = 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings' | 'categories';
 
 const flattenNodes = (nodes: WorkItemNode[]): WorkItemNode[] =>
   nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
@@ -39,10 +40,17 @@ export default function App() {
     if (requirementsQuery.data) setRequirements(requirementsQuery.data);
   }, [requirementsQuery.data]);
 
+  const categoryReturnPath = location.state?.publishReturnPath as string | undefined;
+  const retainedPublishPath =
+    (location.state?.publishEditorPath as string | undefined) ?? categoryReturnPath;
+  const editorPath =
+    location.pathname === '/configuration/categories' && retainedPublishPath
+      ? retainedPublishPath
+      : location.pathname;
   const routeMatch =
     matchPath('/requirements/:requirementId/analysis', location.pathname) ||
     matchPath('/requirements/:requirementId/planning', location.pathname) ||
-    matchPath('/requirements/:requirementId/publish', location.pathname);
+    matchPath('/requirements/:requirementId/publish', editorPath);
   const requirementId = routeMatch?.params.requirementId;
   const requirement = useMemo(
     () => requirements.find((item) => item.id === requirementId) ?? requirements[0],
@@ -62,13 +70,18 @@ export default function App() {
     },
     [requirement],
   );
-  const view: View = location.pathname === '/settings' ? 'settings' : location.pathname.endsWith('/analysis')
-    ? 'analysis'
-    : location.pathname.endsWith('/planning')
-      ? 'planning'
-      : location.pathname.endsWith('/publish')
-        ? 'publishing'
-        : 'requirements';
+  const view: View =
+    location.pathname === '/configuration/categories'
+      ? 'categories'
+      : location.pathname === '/settings'
+        ? 'settings'
+        : location.pathname.endsWith('/analysis')
+          ? 'analysis'
+          : location.pathname.endsWith('/planning')
+            ? 'planning'
+            : location.pathname.endsWith('/publish')
+              ? 'publishing'
+              : 'requirements';
 
   useEffect(() => {
     const handler = (event: Event) => {
@@ -120,9 +133,7 @@ export default function App() {
       navigate(`/requirements/${saved.requirementNo}/publish`);
     } catch (error) {
       setToast(
-        error instanceof ApiError
-          ? error.message
-          : '无法连接后端服务，请确认服务已启动后重试',
+        error instanceof ApiError ? error.message : '无法连接后端服务，请确认服务已启动后重试',
       );
       window.setTimeout(() => setToast(''), 3000);
     }
@@ -130,7 +141,7 @@ export default function App() {
   const createRequirement = () => {
     const item: Requirement = {
       id: `LOCAL-${Date.now()}`,
-      title: '未命名需求标题',
+      title: '',
       description: '',
       aiDescription: '',
       updated: '刚刚',
@@ -162,7 +173,13 @@ export default function App() {
     }
   };
   const navigateSidebar = (target: string) => {
-    if (target === 'settings') navigate('/settings');
+    if (target === 'categories')
+      navigate('/configuration/categories', {
+        state: {
+          publishEditorPath: view === 'publishing' ? location.pathname : retainedPublishPath,
+        },
+      });
+    else if (target === 'settings') navigate('/settings');
     else if (target === 'requirements') navigate('/requirements');
     else {
       setToast('该模块将在后续版本开放');
@@ -172,7 +189,11 @@ export default function App() {
 
   return (
     <div className="app flex min-h-screen">
-      {view !== 'settings' && <Link to="/settings" className="settings-mobile-entry">个人设置</Link>}
+      {view !== 'settings' && (
+        <Link to="/settings" className="settings-mobile-entry">
+          个人设置
+        </Link>
+      )}
       <Sidebar view={view === 'analysis' ? 'requirements' : view} onChange={navigateSidebar} />
       <div className="app-content min-w-0 flex-1">
         <Suspense
@@ -182,6 +203,7 @@ export default function App() {
             </div>
           }
         >
+          {view === 'categories' && <CategoryManagement returnPath={categoryReturnPath} />}
           {view === 'settings' && <SettingsPage />}
           {view === 'requirements' && (
             <RequirementList
@@ -249,25 +271,36 @@ export default function App() {
               onBack={() => navigate(`/requirements/${requirement.id}/analysis`)}
             />
           )}
-          {view === 'publishing' && requirement && (
-            <PublishWizard
-              requirement={requirement}
-              modules={modules}
-              selected={
-                selected.length
-                  ? selected
-                  : flattenNodes(modules).filter(
-                      (item) => item.type === 'work' || item.type === 'subtask',
-                    )
-              }
-              onBack={() => navigate(`/requirements/${requirement.id}/analysis`)}
-              onDone={() => {
-                setToast('任务已发布');
-                window.setTimeout(() => setToast(''), 2500);
-                navigate('/requirements');
-              }}
-            />
-          )}
+          {(view === 'publishing' || (view === 'categories' && retainedPublishPath)) &&
+            requirement && (
+              <div hidden={view !== 'publishing'}>
+                <PublishWizard
+                  requirement={requirement}
+                  modules={modules}
+                  onManageCategories={() =>
+                    navigate('/configuration/categories', {
+                      state: {
+                        publishReturnPath: location.pathname,
+                        publishEditorPath: location.pathname,
+                      },
+                    })
+                  }
+                  selected={
+                    selected.length
+                      ? selected
+                      : flattenNodes(modules).filter(
+                          (item) => item.type === 'work' || item.type === 'subtask',
+                        )
+                  }
+                  onBack={() => navigate(`/requirements/${requirement.id}/analysis`)}
+                  onDone={() => {
+                    setToast('任务已发布');
+                    window.setTimeout(() => setToast(''), 2500);
+                    navigate('/requirements');
+                  }}
+                />
+              </div>
+            )}
         </Suspense>
       </div>
       {toast && (

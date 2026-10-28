@@ -1,12 +1,13 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon } from './Icons';
 import AnalysisPreview from './AnalysisPreview';
+import { RequirementEditor } from '../features/requirements/components/RequirementEditor';
 import { PlanningWorkspace } from './Planning';
+import { useDecompositionCooldown } from '../features/decomposition/hooks/useDecompositionCooldown';
+import { RedecomposeButton } from '../features/decomposition/components/RedecomposeButton';
 import { useDecompositionTask } from '../features/decomposition/hooks/useDecompositionTask';
 
-const initialDescription = `我们需要开发一套面向用户的预约服务系统，支持用户选择服务项目、门店、日期和时间创建订单。
-
-系统需要覆盖用户注册、预约、订单管理，以及取消、改期和退款等能力。`;
+const initialDescription = '';
 
 const mergePromptTemplate = `# 角色定位
 
@@ -55,6 +56,7 @@ export default function AnalysisWorkbench({
   onPublish,
   isPublishing,
 }) {
+  const { coolingDown, activate } = useDecompositionCooldown();
   const initialAiDescription = '';
   const [title, setTitle] = useState(requirement.title);
   const [description, setDescription] = useState(requirement.description || initialDescription);
@@ -142,31 +144,15 @@ export default function AnalysisWorkbench({
           需求分析
         </button>
         <span>/</span>
-        <strong>{title || '未命名需求标题'}</strong>
+        <strong>{title || '新建需求'}</strong>
         <span className="spacer" />
-        <button
-          className="ghost"
-          disabled={
-            decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status)
-          }
-          onClick={startDecomposition}
-        >
-          <Icon
-            name={
-              decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status)
-                ? 'LoaderCircle'
-                : 'ListTree'
-            }
-            className={
-              decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status)
-                ? 'spin'
-                : ''
-            }
-          />
-          {decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status)
-            ? '正在拆解'
-            : '拆解工作项'}
-        </button>
+        <RedecomposeButton
+          coolingDown={coolingDown}
+          onActivate={activate}
+          hasExisting={modules.length > 0}
+          pending={Boolean(decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status))}
+          onStart={startDecomposition}
+        />
         <button
           className="primary"
           disabled={isPublishing}
@@ -233,7 +219,7 @@ export default function AnalysisWorkbench({
                   setTitle(event.target.value);
                   startTransition(() => onRequirementChange?.({ title: event.target.value }));
                 }}
-                placeholder="用一句话概括需求"
+                placeholder="需求标题：简要说明你想做的事…"
                 aria-label="需求标题"
               />
             </label>
@@ -258,39 +244,14 @@ export default function AnalysisWorkbench({
                 </div>
               </div>
               {descriptionMode === 'user' ? (
-                <div className="rich-editor-shell">
-                  <div className="rich-toolbar">
-                    {[
-                      'Bold',
-                      'Italic',
-                      'Underline',
-                      'Link',
-                      'List',
-                      'ListOrdered',
-                      'Paperclip',
-                      'Image',
-                    ].map((name) => (
-                      <button type="button" key={name}>
-                        <Icon name={name} size={15} />
-                      </button>
-                    ))}
-                    <i />
-                    <button type="button" onClick={() => copyText(description, '需求描述已复制')}>
-                      <Icon name="Copy" size={15} />
-                      复制描述
-                    </button>
-                  </div>
-                  <textarea
-                    value={description}
-                    onChange={(event) => {
-                      setDescription(event.target.value);
-                      startTransition(() =>
-                        onRequirementChange?.({ description: event.target.value }),
-                      );
-                    }}
-                    placeholder="描述需求背景、目标、使用场景和约束条件…"
-                  />
-                </div>
+                <RequirementEditor
+                  value={description}
+                  onChange={(value) => {
+                    setDescription(value);
+                    startTransition(() => onRequirementChange?.({ description: value }));
+                  }}
+                  onCopy={(text) => copyText(text, '需求描述已复制')}
+                />
               ) : (
                 <div className="ai-description-shell">
                   <div className="ai-description-toolbar">
@@ -434,7 +395,7 @@ export default function AnalysisWorkbench({
               <span>已内嵌</span>
               <button className="merge-prompt-button" onClick={() => setMergePromptOpen(true)}>
                 <Icon name="Combine" size={13} />
-                复制合并提示词
+                复制「合并提示词」
               </button>
               <a href="https://www.doubao.com/chat/" target="_blank" rel="noreferrer">
                 新窗口打开
@@ -600,7 +561,7 @@ export default function AnalysisWorkbench({
               <button onClick={() => setMergePromptOpen(false)}>取消</button>
               <button
                 className="primary"
-                onClick={() => copyText(mergePromptText, '合并提示词已复制，可以粘贴到豆包')}
+                onClick={() => copyText(mergePromptText, '合并提示词已复制，可以粘贴到豆包文本输入框')}
               >
                 <Icon name="Copy" />
                 复制并发送给豆包

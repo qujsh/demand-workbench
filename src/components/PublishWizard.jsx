@@ -11,7 +11,7 @@ import {
 } from '../features/publishing/components/publicationPreviewModel';
 import { PublicTaskPreview } from '../features/publishing/components/PublicTaskPreview';
 import { ProjectPublicationFields } from '../features/publishing/components/ProjectPublicationFields';
-import { getTaskCategories } from '../features/publishing/api/taskContentApi';
+import { getManagedTaskCategories } from '../features/publishing/api/taskContentApi';
 import { useQuery } from '@tanstack/react-query';
 import { useDecompositionTask } from '../features/decomposition/hooks/useDecompositionTask';
 import { usePublishSummary } from '../features/publishing/hooks/usePublishSummary';
@@ -34,7 +34,7 @@ const validDates = (items, key) =>
 const flattenNodes = (nodes) =>
   nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
 
-export default function PublishWizard({ requirement, selected, modules, onBack, onDone }) {
+export default function PublishWizard({ requirement, selected, modules, onBack, onDone, onManageCategories }) {
   const [fullPreview, setFullPreview] = useState(false);
   const [modal, modalHolder] = Modal.useModal();
   const publishSummary = usePublishSummary(requirement.id);
@@ -78,15 +78,15 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
   });
   const set = (key, value) => setData((current) => ({ ...current, [key]: value }));
   const categoryQuery = useQuery({
-    queryKey: ['task-categories'],
-    queryFn: ({ signal }) => getTaskCategories(signal),
+    queryKey: ['managed-task-categories', ''],
+    queryFn: ({ signal }) => getManagedTaskCategories('', signal),
   });
   const project =
     data.content.project ??
     buildPublicProject(workItemTree, includedIds, requirement.title, data.summary, true);
   const publicContent = publicationContent(data, includedItems, project);
   const budgetLabel = rewardLabel(publicContent);
-  const sourceLabel = publishSummary.status === 'success' ? 'AI 已生成' : 'AI 正在生成';
+  const sourceLabel = publishSummary.isLoading ? '正在检查' : ({ success: 'AI 已生成', generating: 'AI 正在生成', failed: 'AI 生成失败', pending: '等待生成' }[publishSummary.status] || '等待生成');
 
   useEffect(() => {
     if (!publishSummary.content || summaryTouched.current) return;
@@ -259,6 +259,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                 <label>
                   任务分类
                   <TaskCategorySelect
+                    onCreate={onManageCategories}
                     value={data.category}
                     onChange={(value) => set('category', value)}
                   />

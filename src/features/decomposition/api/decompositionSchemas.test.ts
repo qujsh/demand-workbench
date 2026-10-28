@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   decompositionApiResponseSchema,
   decompositionTaskSchema,
+  workItemNodeSchema,
   submitApiResponseSchema,
 } from './decompositionSchemas';
 
@@ -90,4 +91,8 @@ describe('decompositionTaskSchema', () => {
       }),
     ).toThrow('拆解任务不存在');
   });
+});
+
+it('拒绝已移除的待开发状态', () => {
+  expect(workItemNodeSchema.safeParse({id:'WORK-1',type:'work',name:'拍摄',status:'待开发'}).success).toBe(false);
 });

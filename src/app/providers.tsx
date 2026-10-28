@@ -29,7 +29,11 @@ export function AppProviders({ children }: PropsWithChildren) {
           colorText: '#172033',
           colorBorder: '#e4e8f0',
           borderRadius: 6,
-          fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif',
+          fontSize: 14,
+          lineHeight: 1.428571,
+          controlHeight: 36,
+          fontWeightStrong: 500,
+          fontFamily: '-apple-system-body, ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"',
         },
       }}
     >

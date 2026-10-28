@@ -1,10 +1,10 @@
 .settings-content { max-width: 860px; margin: 0 auto; padding: 36px; }
-.settings-content > h1 { margin: 0 0 8px; font-size: 25px; }
-.settings-subtitle, .settings-summary p { color: var(--muted); font-size: 13px; margin: 0; }
+.settings-content > h1 { margin: 0 0 8px; font-size: 24px; font-weight: 400; line-height: 1.2; }
+.settings-subtitle, .settings-summary p { color: var(--muted); font-size: 14px; margin: 0; }
 .settings-summary { display: flex; align-items: center; gap: 18px; margin: 28px 0; }
 .settings-summary h2 { font-size: 18px; margin: 0 0 6px; }
 .settings-section { padding: 26px 0; border-top: 1px solid var(--border); }
-.settings-section h2 { font-size: 16px; margin: 0 0 22px; }
+.settings-section h2 { font-size: 16px; font-weight: 500; margin: 0 0 22px; }
 .settings-section .ant-form { max-width: 420px; }
 .settings-section .ant-alert { margin-bottom: 16px; }
 .settings-mobile-entry { display: none; }
@@ -17,7 +17,7 @@
 .settings-security-list { list-style: none; padding: 0; margin: 16px 0; }
 .settings-security-list li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
 .settings-security-list strong { font-size: 14px; margin-right: 10px; }
-.settings-security-list p, .settings-security-list time { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+.settings-security-list p, .settings-security-list time { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
 .settings-security-list time { white-space: nowrap; }
 @media (max-width: 760px) {
   .settings-content { padding: 24px 18px; }

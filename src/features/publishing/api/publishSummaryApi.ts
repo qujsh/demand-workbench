@@ -41,18 +41,22 @@ export function extractSseEvents(buffer: string): { events: SseEvent[]; remainde
   return { events, remainder };
 }
 
-export function getPublishSummary(
+export async function getPublishSummary(
   requirementNo: string,
   signal?: AbortSignal,
 ): Promise<PublishSummary> {
-  return requestJson(
-    `/api/v1/requirements/publish-summary?requirementNo=${encodeURIComponent(requirementNo)}`,
-    publishSummaryApiResponseSchema,
-    { signal },
-  );
+  try {
+    return await requestJson(
+      `/api/v1/requirements/publish-summary?requirementNo=${encodeURIComponent(requirementNo)}`,
+      publishSummaryApiResponseSchema,
+      { signal },
+    );
+  } catch (error) {
+    throw summaryRequestError(error);
+  }
 }
 
-export async function streamPublishSummary(
+async function readPublishSummaryStream(
   requirementNo: string,
   handlers: PublishSummaryStreamHandlers,
 ): Promise<void> {
@@ -74,22 +78,60 @@ export async function streamPublishSummary(
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
-  while (true) {
-    const { done, value } = await reader.read();
-    buffer += decoder.decode(value, { stream: !done });
-    const parsed = extractSseEvents(buffer);
-    buffer = parsed.remainder;
-    for (const item of parsed.events) {
-      const payload = JSON.parse(item.data) as unknown;
-      if (item.event === 'content') {
-        handlers.onContent(z.object({ text: z.string() }).parse(payload).text);
-      } else if (item.event === 'complete') {
-        handlers.onComplete(publishSummarySchema.parse(payload));
-      } else if (item.event === 'error') {
-        const error = z.object({ errorCode: z.string(), message: z.string() }).parse(payload);
-        throw new ApiError(error.message, 502, error.errorCode);
+  let completed = false;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      buffer += decoder.decode(value, { stream: !done });
+      const parsed = extractSseEvents(buffer);
+      buffer = parsed.remainder;
+      for (const item of parsed.events) {
+        const payload = JSON.parse(item.data) as unknown;
+        if (item.event === 'content') {
+          handlers.onContent(z.object({ text: z.string() }).parse(payload).text);
+        } else if (item.event === 'complete') {
+          handlers.onComplete(publishSummarySchema.parse(payload));
+          completed = true;
+        } else if (item.event === 'error') {
+          const error = z.object({ errorCode: z.string(), message: z.string() }).parse(payload);
+          throw new ApiError(error.message, 502, error.errorCode);
+        }
       }
+      if (completed) return;
+      if (done) break;
     }
-    if (done) break;
+    if (!completed)
+      throw new ApiError(
+        '任务简介生成连接已中断，请重新生成；当前输入内容已保留',
+        502,
+        'SUMMARY_STREAM_INTERRUPTED',
+      );
+  } finally {
+    await reader.cancel().catch(() => undefined);
+    reader.releaseLock();
+  }
+}
+
+function summaryRequestError(error: unknown): Error {
+  if (error instanceof ApiError) return error;
+  if (error instanceof Error && error.name === 'AbortError') return error;
+  if (error instanceof SyntaxError || error instanceof z.ZodError) {
+    return new ApiError('任务简介响应格式异常，请稍后重试', 502, 'INVALID_API_RESPONSE');
+  }
+  return new ApiError(
+    '任务简介连接异常，请检查后端服务或网络后重新生成；当前输入内容已保留',
+    0,
+    'SUMMARY_CONNECTION_ERROR',
+  );
+}
+
+export async function streamPublishSummary(
+  requirementNo: string,
+  handlers: PublishSummaryStreamHandlers,
+): Promise<void> {
+  try {
+    await readPublishSummaryStream(requirementNo, handlers);
+  } catch (error) {
+    throw summaryRequestError(error);
   }
 }
