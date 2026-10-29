@@ -122,10 +122,10 @@ export const updateTaskCategory = (
       }),
     },
   );
-export const createTaskCategory = (name: string) =>
+export const createTaskCategory = (code: string, name: string) =>
   requestJson('/api/v1/task-categories/create', apiResponseSchema(categorySchema), {
     method: 'POST',
-    body: JSON.stringify({ name }),
+    body: JSON.stringify({ code, name }),
   });
 export const getTaskMediaMetadata = (mediaNo: string, signal?: AbortSignal) =>
   requestJson(

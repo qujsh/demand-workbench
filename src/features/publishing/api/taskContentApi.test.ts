@@ -21,12 +21,15 @@ describe('unified publishing contracts', () => {
     const fetcher = vi
       .fn()
       .mockResolvedValue(
-        response({ code: 'cat_1', name: '新分类', sortOrder: 1000, enabled: true }),
+        response({ code: 'new_category', name: '新分类', sortOrder: 1000, enabled: true }),
       );
     vi.stubGlobal('fetch', fetcher);
-    expect((await createTaskCategory('新分类')).code).toBe('cat_1');
+    expect((await createTaskCategory('new_category', '新分类')).code).toBe('new_category');
     expect(fetcher.mock.calls[0][0]).toContain('/task-categories/create');
-    expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({ name: '新分类' });
+    expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({
+      code: 'new_category',
+      name: '新分类',
+    });
   });
   it('uses multipart for media and keeps authentication', async () => {
     const fetcher = vi

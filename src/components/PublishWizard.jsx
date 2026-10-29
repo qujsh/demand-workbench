@@ -76,6 +76,16 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
     invitedUserNos: [],
     version: 0,
   });
+  useEffect(() => {
+    const onMigration = (event) => {
+      const {sourceCode,targetCode} = event.detail;
+      setData((current) => current.category !== sourceCode ? current : ({
+        ...current, category:targetCode, content:{...current.content,categoryCode:targetCode},
+      }));
+    };
+    window.addEventListener('category-migrated',onMigration);
+    return () => window.removeEventListener('category-migrated',onMigration);
+  }, []);
   const set = (key, value) => setData((current) => ({ ...current, [key]: value }));
   const categoryQuery = useQuery({
     queryKey: ['managed-task-categories', ''],

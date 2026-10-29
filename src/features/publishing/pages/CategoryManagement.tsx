@@ -1,5 +1,7 @@
+import { CategoryDeletion } from '../components/CategoryDeletion';
+import { CategoryMigrationHistory } from '../components/CategoryMigrationHistory';
 import { useState } from 'react';
-import { Alert, Button, Input, InputNumber, Modal, Switch, Table, Tag, message } from 'antd';
+import { Alert, Button, Input, InputNumber, Modal, Switch, Table, Tag, Tabs, message } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,6 +15,10 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
   const navigate = useNavigate();
   const client = useQueryClient();
   const [name, setName] = useState('');
+  const [code, setCode] = useState('');
+  const validCode = code.length <= 64 && /^[a-z]+(?:_[a-z]+)*$/.test(code);
+  const canCreate = !!name.trim() && validCode;
+  const [tab, setTab] = useState('categories');
   const [keyword, setKeyword] = useState('');
   const [editing, setEditing] = useState<ManagedCategory | null>(null);
   const [toast, holder] = message.useMessage();
@@ -38,9 +44,10 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
     },
   });
   const create = useMutation({
-    mutationFn: () => createTaskCategory(name.trim()),
+    mutationFn: () => createTaskCategory(code, name.trim()),
     onSuccess: async () => {
       setName('');
+      setCode('');
       await refreshCategories();
       void toast.success(returnPath ? '分类已保存，返回发布页后即可选择' : '分类已保存');
     },
@@ -72,89 +79,126 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
             style={{ marginBottom: 20 }}
           />
         )}
-        <section className="category-create" aria-label="新增分类">
-          <strong>新增分类</strong>
-          <div className="category-create-row">
-            <Input
-              aria-label="分类名称"
-              placeholder="输入分类名称，例如：摄影影像"
-              maxLength={64}
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              onPressEnter={() => {
-                if (name.trim() && !create.isPending) create.mutate();
-              }}
-            />
-            <Button
-              type="primary"
-              loading={create.isPending}
-              disabled={!name.trim()}
-              onClick={() => create.mutate()}
-            >
-              创建分类
-            </Button>
-          </div>
-          <p>最多 64 个字符。同名分类复用已有编号，不会重复创建。</p>
-        </section>
-        {categories.isError && (
-          <Alert
-            type="error"
-            title={categories.error.message}
-            action={<Button onClick={() => void categories.refetch()}>重试</Button>}
-          />
-        )}
-        <div className="category-list-toolbar">
-          <strong>全部分类</strong>
-          <Input.Search
-            aria-label="搜索分类"
-            placeholder="搜索名称或编号"
-            allowClear
-            maxLength={64}
-            onSearch={(value) => setKeyword(value.trim())}
-            style={{ width: 280 }}
-          />
-        </div>
-        <Table
-          rowKey="code"
-          loading={categories.isPending}
-          dataSource={categories.data ?? []}
-          pagination={{ pageSize: 10, hideOnSinglePage: true }}
-          locale={{ emptyText: keyword ? '未找到匹配的分类' : '暂无分类，请先创建一个分类' }}
-          columns={[
-            { title: '分类名称', dataIndex: 'name' },
-            { title: '分类编号', dataIndex: 'code', ellipsis: true },
-            { title: '排序', dataIndex: 'sortOrder', width: 80 },
-            {
-              title: '来源',
-              dataIndex: 'source',
-              width: 100,
-              render: (source: string) =>
-                source === 'system' ? '系统预设' : source === 'user' ? '用户创建' : '未知来源',
-            },
-            {
-              title: '创建人',
-              render: (_, item: ManagedCategory) =>
-                item.source === 'system' ? '系统' : item.creatorName || '账号不可用',
-            },
-            {
-              width: 90,
-              title: '状态',
-              dataIndex: 'enabled',
-              render: (enabled: boolean) => (
-                <Tag color={enabled ? 'green' : undefined}>{enabled ? '已启用' : '已停用'}</Tag>
-              ),
-            },
-            {
-              title: '操作',
-              width: 80,
-              render: (_, item: ManagedCategory) => (
-                <Button type="link" onClick={() => setEditing({ ...item })}>
-                  编辑
-                </Button>
-              ),
-            },
+        <Tabs
+          activeKey={tab}
+          onChange={setTab}
+          items={[
+            { key: 'categories', label: '分类列表' },
+            { key: 'history', label: '迁移记录' },
           ]}
         />
+        {tab === 'history' ? (
+          <CategoryMigrationHistory />
+        ) : (
+          <>
+            <section className="category-create" aria-label="新增分类">
+              <strong>新增分类</strong>
+              <div className="category-create-row">
+                <div className="category-create-field">
+                  <span>英文编号</span>
+                  <Input
+                    aria-label="英文编号"
+                    placeholder="例如：pet_care"
+                    value={code}
+                    maxLength={64}
+                    status={code && !validCode ? 'error' : undefined}
+                    onChange={(event) => setCode(event.target.value)}
+                    onPressEnter={() => {
+                      if (canCreate && !create.isPending) create.mutate();
+                    }}
+                  />
+                </div>
+                <div className="category-create-field">
+                  <span>分类名称</span>
+                  <Input
+                    aria-label="分类名称"
+                    placeholder="输入分类名称，例如：摄影影像"
+                    maxLength={64}
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    onPressEnter={() => {
+                      if (canCreate && !create.isPending) create.mutate();
+                    }}
+                  />
+                </div>
+                <Button
+                  type="primary"
+                  loading={create.isPending}
+                  disabled={!canCreate}
+                  onClick={() => create.mutate()}
+                >
+                  创建分类
+                </Button>
+              </div>
+              <p>
+                英文编号和分类名称均必填、最长 64
+                字符且不可重复。编号仅用小写英文字母，多个单词用下划线连接，创建后不可修改。
+              </p>
+            </section>
+            {categories.isError && (
+              <Alert
+                type="error"
+                title={categories.error.message}
+                action={<Button onClick={() => void categories.refetch()}>重试</Button>}
+              />
+            )}
+            <div className="category-list-toolbar">
+              <strong>全部分类</strong>
+              <Input.Search
+                aria-label="搜索分类"
+                placeholder="搜索名称或编号"
+                allowClear
+                maxLength={64}
+                onSearch={(value) => setKeyword(value.trim())}
+                style={{ width: 280 }}
+              />
+            </div>
+            <Table
+              rowKey="code"
+              loading={categories.isPending}
+              dataSource={categories.data ?? []}
+              pagination={{ pageSize: 10, hideOnSinglePage: true }}
+              locale={{ emptyText: keyword ? '未找到匹配的分类' : '暂无分类，请先创建一个分类' }}
+              columns={[
+                { title: '分类名称', dataIndex: 'name' },
+                { title: '分类编号', dataIndex: 'code', ellipsis: true },
+                { title: '排序', dataIndex: 'sortOrder', width: 80 },
+                {
+                  title: '来源',
+                  dataIndex: 'source',
+                  width: 100,
+                  render: (source: string) =>
+                    source === 'system' ? '系统预设' : source === 'user' ? '用户创建' : '未知来源',
+                },
+                {
+                  title: '创建人',
+                  render: (_, item: ManagedCategory) =>
+                    item.source === 'system' ? '系统' : item.creatorName || '账号不可用',
+                },
+                {
+                  width: 90,
+                  title: '状态',
+                  dataIndex: 'enabled',
+                  render: (enabled: boolean) => (
+                    <Tag color={enabled ? 'green' : undefined}>{enabled ? '已启用' : '已停用'}</Tag>
+                  ),
+                },
+                {
+                  title: '操作',
+                  width: 135,
+                  render: (_, item: ManagedCategory) => (
+                    <>
+                      <Button type="link" onClick={() => setEditing({ ...item })}>
+                        编辑
+                      </Button>
+                      <CategoryDeletion category={item} />
+                    </>
+                  ),
+                },
+              ]}
+            />
+          </>
+        )}
       </div>
       <Modal
         title="编辑分类"
