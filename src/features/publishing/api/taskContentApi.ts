@@ -49,7 +49,6 @@ export type RewardItem = z.infer<typeof rewardItemSchema>;
 export const detailSchema = z.object({
   goal: z.string(),
   collaboration: z.string().nullable(),
-  scopeConfirmed: z.boolean(),
   rewards: z.array(rewardItemSchema),
 });
 export const contentSchema = z.object({

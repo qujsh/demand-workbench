@@ -34,7 +34,6 @@ export function RewardFields({
       details: {
         goal: value.details?.goal ?? '',
         collaboration: value.details?.collaboration ?? '',
-        scopeConfirmed: value.details?.scopeConfirmed ?? false,
         rewards,
       },
     });

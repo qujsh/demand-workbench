@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useQueries } from '@tanstack/react-query';
 import { Image } from 'antd';
 import { getTaskMediaMetadata, type PublicContent } from '../api/taskContentApi';
@@ -17,7 +16,6 @@ export function PublicTaskPreview({
   recruitCount: number;
   experience: string;
 }) {
-  const [expanded, setExpanded] = useState(false);
   const files = useQueries({
     queries: content.mediaNos.map((no) => ({
       queryKey: ['task-media', no],
@@ -59,15 +57,7 @@ export function PublicTaskPreview({
         {!!content.project?.tasks.length && (
           <section>
             <h3>工作范围</h3>
-            <p className="publication-node-meta">整份已确认的 AI 拆解；工作项不单独招募或计价。</p>
-            <PublicProjectTree
-              tasks={expanded ? content.project.tasks : content.project.tasks.slice(0, 3)}
-            />
-            {content.project.tasks.length > 3 && (
-              <button className="ghost" onClick={() => setExpanded(!expanded)}>
-                {expanded ? '收起' : '展开全部工作范围'}
-              </button>
-            )}
+            <PublicProjectTree key={content.title} tasks={content.project.tasks} />
           </section>
         )}
         {(cover || files.length > 0) && (

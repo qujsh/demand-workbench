@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DatePicker, Select, Modal, Checkbox } from 'antd';
+import { DatePicker, Select, Modal } from 'antd';
 import dayjs from 'dayjs';
 import { Icon } from './Icons';
 import {
@@ -34,7 +34,14 @@ const validDates = (items, key) =>
 const flattenNodes = (nodes) =>
   nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
 
-export default function PublishWizard({ requirement, selected, modules, onBack, onDone, onManageCategories }) {
+export default function PublishWizard({
+  requirement,
+  selected,
+  modules,
+  onBack,
+  onDone,
+  onManageCategories,
+}) {
   const [fullPreview, setFullPreview] = useState(false);
   const [modal, modalHolder] = Modal.useModal();
   const publishSummary = usePublishSummary(requirement.id);
@@ -78,25 +85,39 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
   });
   useEffect(() => {
     const onMigration = (event) => {
-      const {sourceCode,targetCode} = event.detail;
-      setData((current) => current.category !== sourceCode ? current : ({
-        ...current, category:targetCode, content:{...current.content,categoryCode:targetCode},
-      }));
+      const { sourceCode, targetCode } = event.detail;
+      setData((current) =>
+        current.category !== sourceCode
+          ? current
+          : {
+              ...current,
+              category: targetCode,
+              content: { ...current.content, categoryCode: targetCode },
+            },
+      );
     };
-    window.addEventListener('category-migrated',onMigration);
-    return () => window.removeEventListener('category-migrated',onMigration);
+    window.addEventListener('category-migrated', onMigration);
+    return () => window.removeEventListener('category-migrated', onMigration);
   }, []);
   const set = (key, value) => setData((current) => ({ ...current, [key]: value }));
   const categoryQuery = useQuery({
     queryKey: ['managed-task-categories', ''],
     queryFn: ({ signal }) => getManagedTaskCategories('', signal),
   });
-  const project =
-    data.content.project ??
-    buildPublicProject(workItemTree, includedIds, true);
+  const project = useMemo(
+    () => buildPublicProject(workItemTree, includedIds, true),
+    [workItemTree, includedIds],
+  );
   const publicContent = publicationContent(data, includedItems, project);
   const budgetLabel = rewardLabel(publicContent);
-  const sourceLabel = publishSummary.isLoading ? '正在检查' : ({ success: 'AI 已生成', generating: 'AI 正在生成', failed: 'AI 生成失败', pending: '等待生成' }[publishSummary.status] || '等待生成');
+  const sourceLabel = publishSummary.isLoading
+    ? '正在检查'
+    : {
+        success: 'AI 已生成',
+        generating: 'AI 正在生成',
+        failed: 'AI 生成失败',
+        pending: '等待生成',
+      }[publishSummary.status] || '等待生成';
 
   useEffect(() => {
     if (!publishSummary.content || summaryTouched.current) return;
@@ -151,7 +172,6 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
     }
   };
   const confirmPublish = async () => {
-    if (!data.content.details?.scopeConfirmed) return notify('请先确认整份 AI 工作范围');
     if (!data.title.trim() || !data.summary.trim()) return notify('请填写任务标题和任务简介');
     try {
       await publishTask.save(taskPayload('published'));
@@ -313,43 +333,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                     )}
                   </span>
                 </label>
-                <ProjectPublicationFields
-                  value={project}
-                  onRefresh={() =>
-                    setData((current) => ({
-                      ...current,
-                      content: {
-                        ...current.content,
-                        details: {
-                          ...(current.content.details || emptyTaskContent().details),
-                          scopeConfirmed: false,
-                        },
-                        project: buildPublicProject(
-                          workItemTree,
-                          includedIds,
-                          true,
-                        ),
-                      },
-                    }))
-                  }
-                />
-                <Checkbox
-                  checked={data.content.details?.scopeConfirmed ?? false}
-                  onChange={(e) =>
-                    setData((current) => ({
-                      ...current,
-                      content: {
-                        ...current.content,
-                        details: {
-                          ...(current.content.details || emptyTaskContent().details),
-                          scopeConfirmed: e.target.checked,
-                        },
-                      },
-                    }))
-                  }
-                >
-                  已逐项确认整份 AI 拆解，发布范围中的全部工作均需实现
-                </Checkbox>
+                <ProjectPublicationFields value={project} />
               </>
             )}
 

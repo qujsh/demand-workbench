@@ -61,7 +61,6 @@ export function TaskContentFields({
             set('details', {
               goal: e.target.value,
               collaboration: value.details?.collaboration ?? '',
-              scopeConfirmed: value.details?.scopeConfirmed ?? false,
               rewards: value.details?.rewards ?? [],
             })
           }
@@ -78,7 +77,6 @@ export function TaskContentFields({
             set('details', {
               goal: value.details?.goal ?? '',
               collaboration: e.target.value,
-              scopeConfirmed: value.details?.scopeConfirmed ?? false,
               rewards: value.details?.rewards ?? [],
             })
           }
