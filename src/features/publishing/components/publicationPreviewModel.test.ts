@@ -30,7 +30,7 @@ const tree: WorkItemNode[] = [
 ];
 describe('正式内容与发布预览', () => {
   it('只发布选中工作项及必要祖先，不包含未选节点和内部信息', () => {
-    const project = buildPublicProject(tree, new Set(['chosen']), '公开项目', '公开介绍');
+    const project = buildPublicProject(tree, new Set(['chosen']));
     const serialized = JSON.stringify(project);
     expect(serialized).toContain('已选任务');
     expect(serialized).not.toContain('不公开的工作项');
@@ -48,7 +48,7 @@ describe('正式内容与发布预览', () => {
       amountMax: 1800,
       unit: 'day' as const,
     };
-    const project = buildPublicProject(tree, new Set(), '项目', '');
+    const project = buildPublicProject(tree, new Set());
     const actual = publicationContent(
       {
         title: ' 标题 ',
@@ -66,6 +66,8 @@ describe('正式内容与发布预览', () => {
     );
     expect(actual.scope).toEqual(['手工范围']);
     expect(actual.title).toBe('标题');
+    expect(actual.project).not.toHaveProperty('title');
+    expect(actual.project).not.toHaveProperty('summary');
     expect(actual.budgetText).toBe('分两次结算');
     expect(actual.workMode).toBe('onsite');
     expect(actual.skills).toEqual(['摄影', '设计']);

@@ -93,7 +93,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
   });
   const project =
     data.content.project ??
-    buildPublicProject(workItemTree, includedIds, requirement.title, data.summary, true);
+    buildPublicProject(workItemTree, includedIds, true);
   const publicContent = publicationContent(data, includedItems, project);
   const budgetLabel = rewardLabel(publicContent);
   const sourceLabel = publishSummary.isLoading ? '正在检查' : ({ success: 'AI 已生成', generating: 'AI 正在生成', failed: 'AI 生成失败', pending: '等待生成' }[publishSummary.status] || '等待生成');
@@ -315,19 +315,6 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                 </label>
                 <ProjectPublicationFields
                   value={project}
-                  onChange={(next) =>
-                    setData((current) => ({
-                      ...current,
-                      content: {
-                        ...current.content,
-                        project: next,
-                        details: {
-                          ...(current.content.details || emptyTaskContent().details),
-                          scopeConfirmed: false,
-                        },
-                      },
-                    }))
-                  }
                   onRefresh={() =>
                     setData((current) => ({
                       ...current,
@@ -340,8 +327,6 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                         project: buildPublicProject(
                           workItemTree,
                           includedIds,
-                          project.title,
-                          project.summary,
                           true,
                         ),
                       },
@@ -513,7 +498,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                 <div className="publish-review-list">
                   <div>
                     <span>所属项目</span>
-                    <strong>{project.title || data.title}</strong>
+                    <strong>{data.title}</strong>
                   </div>
                   <div>
                     <span>项目任务</span>
@@ -524,7 +509,7 @@ export default function PublishWizard({ requirement, selected, modules, onBack, 
                   <Icon name="ShieldCheck" />
                   <div>
                     <strong>请完成最终确认</strong>
-                    <p>发布后，项目介绍、项目任务和当前预览内容将对所有人可见。</p>
+                    <p>发布后，任务简介、工作范围和当前预览内容将对所有人可见。</p>
                   </div>
                 </div>
               </>

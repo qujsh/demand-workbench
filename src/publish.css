@@ -745,3 +745,5 @@
 .category-create-row { max-width:800px; align-items:flex-end; }
 .category-create-field { flex:1; min-width:0; }
 .category-create-field > span { display:block; margin-bottom:8px; font-size:12px; color:var(--muted); }
+
+.category-row-actions { white-space:nowrap; flex-wrap:nowrap; }

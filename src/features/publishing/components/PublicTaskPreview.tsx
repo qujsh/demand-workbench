@@ -164,13 +164,6 @@ export function PublicTaskPreview({
             <p>{content.details.collaboration}</p>
           </section>
         )}
-        {content.project?.summary && content.project.summary !== content.summary && (
-          <section>
-            <h3>项目介绍</h3>
-            <h4>{content.project.title}</h4>
-            <p>{content.project.summary}</p>
-          </section>
-        )}
       </article>
       <aside className="publication-reward-card">
         <h3>回报内容</h3>

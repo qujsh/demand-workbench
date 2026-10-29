@@ -1,7 +1,19 @@
 import { CategoryDeletion } from '../components/CategoryDeletion';
 import { CategoryMigrationHistory } from '../components/CategoryMigrationHistory';
 import { useState } from 'react';
-import { Alert, Button, Input, InputNumber, Modal, Switch, Table, Tag, Tabs, message } from 'antd';
+import {
+  Alert,
+  Button,
+  Input,
+  InputNumber,
+  Modal,
+  Space,
+  Switch,
+  Table,
+  Tag,
+  Tabs,
+  message,
+} from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -14,13 +26,18 @@ import {
 export default function CategoryManagement({ returnPath }: { returnPath?: string }) {
   const navigate = useNavigate();
   const client = useQueryClient();
-  const [name, setName] = useState('');
-  const [code, setCode] = useState('');
-  const validCode = code.length <= 64 && /^[a-z]+(?:_[a-z]+)*$/.test(code);
-  const canCreate = !!name.trim() && validCode;
   const [tab, setTab] = useState('categories');
   const [keyword, setKeyword] = useState('');
   const [editing, setEditing] = useState<ManagedCategory | null>(null);
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [fields, setFields] = useState({ name: '', code: '', sortOrder: 1000, enabled: true });
+  const validCode = fields.code.length <= 64 && /^[a-z]+(?:_[a-z]+)*$/.test(fields.code);
+  const valid = !!fields.name.trim() && validCode;
+  const openEditor = (item: ManagedCategory | null) => {
+    setEditing(item);
+    setFields(item ? { ...item } : { name: '', code: '', sortOrder: 1000, enabled: true });
+    setEditorOpen(true);
+  };
   const [toast, holder] = message.useMessage();
   const categories = useQuery({
     queryKey: ['managed-task-categories', keyword],
@@ -34,8 +51,14 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
   };
   const update = useMutation({
     mutationFn: updateTaskCategory,
-    onSuccess: async () => {
-      setEditing(null);
+    onSuccess: async (result, input) => {
+      if (input.originalCode !== result.code)
+        window.dispatchEvent(
+          new CustomEvent('category-migrated', {
+            detail: { sourceCode: input.originalCode, targetCode: result.code },
+          }),
+        );
+      setEditorOpen(false);
       await refreshCategories();
       void toast.success('分类已更新');
     },
@@ -44,10 +67,10 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
     },
   });
   const create = useMutation({
-    mutationFn: () => createTaskCategory(code, name.trim()),
+    mutationFn: () =>
+      createTaskCategory(fields.code, fields.name.trim(), fields.sortOrder, fields.enabled),
     onSuccess: async () => {
-      setName('');
-      setCode('');
+      setEditorOpen(false);
       await refreshCategories();
       void toast.success(returnPath ? '分类已保存，返回发布页后即可选择' : '分类已保存');
     },
@@ -91,50 +114,6 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
           <CategoryMigrationHistory />
         ) : (
           <>
-            <section className="category-create" aria-label="新增分类">
-              <strong>新增分类</strong>
-              <div className="category-create-row">
-                <div className="category-create-field">
-                  <span>英文编号</span>
-                  <Input
-                    aria-label="英文编号"
-                    placeholder="例如：pet_care"
-                    value={code}
-                    maxLength={64}
-                    status={code && !validCode ? 'error' : undefined}
-                    onChange={(event) => setCode(event.target.value)}
-                    onPressEnter={() => {
-                      if (canCreate && !create.isPending) create.mutate();
-                    }}
-                  />
-                </div>
-                <div className="category-create-field">
-                  <span>分类名称</span>
-                  <Input
-                    aria-label="分类名称"
-                    placeholder="输入分类名称，例如：摄影影像"
-                    maxLength={64}
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    onPressEnter={() => {
-                      if (canCreate && !create.isPending) create.mutate();
-                    }}
-                  />
-                </div>
-                <Button
-                  type="primary"
-                  loading={create.isPending}
-                  disabled={!canCreate}
-                  onClick={() => create.mutate()}
-                >
-                  创建分类
-                </Button>
-              </div>
-              <p>
-                英文编号和分类名称均必填、最长 64
-                字符且不可重复。编号仅用小写英文字母，多个单词用下划线连接，创建后不可修改。
-              </p>
-            </section>
             {categories.isError && (
               <Alert
                 type="error"
@@ -144,14 +123,19 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
             )}
             <div className="category-list-toolbar">
               <strong>全部分类</strong>
-              <Input.Search
-                aria-label="搜索分类"
-                placeholder="搜索名称或编号"
-                allowClear
-                maxLength={64}
-                onSearch={(value) => setKeyword(value.trim())}
-                style={{ width: 280 }}
-              />
+              <Space size={12}>
+                <Input.Search
+                  aria-label="搜索分类"
+                  placeholder="搜索名称或编号"
+                  allowClear
+                  maxLength={64}
+                  onSearch={(value) => setKeyword(value.trim())}
+                  style={{ width: 280 }}
+                />
+                <Button type="primary" onClick={() => openEditor(null)}>
+                  新增分类
+                </Button>
+              </Space>
             </div>
             <Table
               rowKey="code"
@@ -185,14 +169,14 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
                 },
                 {
                   title: '操作',
-                  width: 135,
+                  width: 160,
                   render: (_, item: ManagedCategory) => (
-                    <>
-                      <Button type="link" onClick={() => setEditing({ ...item })}>
+                    <Space size={0} className="category-row-actions">
+                      <Button type="link" onClick={() => openEditor(item)}>
                         编辑
                       </Button>
                       <CategoryDeletion category={item} />
-                    </>
+                    </Space>
                   ),
                 },
               ]}
@@ -201,60 +185,74 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
         )}
       </div>
       <Modal
-        title="编辑分类"
-        open={!!editing}
+        title={editing ? '编辑分类' : '新增分类'}
+        open={editorOpen}
         onCancel={() => {
-          if (!update.isPending) setEditing(null);
+          if (!update.isPending && !create.isPending) setEditorOpen(false);
         }}
-        okText="保存修改"
+        okText={editing ? '保存修改' : '创建分类'}
         cancelText="取消"
-        confirmLoading={update.isPending}
-        okButtonProps={{ disabled: !editing?.name.trim() }}
+        confirmLoading={update.isPending || create.isPending}
+        okButtonProps={{ disabled: !valid }}
         onOk={() => {
-          if (editing) update.mutate(editing);
+          if (!valid) return;
+          if (editing)
+            update.mutate({ ...fields, name: fields.name.trim(), originalCode: editing.code });
+          else create.mutate();
         }}
       >
-        {editing && (
-          <div className="category-edit-fields">
-            <p className="category-edit-note">分类编号保持不变，已有任务的关联不会丢失。</p>
-            <div>
-              <span>分类名称</span>
-              <Input
-                aria-label="编辑分类名称"
-                value={editing.name}
-                maxLength={64}
-                onChange={(event) => setEditing({ ...editing, name: event.target.value })}
-              />
-            </div>
-            <div>
-              <span>展示排序</span>
-              <InputNumber
-                aria-label="分类展示排序"
-                value={editing.sortOrder}
-                min={0}
-                max={999999}
-                precision={0}
-                onChange={(value) => {
-                  if (value !== null) setEditing({ ...editing, sortOrder: value });
-                }}
-              />
-              <small>数值越小越靠前，同值按分类编号排序。</small>
-            </div>
-            <div className="category-status-field">
-              <span>启用分类</span>
-              <Switch
-                aria-label="启用分类"
-                checked={editing.enabled}
-                onChange={(enabled) => setEditing({ ...editing, enabled })}
-              />
-            </div>
+        <div className="category-edit-fields">
+          <div>
+            <span>分类名称</span>
+            <Input
+              aria-label={editing ? '编辑分类名称' : '分类名称'}
+              value={fields.name}
+              maxLength={64}
+              placeholder="例如：摄影影像"
+              onChange={(event) => setFields({ ...fields, name: event.target.value })}
+            />
+          </div>
+          <div>
+            <span>英文编号</span>
+            <Input
+              aria-label="英文编号"
+              value={fields.code}
+              maxLength={64}
+              placeholder="例如：pet_care"
+              status={fields.code && !validCode ? 'error' : undefined}
+              onChange={(event) => setFields({ ...fields, code: event.target.value })}
+            />
+            <small>仅用小写英文字母，多个单词用下划线连接，最长64字符且不可重复。</small>
+          </div>
+          <div>
+            <span>展示排序</span>
+            <InputNumber
+              aria-label="分类展示排序"
+              value={fields.sortOrder}
+              min={0}
+              max={999999}
+              precision={0}
+              style={{ width: '100%' }}
+              onChange={(value) => setFields({ ...fields, sortOrder: value ?? 1000 })}
+            />
+            <small>数值越小越靠前，同值按分类编号排序。</small>
+          </div>
+          <div className="category-status-field">
+            <span>启用分类</span>
+            <Switch
+              aria-label="启用分类"
+              checked={fields.enabled}
+              onChange={(enabled) => setFields({ ...fields, enabled })}
+            />
+          </div>
+          {editing && (
             <Alert
               type="info"
               showIcon
-              title="停用后不可用于新的正式发布，已发布任务继续保留。改名会同步更新已有任务显示的分类名称。"
+              title="修改编号会同步更新当前任务和草稿关联，历史发布版本保留原编号。停用后不可用于新的正式发布，已发布任务继续保留。"
             />
-          </div>
-        )}
+          )}
+        </div>
       </Modal>
     </main>
   );

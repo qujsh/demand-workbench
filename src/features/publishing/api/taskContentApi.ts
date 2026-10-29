@@ -30,8 +30,6 @@ export interface ProjectTask {
   children: ProjectTask[];
 }
 export const projectSchema = z.object({
-  title: z.string(),
-  summary: z.string(),
   tasks: z.array(projectTaskSchema),
 });
 export type PublicProject = z.infer<typeof projectSchema>;
@@ -108,24 +106,27 @@ export const getManagedTaskCategories = (keyword: string, signal?: AbortSignal) 
     { signal },
   );
 export const updateTaskCategory = (
-  category: Pick<ManagedCategory, 'code' | 'name' | 'sortOrder' | 'enabled'>,
+  category: Pick<ManagedCategory, 'code' | 'name' | 'sortOrder' | 'enabled'> & {
+    originalCode?: string;
+  },
 ) =>
   requestJson(
-    `/api/v1/task-categories/update?code=${encodeURIComponent(category.code)}`,
+    `/api/v1/task-categories/update?code=${encodeURIComponent(category.originalCode ?? category.code)}`,
     apiResponseSchema(categorySchema),
     {
       method: 'POST',
       body: JSON.stringify({
+        code: category.code,
         name: category.name,
         sortOrder: category.sortOrder,
         enabled: category.enabled,
       }),
     },
   );
-export const createTaskCategory = (code: string, name: string) =>
+export const createTaskCategory = (code: string, name: string, sortOrder = 1000, enabled = true) =>
   requestJson('/api/v1/task-categories/create', apiResponseSchema(categorySchema), {
     method: 'POST',
-    body: JSON.stringify({ code, name }),
+    body: JSON.stringify({ code, name, sortOrder, enabled }),
   });
 export const getTaskMediaMetadata = (mediaNo: string, signal?: AbortSignal) =>
   requestJson(

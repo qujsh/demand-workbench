@@ -122,6 +122,7 @@ it('发布入口保留返回提示，编辑名称排序和启停状态后提交�
 it('新增分类必须填写有效英文编号，并提交原值', async () => {
   vi.mocked(createTaskCategory).mockResolvedValue(category);
   page();
+  fireEvent.click(screen.getByRole('button', { name: '新增分类' }));
   fireEvent.change(screen.getByRole('textbox', { name: '分类名称' }), {
     target: { value: '宠物照护' },
   });
@@ -135,7 +136,9 @@ it('新增分类必须填写有效英文编号，并提交原值', async () => {
     target: { value: 'pet_care' },
   });
   fireEvent.click(button);
-  await waitFor(() => expect(createTaskCategory).toHaveBeenCalledWith('pet_care', '宠物照护'));
+  await waitFor(() =>
+    expect(createTaskCategory).toHaveBeenCalledWith('pet_care', '宠物照护', 1000, true),
+  );
 });
 
 it('删除有关联任务的分类时必须选择其他分类，取消不写入', async () => {

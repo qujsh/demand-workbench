@@ -7,8 +7,6 @@ import type { WorkItemNode } from '../../../shared/types/workItem';
 export function buildPublicProject(
   tree: WorkItemNode[],
   selected: Set<string>,
-  title: string,
-  summary: string,
   whole = false,
 ): PublicProject {
   function prune(nodes: WorkItemNode[], path: string): ProjectTask[] {
@@ -30,7 +28,7 @@ export function buildPublicProject(
       ];
     });
   }
-  return { title, summary, tasks: prune(tree, 'task') };
+  return { tasks: prune(tree, 'task') };
 }
 export function countProjectTasks(nodes: ProjectTask[]): number {
   return nodes.reduce(
@@ -74,7 +72,7 @@ export function publicationContent(
     scope: data.content.scope.length
       ? data.content.scope
       : included.map((item) => item.name).filter(Boolean),
-    project,
+    project: { tasks: project.tasks },
   };
 }
 export const unitLabels: Record<string, string> = {
