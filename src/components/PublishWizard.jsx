@@ -48,6 +48,7 @@ export default function PublishWizard({
   const publishTask = usePublishTask(requirement.id);
   const summaryTouched = useRef(false);
   const restoredTaskNo = useRef(null);
+  const editedFields = useRef(new Set());
   const formScrollRef = useRef(null);
   const decompositionQuery = useDecompositionTask(
     modules.length ? undefined : requirement.currentDecompositionNo,
@@ -99,7 +100,10 @@ export default function PublishWizard({
     window.addEventListener('category-migrated', onMigration);
     return () => window.removeEventListener('category-migrated', onMigration);
   }, []);
-  const set = (key, value) => setData((current) => ({ ...current, [key]: value }));
+  const set = (key, value) => {
+    editedFields.current.add(key);
+    setData((current) => ({ ...current, [key]: value }));
+  };
   const categoryQuery = useQuery({
     queryKey: ['managed-task-categories', ''],
     queryFn: ({ signal }) => getManagedTaskCategories('', signal),
@@ -137,10 +141,18 @@ export default function PublishWizard({
 
   useEffect(() => {
     const task = publishTask.data;
-    if (!task || restoredTaskNo.current === task) return;
-    restoredTaskNo.current = task;
+    if (!task) return;
+    if (restoredTaskNo.current === task.taskNo) {
+      setData((current) => ({ ...current, version: task.version || 0 }));
+      return;
+    }
+    restoredTaskNo.current = task.taskNo;
     summaryTouched.current = true;
-    setData(publicationEditorState(task));
+    setData((current) => {
+      const restored = publicationEditorState(task);
+      for (const key of editedFields.current) restored[key] = current[key];
+      return restored;
+    });
   }, [publishTask.data]);
 
   const notify = (message) => window.dispatchEvent(new CustomEvent('toast', { detail: message }));
@@ -171,7 +183,9 @@ export default function PublishWizard({
       notify(error instanceof Error ? error.message : '草稿保存失败，请稍后重试');
     }
   };
+  const rewardsReady = Boolean(data.content.details?.rewardConfirmed);
   const confirmPublish = async () => {
+    if (!rewardsReady) return notify('请先整理并核对任务回报，在承接要求中确认后再发布');
     if (!data.title.trim() || !data.summary.trim()) return notify('请填写任务标题和任务简介');
     try {
       await publishTask.save(taskPayload('published'));
@@ -243,7 +257,10 @@ export default function PublishWizard({
             type="button"
             className={`${index === step ? 'active' : ''} ${index < step ? 'done' : ''}`}
             key={label}
-            onClick={() => setStep(index)}
+            onClick={() => {
+              if (index === 2 && !rewardsReady) return notify('请先整理并核对任务回报');
+              setStep(index);
+            }}
           >
             <b>{index < step ? <Icon name="Check" size={14} /> : index + 1}</b>
             <span>{label}</span>
@@ -263,7 +280,7 @@ export default function PublishWizard({
                 {
                   [
                     '确认从需求带入的任务信息与工作范围。',
-                    '补充承接者要求、预算和交付周期。',
+                    '补充承接者要求、任务回报和交付周期。',
                     '检查完整内容并设置任务发布方式。',
                   ][step]
                 }
@@ -340,13 +357,15 @@ export default function PublishWizard({
             {step === 1 && (
               <>
                 <TaskContentFields
+                  requirementNo={requirement.id}
                   value={data.content}
-                  onChange={(patch) =>
+                  onChange={(patch) => {
+                    editedFields.current.add('content');
                     setData((current) => ({
                       ...current,
                       content: { ...current.content, ...patch },
-                    }))
-                  }
+                    }));
+                  }}
                   workMode={data.mode}
                   onUploadingChange={setMediaUploading}
                 />
@@ -384,14 +403,6 @@ export default function PublishWizard({
                   </label>
                 </div>
                 <div className="form-grid">
-                  <label>
-                    回报补充说明（选填）
-                    <input
-                      value={data.budget}
-                      onChange={(event) => set('budget', event.target.value)}
-                      placeholder="补充双方需要了解的回报约定"
-                    />
-                  </label>
                   <label>
                     工作方式
                     <Select
@@ -523,7 +534,11 @@ export default function PublishWizard({
                   !data.summary.trim()
                 }
                 onClick={() =>
-                  step < 2 ? setStep((current) => current + 1) : void confirmPublish()
+                  step === 1 && !rewardsReady
+                    ? notify('请先整理并核对任务回报')
+                    : step < 2
+                      ? setStep((current) => current + 1)
+                      : void confirmPublish()
                 }
               >
                 {step < 2 ? '下一步' : publishTask.isSaving ? '发布中...' : '确认发布'}

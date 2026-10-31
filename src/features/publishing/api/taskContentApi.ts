@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { requestJson, buildApiUrl, ApiError } from '../../../shared/api/httpClient';
+import { requestJson } from '../../../shared/api/httpClient';
 import { apiResponseSchema } from '../../../shared/api/apiResponseSchema';
 export const categorySchema = z.object({
   code: z.string(),
@@ -47,8 +47,11 @@ export const rewardItemSchema = z.object({
 });
 export type RewardItem = z.infer<typeof rewardItemSchema>;
 export const detailSchema = z.object({
-  goal: z.string(),
   collaboration: z.string().nullable(),
+  rewardDescription: z.string().nullable().optional(),
+  rewardAnalysisId: z.string().nullable().optional(),
+  rewardAppliedId: z.string().nullable().optional(),
+  rewardConfirmed: z.boolean().nullable().optional(),
   rewards: z.array(rewardItemSchema),
 });
 export const contentSchema = z.object({
@@ -133,23 +136,8 @@ export const getTaskMediaMetadata = (mediaNo: string, signal?: AbortSignal) =>
     apiResponseSchema(uploadSchema),
     { signal },
   );
-const uploadSchema = z.object({
+export const uploadSchema = z.object({
   mediaNo: z.string(),
   type: z.enum(['image', 'video', 'file']),
   previewUrl: z.string(),
 });
-export async function uploadTaskMedia(file: File) {
-  const body = new FormData();
-  body.append('file', file);
-  const response = await fetch(buildApiUrl('/api/v1/task-media/upload'), {
-    method: 'POST',
-    credentials: 'include',
-    body,
-  });
-  const payload = await response.json().catch(() => null);
-  if (!response.ok || !payload?.success)
-    throw new ApiError(payload?.errorMsg || '上传失败', response.status, payload?.errorCode);
-  const parsed = apiResponseSchema(uploadSchema).safeParse(payload);
-  if (!parsed.success) throw new ApiError('媒体响应格式无效', 502, 'INVALID_API_RESPONSE');
-  return parsed.data;
-}

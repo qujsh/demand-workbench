@@ -1,7 +1,7 @@
 import type { PublicContent } from '../api/taskContentApi';
 export function emptyTaskContent(): PublicContent {
   return {
-    details: { goal: '', collaboration: '', rewards: [] },
+    details: { collaboration: '', rewards: [] },
     title: '',
     summary: '',
     categoryCode: '',

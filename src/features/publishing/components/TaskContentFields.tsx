@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Checkbox, InputNumber, Select, message } from 'antd';
 import type { PublicContent } from '../api/taskContentApi';
-import { uploadTaskMedia } from '../api/taskContentApi';
+import { useMediaUpload } from '../../media';
 import { buildApiUrl } from '../../../shared/api/httpClient';
 import './taskContent.css';
 import { RewardFields } from './RewardFields';
@@ -10,14 +10,16 @@ export function TaskContentFields({
   value,
   onChange,
   workMode,
+  requirementNo,
   onUploadingChange,
 }: {
   value: PublicContent;
+  requirementNo: string;
   onChange: (value: Partial<PublicContent>) => void;
   onUploadingChange: (busy: boolean) => void;
   workMode: string;
 }) {
-  const [uploading, setUploading] = useState(false);
+  const { upload: uploadMedia, uploading, progress, cancel } = useMediaUpload();
   const [toast, holder] = message.useMessage();
   const set = <K extends keyof PublicContent>(key: K, next: PublicContent[K]) =>
     onChange({ ...value, [key]: next });
@@ -29,10 +31,16 @@ export function TaskContentFields({
       input.value = '';
       return;
     }
-    setUploading(true);
     onUploadingChange(true);
     try {
-      const media = await uploadTaskMedia(file);
+      const scene = cover
+        ? 'task_cover'
+        : file.type.startsWith('image/')
+          ? 'task_image'
+          : file.type.startsWith('video/')
+            ? 'task_video'
+            : 'task_attachment';
+      const media = await uploadMedia({ file, scene, requirementNo });
       onChange({
         mediaNos: cover ? value.mediaNos : [...value.mediaNos, media.mediaNo],
         coverMediaNo:
@@ -41,9 +49,9 @@ export function TaskContentFields({
             : value.coverMediaNo,
       });
     } catch (error) {
-      void toast.error(error instanceof Error ? error.message : '上传失败');
+      if (!(error instanceof DOMException && error.name === 'AbortError'))
+        void toast.error(error instanceof Error ? error.message : '上传失败');
     } finally {
-      setUploading(false);
       onUploadingChange(false);
       input.value = '';
     }
@@ -51,23 +59,8 @@ export function TaskContentFields({
   return (
     <div className="task-content-fields">
       {holder}
-      <h3>任务目标与回报</h3>
-      <label>
-        任务目标（选填）
-        <textarea
-          maxLength={5000}
-          value={value.details?.goal ?? ''}
-          onChange={(e) =>
-            set('details', {
-              goal: e.target.value,
-              collaboration: value.details?.collaboration ?? '',
-              rewards: value.details?.rewards ?? [],
-            })
-          }
-          placeholder="希望这次工作解决什么问题、达到什么效果"
-        />
-      </label>
-      <RewardFields value={value} onChange={onChange} />
+      <h3>任务回报</h3>
+      <RewardFields requirementNo={requirementNo} value={value} onChange={onChange} />
       <label>
         时间与协作说明
         <textarea
@@ -75,7 +68,7 @@ export function TaskContentFields({
           value={value.details?.collaboration ?? ''}
           onChange={(e) =>
             set('details', {
-              goal: value.details?.goal ?? '',
+              ...value.details,
               collaboration: e.target.value,
               rewards: value.details?.rewards ?? [],
             })
@@ -168,7 +161,14 @@ export function TaskContentFields({
           />
         </label>
       </div>
-      {uploading && <p role="status">正在上传，请等待完成后保存或发布。</p>}
+      {uploading && (
+        <p role="status">
+          {progress < 100 ? `正在上传 ${progress}%` : '正在核验文件'}，请等待完成后保存或发布。
+          <Button type="link" onClick={cancel}>
+            取消上传
+          </Button>
+        </p>
+      )}
       {value.coverMediaNo && (
         <div className="task-content-cover">
           <img

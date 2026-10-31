@@ -1,3 +1,4 @@
+import { rewardItemTitle } from './rewardPresentation';
 import { useQueries } from '@tanstack/react-query';
 import { Image } from 'antd';
 import { getTaskMediaMetadata, type PublicContent } from '../api/taskContentApi';
@@ -48,12 +49,6 @@ export function PublicTaskPreview({
           <h3>任务简介</h3>
           <p>{content.summary || '未填写任务简介'}</p>
         </section>
-        {content.details?.goal && (
-          <section>
-            <h3>任务目标</h3>
-            <p>{content.details.goal}</p>
-          </section>
-        )}
         {!!content.project?.tasks.length && (
           <section>
             <h3>工作范围</h3>
@@ -160,20 +155,11 @@ export function PublicTaskPreview({
         {content.details?.rewards.length ? (
           content.details.rewards.map((r, i) => (
             <section key={i}>
-              <small>{{ cash: '现金回报', goods: '物品交换', service: '服务交换' }[r.type]}</small>
-              <h4>{r.title || '名称待填写'}</h4>
-              {r.type === 'cash' ? (
-                <strong className="publication-reward">
-                  ¥{r.amountMin ?? '待填写'}
-                  {r.pricing === 'range' ? `–${r.amountMax ?? '待填写'}` : ''} / {r.unit}
-                </strong>
-              ) : (
-                r.type === 'goods' && (
-                  <p>
-                    {r.quantity} {r.unit} · {r.condition}
-                  </p>
-                )
-              )}
+              <small>{{ cash: '现金回报', goods: '物品回报', service: '服务回报' }[r.type]}</small>
+              <h4 className={r.type === 'cash' ? 'publication-reward' : undefined}>
+                {rewardItemTitle(r)}
+              </h4>
+              {r.condition && <p>{r.condition}</p>}
               {r.description && <p>{r.description}</p>}
               {r.handover && <p>{r.handover}</p>}
             </section>
@@ -181,6 +167,7 @@ export function PublicTaskPreview({
         ) : (
           <strong className="publication-reward">{rewardLabel(content)}</strong>
         )}
+        <p className="publication-node-meta">回报由发布者提供，平台不提供支付、物流或履约担保。</p>
         <p>招募 {recruitCount} 人 · 表达意向不等于确认承接</p>
         <p className="publication-node-meta">
           预览模式，不提交意向；发布后与 C 端共用同一正式版本。

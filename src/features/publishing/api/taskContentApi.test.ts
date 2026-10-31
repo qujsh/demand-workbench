@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createTaskCategory, uploadTaskMedia } from './taskContentApi';
+import { createTaskCategory } from './taskContentApi';
 import { getPublishTask, savePublishTask, getPublishVersions } from './publishTaskApi';
 afterEach(() => vi.unstubAllGlobals());
 const response = (msg: unknown, status = 200) =>
@@ -30,16 +30,6 @@ describe('unified publishing contracts', () => {
       code: 'new_category',
       name: '新分类',
     });
-  });
-  it('uses multipart for media and keeps authentication', async () => {
-    const fetcher = vi
-      .fn()
-      .mockResolvedValue(response({ mediaNo: 'MEDIA-1', type: 'image', previewUrl: '/preview' }));
-    vi.stubGlobal('fetch', fetcher);
-    await uploadTaskMedia(new File(['x'], 'image.png', { type: 'image/png' }));
-    expect(fetcher.mock.calls[0][1].body).toBeInstanceOf(FormData);
-    expect(fetcher.mock.calls[0][1].headers).toBeUndefined();
-    expect(fetcher.mock.calls[0][1].credentials).toBe('include');
   });
   it('preserves version conflicts instead of reporting success', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response(null, 409)));
