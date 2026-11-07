@@ -52,10 +52,15 @@
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(12px);
+  overflow: clip;
 }
 
+.auth-panel-content { display: flow-root; }
+.auth-panel-content--password { animation: auth-content-reveal 200ms ease-out both; }
+@keyframes auth-content-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .auth-panel-content { animation: none; } }
+
 .auth-heading { margin: 0 0 30px; text-align: center; }
-.auth-heading-icon { width: 42px; height: 42px; margin: 0 auto 14px; display: grid; place-items: center; border-radius: 8px; background: #edf2ff; color: #4268f6; }
 .auth-heading h2 { margin: 0 0 6px !important; font-size: 23px !important; letter-spacing: 0; }
 .auth-heading p { margin: 0 !important; color: #778195; font-size: 14px; }
 .auth-error { margin: -5px 0 14px; color: #c53b3b; font-size: 14px; }
@@ -89,3 +94,17 @@
   .auth-panel { padding: 32px 24px 34px; }
   .auth-copyright { right: 16px; bottom: 12px; left: 16px; text-align: center; }
 }
+
+.auth-methods { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); margin: -6px 0 24px; }
+.auth-methods a { padding: 12px 0; text-align: center; color: #778195; border-bottom: 2px solid transparent; }
+.auth-methods a.is-active { color: var(--blue); border-bottom-color: currentColor; font-weight: 500; }
+.auth-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px; color: #778195; }
+.auth-forgot { display: flex; justify-content: flex-end; min-height: 22px; line-height: 22px; margin: -8px 0 20px; }
+.auth-footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: #778195; font-size: 14px; }
+.auth-footer a { margin-left: 6px; }
+.auth-feedback { margin-bottom: 18px; }
+.auth-code-hint { color: #778195; font-size: 12px; margin: -12px 0 18px; }
+.auth-send { padding: 0 0 0 10px; height: auto; font-size: 12px; }
+.auth-help { margin: 16px 0 0; color: #778195; font-size: 12px; line-height: 1.6; text-align: center; }
+.auth-success { padding: 12px 0; }
+.auth-page a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }

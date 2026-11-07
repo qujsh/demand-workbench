@@ -1,6 +1,6 @@
 import { Alert, Button, Descriptions, Empty, Spin, Table, Tabs } from 'antd';
 import { useAccountPlatform } from '../hooks/useAccountPlatform';
-import AdminPanel from './AdminPanel';
+import { Link } from 'react-router-dom';
 import CollaborationPanel from './CollaborationPanel';
 import { kindNames, roleNames, timeText } from '../accountPresentation';
 
@@ -12,7 +12,7 @@ export default function AccountCenter() {
   return <>
     <section className="settings-section">
       <h2>业务身份与成长</h2>
-      <p className="settings-subtitle">平台角色：{roleNames[account.role] || account.role}。业务成长与信用分别记录。</p>
+      <p className="settings-subtitle">平台角色：{account.roleName || roleNames[account.role] || '自定义角色'}。业务成长与信用分别记录。</p>
       {account.identities.map((identity) => <div className="account-identity" key={identity.kind}>
         <h3>{kindNames[identity.kind]} · {identity.levelCode} {identity.levelName}</h3>
         <Descriptions column={{ xs: 1, sm: 3 }} items={[
@@ -41,7 +41,7 @@ export default function AccountCenter() {
         { title: '变化', render: (_, item) => `${item.metric === 'growth' ? '成长' : '信用'} ${item.delta > 0 ? '+' : ''}${item.delta}` }, { title: '原因', dataIndex: 'reason' },
       ]} />}
     </section>
-    <CollaborationPanel />
-    {account.permissions.length > 0 && <AdminPanel permissions={account.permissions} rules={rules.data || []} />}
+    {account.permissions.includes('requirements.use') && <CollaborationPanel />}
+    {account.permissions.some((permission) => ['accounts.manage', 'roles.manage', 'growth.manage', 'audit.read'].includes(permission)) && <section className="settings-section"><h2>系统配置</h2><Link to={account.permissions.includes('roles.manage') ? '/system/roles' : account.permissions.includes('accounts.manage') ? '/system/accounts' : account.permissions.includes('growth.manage') ? '/system/growth' : '/system/audits'}>打开系统配置</Link></section>}
   </>;
 }

@@ -1,8 +1,9 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CategoryManagement from './CategoryManagement';
+vi.mock('../../account/hooks/usePermissions', () => ({ usePermissions: () => ({ can: () => true }) }));
 import {
   getCategoryUsage,
   deleteCategory,
@@ -83,6 +84,8 @@ function page(returnPath?: string) {
     </QueryClientProvider>,
   );
 }
+// 表格和弹窗在全量并发 JSDOM 运行时较慢，保持业务等待条件并给本页独立预算。
+describe('分类管理页面', { timeout: 15000 }, () => {
 it('独立入口不显示返回发布按钮，搜索请求传递关键词', async () => {
   page();
   await screen.findByText('测试发布人');
@@ -117,7 +120,7 @@ it('发布入口保留返回提示，编辑名称排序和启停状态后提交�
       expect.anything(),
     ),
   );
-});
+}, 15000);
 
 it('新增分类必须填写有效英文编号，并提交原值', async () => {
   vi.mocked(createTaskCategory).mockResolvedValue(category);
@@ -158,4 +161,6 @@ it('迁移记录可追溯旧分类关联的具体任务', async () => {
   fireEvent.click(screen.getByRole('button', { name: '查看任务' }));
   await screen.findByText('TASK-1');
   expect(screen.getByText('迁移前任务')).toBeTruthy();
+});
+
 });

@@ -1,4 +1,5 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import { RequirementAttachments } from '../features/requirements/components/RequirementAttachments';
 import { Icon } from './Icons';
 import AnalysisPreview from './AnalysisPreview';
 import { RequirementEditor } from '../features/requirements/components/RequirementEditor';
@@ -52,11 +53,13 @@ export default function AnalysisWorkbench({
   modules,
   setModules,
   onRequirementChange,
+  onRequirementSaved,
   onBack,
   onPublish,
   isPublishing,
 }) {
   const { coolingDown, activate } = useDecompositionCooldown();
+  const [attachmentsBusy, setAttachmentsBusy] = useState(false);
   const initialAiDescription = '';
   const [title, setTitle] = useState(requirement.title);
   const [description, setDescription] = useState(requirement.description || initialDescription);
@@ -150,23 +153,30 @@ export default function AnalysisWorkbench({
           coolingDown={coolingDown}
           onActivate={activate}
           hasExisting={modules.length > 0}
-          pending={Boolean(decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status))}
+          pending={Boolean(
+            decomposition && ['SUBMITTING', 'QUEUED', 'PROCESSING'].includes(decomposition.status),
+          )}
           onStart={startDecomposition}
         />
         <button
           className="primary"
-          disabled={isPublishing}
+          disabled={isPublishing || attachmentsBusy}
           onClick={() =>
             onPublish([], {
               title,
               description,
               aiDescription,
               currentDecompositionNo:
-                decomposition?.status === 'SUCCESS' ? decomposition.taskId : requirement.currentDecompositionNo,
+                decomposition?.status === 'SUCCESS'
+                  ? decomposition.taskId
+                  : requirement.currentDecompositionNo,
             })
           }
         >
-          <Icon name={isPublishing ? 'LoaderCircle' : 'Send'} className={isPublishing ? 'spin' : ''} />
+          <Icon
+            name={isPublishing ? 'LoaderCircle' : 'Send'}
+            className={isPublishing ? 'spin' : ''}
+          />
           {isPublishing ? '正在保存' : '任务发布'}
         </button>
       </header>
@@ -243,83 +253,66 @@ export default function AnalysisWorkbench({
                   </button>
                 </div>
               </div>
-              {descriptionMode === 'user' ? (
-                <RequirementEditor
-                  value={description}
-                  onChange={(value) => {
-                    setDescription(value);
-                    startTransition(() => onRequirementChange?.({ description: value }));
-                  }}
-                  onCopy={(text) => copyText(text, '需求描述已复制')}
-                />
-              ) : (
-                <div className="ai-description-shell">
-                  <div className="ai-description-toolbar">
-                    <div>
-                      <span className="ai-state">
-                        <Icon name="Sparkles" size={13} />
-                        豆包分析结果
-                      </span>
-                      <small>编辑内容仅保留在当前页面，不覆盖用户原始描述</small>
+              <div className="requirement-composer">
+                {descriptionMode === 'user' ? (
+                  <RequirementEditor
+                    value={description}
+                    onChange={(value) => {
+                      setDescription(value);
+                      startTransition(() => onRequirementChange?.({ description: value }));
+                    }}
+                    onCopy={(text) => copyText(text, '需求描述已复制')}
+                  />
+                ) : (
+                  <div className="ai-description-shell">
+                    <div className="ai-description-toolbar">
+                      <div>
+                        <span className="ai-state">
+                          <Icon name="Sparkles" size={13} />
+                          豆包分析结果
+                        </span>
+                        <small>编辑内容仅保留在当前页面，不覆盖用户原始描述</small>
+                      </div>
+                      <span />
+                      <button
+                        className={aiMode === 'edit' ? 'active' : ''}
+                        onClick={() => setAiMode('edit')}
+                      >
+                        <Icon name="Pencil" size={14} />
+                        编辑原文
+                      </button>
+                      <button
+                        className={aiMode === 'preview' ? 'active' : ''}
+                        disabled={!aiDescription.trim()}
+                        onClick={() => setAiMode('preview')}
+                      >
+                        <Icon name="Eye" size={14} />
+                        评审预览
+                      </button>
                     </div>
-                    <span />
-                    <button
-                      className={aiMode === 'edit' ? 'active' : ''}
-                      onClick={() => setAiMode('edit')}
-                    >
-                      <Icon name="Pencil" size={14} />
-                      编辑原文
-                    </button>
-                    <button
-                      className={aiMode === 'preview' ? 'active' : ''}
-                      disabled={!aiDescription.trim()}
-                      onClick={() => setAiMode('preview')}
-                    >
-                      <Icon name="Eye" size={14} />
-                      评审预览
-                    </button>
+                    {aiMode === 'preview' ? (
+                      <AnalysisPreview content={aiDescription} />
+                    ) : (
+                      <textarea
+                        className="ai-description-editor"
+                        value={aiDescription}
+                        onChange={(event) => {
+                          setAiDescription(event.target.value);
+                          startTransition(() =>
+                            onRequirementChange?.({ aiDescription: event.target.value }),
+                          );
+                        }}
+                        placeholder="将豆包生成的分析内容粘贴到这里…"
+                      />
+                    )}
                   </div>
-                  {aiMode === 'preview' ? (
-                    <AnalysisPreview content={aiDescription} />
-                  ) : (
-                    <textarea
-                      className="ai-description-editor"
-                      value={aiDescription}
-                      onChange={(event) => {
-                        setAiDescription(event.target.value);
-                        startTransition(() =>
-                          onRequirementChange?.({ aiDescription: event.target.value }),
-                        );
-                      }}
-                      placeholder="将豆包生成的分析内容粘贴到这里…"
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-            <div className="attachments">
-              <div>
-                <Icon name="Image" />
-                <span>
-                  门店示意图.png<small>1.8 MB</small>
-                </span>
-                <button>
-                  <Icon name="X" size={13} />
-                </button>
+                )}
+                <RequirementAttachments
+                  requirement={{ ...requirement, title, description, aiDescription }}
+                  onSaved={onRequirementSaved}
+                  onBusyChange={setAttachmentsBusy}
+                />
               </div>
-              <div>
-                <Icon name="FileText" />
-                <span>
-                  需求说明.docx<small>246 KB</small>
-                </span>
-                <button>
-                  <Icon name="X" size={13} />
-                </button>
-              </div>
-              <button className="upload">
-                <Icon name="Plus" />
-                添加附件
-              </button>
             </div>
           </div>
           <div className="prompt-action">
@@ -409,56 +402,56 @@ export default function AnalysisWorkbench({
               referrerPolicy="no-referrer"
             />
           </div>
-          {rightView === 'planning' && <div
-            className="right-workspace-pane planning-pane active"
-          >
-            <PlanningWorkspace
-              embedded
-              title={deferredTitle}
-              modules={modules}
-              setModules={setModules}
-              decompositionNo={requirement.currentDecompositionNo}
-              emptyPrimaryLabel="拆解工作项"
-              onEmptyPrimary={startDecomposition}
-            />
-            {decomposition && decomposition.status !== 'SUCCESS' && (
-              <div
-                className={`decomposition-status ${decomposition.status === 'FAILED' ? 'failed' : ''}`}
-              >
-                <div className="decomposition-status-card">
-                  <span className="decomposition-status-icon">
-                    <Icon
-                      name={decomposition.status === 'FAILED' ? 'CircleAlert' : 'Sparkles'}
-                      size={20}
-                    />
-                  </span>
-                  <h3>
-                    {decomposition.status === 'FAILED' ? '工作项拆解未完成' : '正在拆解工作项'}
-                  </h3>
-                  <p>{decomposition.message}</p>
-                  {decomposition.status !== 'FAILED' && (
-                    <>
-                      <div className="tree-skeleton">
-                        {[72, 88, 62, 80].map((width, index) => (
-                          <span
-                            key={width}
-                            style={{ width: `${width}%`, marginLeft: `${index % 2 ? 22 : 0}px` }}
-                          />
-                        ))}
-                      </div>
-                      <small>完成后将自动展示工作项树，请勿重复提交。</small>
-                    </>
-                  )}
-                  {decomposition.status === 'FAILED' && (
-                    <button className="primary" onClick={startDecomposition}>
-                      <Icon name="RotateCcw" size={14} />
-                      重新尝试
-                    </button>
-                  )}
+          {rightView === 'planning' && (
+            <div className="right-workspace-pane planning-pane active">
+              <PlanningWorkspace
+                embedded
+                title={deferredTitle}
+                modules={modules}
+                setModules={setModules}
+                decompositionNo={requirement.currentDecompositionNo}
+                emptyPrimaryLabel="拆解工作项"
+                onEmptyPrimary={startDecomposition}
+              />
+              {decomposition && decomposition.status !== 'SUCCESS' && (
+                <div
+                  className={`decomposition-status ${decomposition.status === 'FAILED' ? 'failed' : ''}`}
+                >
+                  <div className="decomposition-status-card">
+                    <span className="decomposition-status-icon">
+                      <Icon
+                        name={decomposition.status === 'FAILED' ? 'CircleAlert' : 'Sparkles'}
+                        size={20}
+                      />
+                    </span>
+                    <h3>
+                      {decomposition.status === 'FAILED' ? '工作项拆解未完成' : '正在拆解工作项'}
+                    </h3>
+                    <p>{decomposition.message}</p>
+                    {decomposition.status !== 'FAILED' && (
+                      <>
+                        <div className="tree-skeleton">
+                          {[72, 88, 62, 80].map((width, index) => (
+                            <span
+                              key={width}
+                              style={{ width: `${width}%`, marginLeft: `${index % 2 ? 22 : 0}px` }}
+                            />
+                          ))}
+                        </div>
+                        <small>完成后将自动展示工作项树，请勿重复提交。</small>
+                      </>
+                    )}
+                    {decomposition.status === 'FAILED' && (
+                      <button className="primary" onClick={startDecomposition}>
+                        <Icon name="RotateCcw" size={14} />
+                        重新尝试
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>}
+              )}
+            </div>
+          )}
         </section>
       </div>
       {promptOpen && (
@@ -561,7 +554,9 @@ export default function AnalysisWorkbench({
               <button onClick={() => setMergePromptOpen(false)}>取消</button>
               <button
                 className="primary"
-                onClick={() => copyText(mergePromptText, '合并提示词已复制，可以粘贴到豆包文本输入框')}
+                onClick={() =>
+                  copyText(mergePromptText, '合并提示词已复制，可以粘贴到豆包文本输入框')
+                }
               >
                 <Icon name="Copy" />
                 复制并发送给豆包

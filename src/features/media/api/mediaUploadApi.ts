@@ -2,7 +2,13 @@ import { z } from 'zod';
 import { ApiError, requestJson } from '../../../shared/api/httpClient';
 import { apiResponseSchema } from '../../../shared/api/apiResponseSchema';
 
-export type UploadScene = 'task_cover' | 'task_image' | 'task_video' | 'task_attachment';
+export type UploadScene =
+  | 'task_cover'
+  | 'task_image'
+  | 'task_video'
+  | 'task_attachment'
+  | 'requirement_image'
+  | 'requirement_attachment';
 const ticketSchema = z.object({
   mediaNo: z.string().min(1),
   key: z.string().min(1),
@@ -15,7 +21,7 @@ const mediaSchema = z.object({
   type: z.enum(['image', 'video', 'file']),
   previewUrl: z.string(),
 });
-export type UploadedMedia = z.infer<typeof mediaSchema>;
+export type UploadedMedia = z.infer<typeof mediaSchema> & { storageKey: string };
 export interface UploadInput {
   file: File;
   scene: UploadScene;
@@ -24,6 +30,12 @@ export interface UploadInput {
   onProgress?: (percent: number) => void;
 }
 const types: Record<UploadScene, string[]> = {
+  requirement_image: ['image/jpeg', 'image/png', 'image/webp'],
+  requirement_attachment: [
+    'application/pdf',
+    'application/zip',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ],
   task_cover: ['image/jpeg', 'image/png', 'image/webp'],
   task_image: ['image/jpeg', 'image/png', 'image/webp'],
   task_video: ['video/mp4'],
@@ -32,8 +44,16 @@ const types: Record<UploadScene, string[]> = {
 /** 凭证只能由后端生成；跨域直传不携带业务登录Cookie。 */
 export async function uploadMedia(input: UploadInput): Promise<UploadedMedia> {
   const { file, scene, requirementNo, signal, onProgress } = input;
-  if (!types[scene].includes(file.type) || file.size <= 0 || file.size > 50 * 1024 * 1024)
-    throw new ApiError('文件类型不支持或大小超过 50MB', 400, 'MEDIA_INVALID');
+  if (
+    !types[scene].includes(file.type) ||
+    file.size <= 0 ||
+    file.size > (scene === 'task_video' ? 50 : 10) * 1024 * 1024
+  )
+    throw new ApiError(
+      `文件类型不支持或大小超过 ${scene === 'task_video' ? 50 : 10}MB`,
+      400,
+      'MEDIA_INVALID',
+    );
   const ticket = await requestJson(
     `/api/v1/task-media/upload-token?requirementNo=${encodeURIComponent(requirementNo)}`,
     apiResponseSchema(ticketSchema),
@@ -44,11 +64,12 @@ export async function uploadMedia(input: UploadInput): Promise<UploadedMedia> {
     },
   );
   await directUpload(file, ticket, signal, onProgress);
-  return requestJson(
+  const media = await requestJson(
     `/api/v1/task-media/complete?mediaNo=${encodeURIComponent(ticket.mediaNo)}`,
     apiResponseSchema(mediaSchema),
     { method: 'POST', signal },
   );
+  return { ...media, storageKey: ticket.key };
 }
 function directUpload(
   file: File,

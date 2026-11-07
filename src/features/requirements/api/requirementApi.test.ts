@@ -1,10 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { Requirement } from '../../../shared/types/workItem';
-import {
-  deleteRequirement,
-  isPersistedRequirement,
-  saveRequirement,
-} from './requirementApi';
+import { deleteRequirement, isPersistedRequirement, saveRequirement } from './requirementApi';
 
 const requirement: Requirement = {
   id: 'REQ-024',
@@ -24,6 +20,42 @@ describe('requirementApi', () => {
   it('distinguishes backend numbers from demo numbers', () => {
     expect(isPersistedRequirement('REQ-KFYTYY-000025')).toBe(true);
     expect(isPersistedRequirement('REQ-024')).toBe(false);
+  });
+
+  it('preserves attachment object keys when saving requirement edits', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        success: true,
+        msg: {
+          requirementNo: 'REQ-KFYTYY-000025',
+          title: requirement.title,
+          userDescription: '',
+          aiDescription: '',
+          stage: 'draft',
+          currentDecompositionNo: null,
+          createdAt: '2026-10-12T16:00:00',
+          updatedAt: '2026-10-12T16:00:00',
+          moduleCount: 0,
+          workItemCount: 0,
+          attachments: [],
+        },
+        errorCode: '',
+        errorMsg: '',
+      }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const attachments = [
+      {
+        fileName: 'photo.png',
+        storageKey: 'requirement/image/test.png',
+        contentType: 'image/png',
+        fileSize: 12,
+        sortOrder: 0,
+      },
+    ];
+    await saveRequirement({ requirement: { ...requirement, attachments } });
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body).attachments).toEqual(attachments);
   });
 
   it('creates a demo requirement and maps the publishing payload', async () => {

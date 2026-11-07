@@ -1,0 +1,5 @@
+.api-keys-content { max-width: 1000px; margin: 0 auto; padding: 36px; }
+.api-keys-content .api-key-settings { padding: 0; border: 0; }
+.api-keys-content .api-key-heading h2 { font-size: 24px; font-weight: 400; line-height: 1.2; }
+.api-keys-content .ant-alert { margin-bottom: 16px; }
+@media (max-width: 760px) { .api-keys-content { padding: 24px 18px; } }

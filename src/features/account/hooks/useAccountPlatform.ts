@@ -8,10 +8,10 @@ export function useAccountPlatform() {
   const activate = useMutation({ mutationFn: activateContractor, onSuccess: (data) => client.setQueryData(accountKeys.overview, data) });
   return { overview, rules, activate };
 }
-export function useAdmin(permissions: string[]) {
+export function useAdmin(permissions: string[], section: string) {
   const client = useQueryClient();
-  const users = useQuery({ queryKey: accountKeys.users, queryFn: ({ signal }) => getAdminUsers(signal), enabled: permissions.includes('accounts.manage') });
-  const audits = useQuery({ queryKey: accountKeys.audits, queryFn: ({ signal }) => getAudits(signal), enabled: permissions.includes('audit.read') });
+  const users = useQuery({ queryKey: accountKeys.users, queryFn: ({ signal }) => getAdminUsers(signal), enabled: section === 'users' && permissions.includes('accounts.manage') });
+  const audits = useQuery({ queryKey: accountKeys.audits, queryFn: ({ signal }) => getAudits(signal), enabled: section === 'audit' && permissions.includes('audit.read') });
   const save = useMutation({ mutationFn: saveAdmin, onSuccess: async () => {
     await Promise.all([client.invalidateQueries({ queryKey: ['account'] }), client.invalidateQueries({ queryKey: ['auth', 'current-user'] }), client.invalidateQueries({ queryKey: ['auth', 'publisher-eligibility'] })]);
   } });

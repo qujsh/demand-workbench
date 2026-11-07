@@ -1,0 +1,41 @@
+.api-key-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.api-key-heading h2 {
+  margin: 0;
+}
+.api-key-settings > p,
+.api-key-guide p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.api-key-guide {
+  margin-top: 20px;
+}
+.api-key-guide summary {
+  cursor: pointer;
+  color: var(--blue);
+}
+.api-key-guide pre {
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.api-key-secret {
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+  font-family: monospace;
+}
+@media (max-width: 760px) {
+  .api-key-heading {
+    flex-wrap: wrap;
+  }
+}

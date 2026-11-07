@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, Avatar, Button, Descriptions, Form, Input, message } from 'antd';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../authContext';
 import { currentUserKey, saveProfile } from '../api/authApi';
 import './settings.css';
 import AccountSecurity from '../components/AccountSecurity';
+import { PasswordSecurity } from '../components/PasswordSecurity';
 import { AccountCenter } from '../../account';
 
 const statusNames: Record<string, string> = {
@@ -24,7 +24,7 @@ export default function SettingsPage() {
   });
   return <main className="settings-page">
     {contextHolder}
-    <header className="topbar"><Link to="/requirements">需求管理</Link><span>/</span><strong>个人设置</strong></header>
+    <header className="topbar"><span>系统配置</span><span>/</span><strong>个人设置</strong></header>
     <div className="settings-content">
       <h1>个人设置</h1>
       <p className="settings-subtitle">管理你的个人资料和登录账号</p>
@@ -52,6 +52,7 @@ export default function SettingsPage() {
         ]} />
         <Button onClick={() => void logout().catch(() => feedback.error('退出失败，请稍后重试'))}>退出登录</Button>
       </section>
+      <PasswordSecurity />
       <AccountSecurity />
       <AccountCenter />
     </div>

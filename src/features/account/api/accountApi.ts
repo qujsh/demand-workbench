@@ -4,7 +4,7 @@ import { apiResponseSchema } from '../../../shared/api/apiResponseSchema';
 
 const identitySchema = z.object({ kind: z.enum(['publisher', 'contractor']), status: z.string(), levelCode: z.string().nullable(), levelName: z.string().nullable(), growthPoints: z.number(), creditScore: z.number(), creditRecorded: z.boolean() });
 const ledgerSchema = z.object({ eventNo: z.string(), kind: z.enum(['publisher', 'contractor']), metric: z.enum(['growth', 'credit']), delta: z.number(), reason: z.string(), createdAt: z.string() });
-const overviewSchema = z.object({ role: z.string(), permissions: z.array(z.string()), identities: z.array(identitySchema), history: z.array(ledgerSchema) });
+const overviewSchema = z.object({ role: z.string(), roleName: z.string().nullish(), permissions: z.array(z.string()), identities: z.array(identitySchema), history: z.array(ledgerSchema) });
 const ruleSchema = z.object({ kind: z.enum(['publisher', 'contractor']), levelCode: z.string(), levelName: z.string(), sortOrder: z.number(), minPoints: z.number().nullable(), enabled: z.boolean(), version: z.number() });
 const adminUserSchema = z.object({ userNo: z.string(), nickname: z.string(), status: z.string(), role: z.string() });
 const auditSchema = z.object({ id: z.number(), operatorNo: z.string(), action: z.string(), targetNo: z.string(), detail: z.string(), createdAt: z.string() });

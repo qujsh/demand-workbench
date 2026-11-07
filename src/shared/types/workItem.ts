@@ -19,6 +19,15 @@ export interface WorkItemNode {
   children?: WorkItemNode[];
 }
 
+export interface RequirementAttachment {
+  id?: number;
+  fileName: string;
+  storageKey: string;
+  contentType: string | null;
+  fileSize: number;
+  sortOrder: number;
+}
+
 export interface Requirement {
   id: string;
   title: string;
@@ -28,5 +37,6 @@ export interface Requirement {
   stage: RequirementStage;
   modules: number;
   items: number;
+  attachments?: RequirementAttachment[];
   currentDecompositionNo?: string;
 }

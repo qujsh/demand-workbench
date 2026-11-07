@@ -26,8 +26,8 @@ export function TaskContentFields({
   async function upload(input: HTMLInputElement, cover: boolean) {
     const file = input.files?.[0];
     if (!file) return;
-    if (file.size > 50 * 1024 * 1024) {
-      void toast.warning('单文件最多 50MB');
+    if (file.size > (file.type === 'video/mp4' ? 50 : 10) * 1024 * 1024) {
+      void toast.warning('图片和文件最多 10MB，视频最多 50MB');
       input.value = '';
       return;
     }
@@ -139,7 +139,7 @@ export function TaskContentFields({
       <h3>任务参考素材</h3>
       <p>
         只上传用于任务展示的媒体，内部需求附件不会自动展示。支持 JPEG / PNG /
-        WebP、MP4、PDF、ZIP；单文件最多 50MB，最多8个媒体，视频需图片封面。
+        WebP、MP4、PDF、ZIP；图片和文件最多 10MB，视频最多 50MB，最多8个媒体，视频需图片封面。
       </p>
       <div className="task-content-upload">
         <label>

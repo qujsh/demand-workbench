@@ -34,7 +34,7 @@ export function saveRequirement(input: SaveRequirementInput): Promise<Requiremen
       aiDescription: input.aiDescription ?? requirement.aiDescription ?? '',
       stage: 'draft',
       currentDecompositionNo: requirement.currentDecompositionNo ?? null,
-      attachments: [],
+      attachments: requirement.attachments ?? [],
     }),
   });
 }

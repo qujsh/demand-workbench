@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import type { PropsWithChildren } from 'react';
 import { useState } from 'react';
-import { AuthGate } from '../features/auth/components/AuthGate';
 
 dayjs.locale('zh-cn');
 
@@ -38,7 +37,7 @@ export function AppProviders({ children }: PropsWithChildren) {
       }}
     >
       <AntApp>
-        <QueryClientProvider client={queryClient}><AuthGate>{children}</AuthGate></QueryClientProvider>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </AntApp>
     </ConfigProvider>
   );

@@ -89,4 +89,21 @@ describe('registered direct upload', () => {
     });
     expect(fetcher).toHaveBeenCalledTimes(1);
   });
+  it('rejects requirement attachments larger than 10MB before registration', async () => {
+    const fetcher = setup();
+    await expect(
+      uploadMedia({
+        ...input(),
+        scene: 'requirement_image',
+        file: new File([new Uint8Array(10 * 1024 * 1024 + 1)], 'large.png', { type: 'image/png' }),
+      }),
+    ).rejects.toMatchObject({ code: 'MEDIA_INVALID' });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+  it('keeps the backend object key for binding requirement attachments', async () => {
+    const fetcher = setup();
+    const result = await uploadMedia({ ...input(), scene: 'requirement_image' });
+    expect(result.storageKey).toBe(ticket.key);
+    expect(JSON.parse(fetcher.mock.calls[0][1].body).scene).toBe('requirement_image');
+  });
 });

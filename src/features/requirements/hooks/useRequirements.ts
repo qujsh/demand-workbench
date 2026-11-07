@@ -21,6 +21,7 @@ function formatUpdatedAt(value: string): string {
 export function mapRequirement(response: RequirementResponse): Requirement {
   return {
     id: response.requirementNo,
+    attachments: response.attachments,
     title: response.title,
     description: response.userDescription ?? '',
     aiDescription: response.aiDescription ?? '',
@@ -32,8 +33,9 @@ export function mapRequirement(response: RequirementResponse): Requirement {
   };
 }
 
-export function useRequirements() {
+export function useRequirements(enabled = true) {
   return useQuery({
+    enabled,
     queryKey: ['requirements'],
     queryFn: ({ signal }) => listRequirements(signal),
     select: responses => responses.map(mapRequirement),

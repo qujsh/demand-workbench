@@ -2,6 +2,7 @@ import { Alert, Button, Empty, Popconfirm, Spin, Tag } from 'antd';
 import { useAccountSecurity } from '../hooks/useAccountSecurity';
 
 const eventNames: Record<string, string> = {
+  password_set: '设置登录密码', password_reset: '重置登录密码',
   login: '登录成功', logout: '退出登录', session_revoked: '退出指定设备', other_sessions_revoked: '退出其他设备',
 };
 const formatTime = (value: string) => value.replace('T', ' ').slice(0, 16);

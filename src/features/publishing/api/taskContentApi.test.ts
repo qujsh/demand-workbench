@@ -29,6 +29,8 @@ describe('unified publishing contracts', () => {
     expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({
       code: 'new_category',
       name: '新分类',
+      sortOrder: 1000,
+      enabled: true,
     });
   });
   it('preserves version conflicts instead of reporting success', async () => {

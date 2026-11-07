@@ -8,16 +8,21 @@ import { stageLabels, useRequirements } from './features/requirements/hooks/useR
 import { useDeleteRequirement } from './features/requirements/hooks/useDeleteRequirement';
 import { useCancelPublishTask } from './features/publishing/hooks/useCancelPublishTask';
 import { isPersistedRequirement } from './features/requirements/api/requirementApi';
+import { usePermissions } from './features/account/hooks/usePermissions';
+import { Alert, Button, Spin } from 'antd';
 import { ApiError } from './shared/api/httpClient';
 
+const SystemConfiguration = lazy(() => import('./features/account/pages/SystemConfiguration'));
 const RequirementList = lazy(() => import('./components/RequirementList'));
 const AnalysisWorkbench = lazy(() => import('./components/AnalysisWorkbench'));
 const Planning = lazy(() => import('./components/Planning'));
 const PublishWizard = lazy(() => import('./components/PublishWizard'));
 const CategoryManagement = lazy(() => import('./features/publishing/pages/CategoryManagement'));
+const SharePage = lazy(() => import('./features/shares/SharePage'));
+const ApiKeysPage = lazy(() => import('./features/open-platform/pages/ApiKeysPage'));
 const SettingsPage = lazy(() => import('./features/auth/pages/SettingsPage'));
 
-type View = 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings' | 'categories';
+type View = 'system' | 'shares' | 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings' | 'categories';
 
 const flattenNodes = (nodes: WorkItemNode[]): WorkItemNode[] =>
   nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
@@ -34,7 +39,8 @@ export default function App() {
   const saveRequirementMutation = useSaveRequirement();
   const deleteRequirementMutation = useDeleteRequirement();
   const cancelPublishTaskMutation = useCancelPublishTask();
-  const requirementsQuery = useRequirements();
+  const access = usePermissions();
+  const requirementsQuery = useRequirements(access.can('requirements.use'));
 
   useEffect(() => {
     if (requirementsQuery.data) setRequirements(requirementsQuery.data);
@@ -71,11 +77,15 @@ export default function App() {
     [requirement],
   );
   const view: View =
-    location.pathname === '/configuration/categories'
+    location.pathname === '/system/settings'
+      ? 'settings'
+      : location.pathname.startsWith('/system/')
+      ? 'system'
+      : location.pathname.startsWith('/shares')
+      ? 'shares'
+      : location.pathname === '/configuration/categories'
       ? 'categories'
-      : location.pathname === '/settings'
-        ? 'settings'
-        : location.pathname.endsWith('/analysis')
+      : location.pathname.endsWith('/analysis')
           ? 'analysis'
           : location.pathname.endsWith('/planning')
             ? 'planning'
@@ -179,7 +189,9 @@ export default function App() {
           publishEditorPath: view === 'publishing' ? location.pathname : retainedPublishPath,
         },
       });
-    else if (target === 'settings') navigate('/settings');
+    else if (target.startsWith('system/')) navigate(`/${target}`);
+    else if (target === 'shares') navigate('/shares');
+    else if (target === 'settings') navigate('/system/settings');
     else if (target === 'requirements') navigate('/requirements');
     else {
       setToast('该模块将在后续版本开放');
@@ -187,14 +199,16 @@ export default function App() {
     }
   };
 
+  const requiredPermission = view === 'shares' ? 'shares.use' : view === 'categories' ? 'categories.read' : view === 'settings' || view === 'system' ? null : 'requirements.use';
+  const allowed = !requiredPermission || access.can(requiredPermission);
   return (
     <div className="app flex min-h-screen">
       {view !== 'settings' && (
-        <Link to="/settings" className="settings-mobile-entry">
+        <Link to="/system/settings" className="settings-mobile-entry">
           个人设置
         </Link>
       )}
-      <Sidebar view={view === 'analysis' ? 'requirements' : view} onChange={navigateSidebar} />
+      <Sidebar view={view === 'settings' ? 'system/settings' : view === 'system' ? `system/${location.pathname.split('/')[2]}` : view === 'analysis' ? 'requirements' : view} onChange={navigateSidebar} />
       <div className="app-content min-w-0 flex-1">
         <Suspense
           fallback={
@@ -203,8 +217,11 @@ export default function App() {
             </div>
           }
         >
+          {access.isPending ? <div className="system-content"><Spin /></div> : access.isError ? <div className="system-content"><Alert type="error" title="无法加载权限" action={<Button onClick={() => void access.refetch()}>重试</Button>} /></div> : !allowed ? <div className="system-content"><Alert type="warning" title="暂无访问权限" description="请联系管理员分配所需角色。" action={<Link to="/system/settings"><Button>个人设置</Button></Link>} /></div> : <>
+          {view === 'system' && (location.pathname === '/system/api-keys' ? <ApiKeysPage /> : <SystemConfiguration page={location.pathname.split('/')[2] ?? ''} />)}
           {view === 'categories' && <CategoryManagement returnPath={categoryReturnPath} />}
           {view === 'settings' && <SettingsPage />}
+          {view === 'shares' && <SharePage />}
           {view === 'requirements' && (
             <RequirementList
               requirements={requirements}
@@ -248,6 +265,22 @@ export default function App() {
               requirement={requirement}
               modules={modules}
               setModules={setModules}
+              onRequirementSaved={(saved: Requirement) => {
+                setRequirements((current) =>
+                  current.map((item) =>
+                    item.id === requirement.id || item.id === saved.id ? saved : item,
+                  ),
+                );
+                if (saved.id !== requirement.id) {
+                  setWorkItemsByRequirement((current) => {
+                    if (!current[requirement.id]) return current;
+                    const next = { ...current, [saved.id]: current[requirement.id] };
+                    delete next[requirement.id];
+                    return next;
+                  });
+                  navigate(`/requirements/${saved.id}/analysis`, { replace: true });
+                }
+              }}
               onRequirementChange={(patch: Partial<Requirement>) => {
                 setRequirements((current) =>
                   current.map((item) =>
@@ -301,6 +334,7 @@ export default function App() {
                 />
               </div>
             )}
+          </>}
         </Suspense>
       </div>
       {toast && (

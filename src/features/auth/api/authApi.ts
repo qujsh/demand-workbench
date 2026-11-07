@@ -37,11 +37,13 @@ export async function getCurrentUser(): Promise<CurrentUser> {
   return (await requestJson('/api/v1/users/me', envelope(userSchema))).msg;
 }
 
-export async function sendLoginCode(phone: string): Promise<void> {
+export type SmsPurpose = 'login' | 'set_password' | 'reset_password';
+
+export async function sendLoginCode(phone: string, purpose: SmsPurpose = 'login'): Promise<void> {
   await requestJson(
     '/api/v1/auth/sms/send',
-    envelope(z.object({ message: z.string(), developmentCode: z.string() })),
-    { method: 'POST', body: JSON.stringify({ phone }) },
+    envelope(z.object({ message: z.string(), retryAfterSeconds: z.number().optional() })),
+    { method: 'POST', body: JSON.stringify({ phone, purpose }) },
   );
 }
 
@@ -88,4 +90,21 @@ export async function revokeSession(sessionNo: string | null) {
   const path = sessionNo === null ? '/api/v1/users/sessions/revoke-others'
     : `/api/v1/users/sessions/revoke?sessionNo=${encodeURIComponent(sessionNo)}`;
   await requestJson(path, envelope(z.string()), { method: 'POST' });
+}
+
+export async function loginWithPassword(phone: string, password: string): Promise<CurrentUser> {
+  return (await requestJson('/api/v1/auth/password/login', envelope(userSchema), {
+    method: 'POST', body: JSON.stringify({ phone, password }),
+  })).msg;
+}
+
+export async function savePassword(values: { phone: string; code: string; password: string }, reset: boolean): Promise<void> {
+  await requestJson(`/api/v1/auth/password/${reset ? 'reset' : 'set'}`, envelope(z.string()), {
+    method: 'POST', body: JSON.stringify({ phone: values.phone, code: values.code, password: values.password }),
+  });
+}
+
+export const passwordStatusKey = ['auth', 'password-status'] as const;
+export async function getPasswordStatus() {
+  return (await requestJson('/api/v1/users/password/status', envelope(z.object({ hasPassword: z.boolean() })))).msg;
 }

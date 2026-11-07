@@ -1,5 +1,7 @@
-import { Alert, Button, Collapse, Form, Input, InputNumber, Popconfirm, Select, Switch, Table, Tabs } from 'antd';
+import { Alert, Button, Form, Input, InputNumber, Popconfirm, Select, Switch, Table, Tabs } from 'antd';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getRoleOptions, roleKeys } from '../api/roleApi';
 import type { Adjustment, LevelRule } from '../api/accountApi';
 import { useAdmin } from '../hooks/useAccountPlatform';
 import { kindNames, roleNames, timeText } from '../accountPresentation';
@@ -29,28 +31,31 @@ function AdjustmentForm({ save, pending }: { save: (input: Adjustment) => Promis
   </Form>;
 }
 
-export default function AdminPanel({ permissions, rules }: { permissions: string[]; rules: LevelRule[] }) {
-  const { users, audits, save } = useAdmin(permissions);
+export default function AdminPanel({ permissions, rules, section }: { permissions: string[]; rules: LevelRule[]; section: 'users' | 'rules' | 'audit' }) {
+  const { users, audits, save } = useAdmin(permissions, section);
+  const roleOptions = useQuery({ queryKey: roleKeys.options, queryFn: ({ signal }) => getRoleOptions(signal), enabled: section === 'users' });
+  const names = Object.fromEntries((roleOptions.data ?? []).map((item) => [item.code, item.name]));
   const [selectedUser, setSelectedUser] = useState('');
   const [role, setRole] = useState('member');
   const [status, setStatus] = useState('active');
   const accounts = permissions.includes('accounts.manage');
   const growth = permissions.includes('growth.manage');
   return <section className="settings-section">
-    <h2>平台管理</h2>
+
+    {roleOptions.isError && section === 'users' && <Alert type="error" title={roleOptions.error.message} />}
     {save.isError && <Alert type="error" title={save.error.message} showIcon />}
     {save.isSuccess && <Alert type="success" title="操作已保存并写入审计记录" showIcon />}
-    <Collapse items={[{ key: 'admin', label: '打开管理控制台', children: <Tabs items={[
+    <Tabs items={[
       ...(accounts ? [{ key: 'users', label: '账号与角色', children: <>
         {users.isError && <Alert type="error" title={users.error.message} />}
         <Table rowKey="userNo" size="small" dataSource={users.data} loading={users.isPending} scroll={{ x: 520 }} pagination={{ pageSize: 5 }} columns={[
           { title: '账号', dataIndex: 'userNo' }, { title: '昵称', dataIndex: 'nickname' },
-          { title: '角色', dataIndex: 'role', render: (value: string) => roleNames[value] || value },
+          { title: '角色', dataIndex: 'role', render: (value: string) => names[value] || roleNames[value] || '自定义角色' },
           { title: '状态', dataIndex: 'status', render: (value: string) => ({ active: '正常', restricted: '受限', suspended: '暂停', banned: '禁用' })[value] || value },
           { title: '操作', render: (_: unknown, user: { userNo: string; role: string; status: string }) => <Button onClick={() => { setSelectedUser(user.userNo); setRole(user.role); setStatus(user.status); }}>管理</Button> },
         ]} />
         {selectedUser && <div className="account-admin-editor"><strong>管理 {selectedUser}</strong>
-          {permissions.includes('roles.manage') && <div className="account-inline-controls"><Select aria-label="平台角色" value={role} onChange={setRole} options={['member', 'operator', 'admin'].map((value) => ({ value, label: roleNames[value] }))} />
+          {permissions.includes('roles.manage') && <div className="account-inline-controls"><Select aria-label="平台角色" value={role} onChange={setRole} loading={roleOptions.isPending} options={(roleOptions.data ?? []).filter((item) => item.enabled).map((item) => ({ value: item.code, label: item.name }))} />
             <Popconfirm title="确认变更平台角色？" onConfirm={() => save.mutateAsync({ action: 'role', userNo: selectedUser, role }).catch(() => undefined)}><Button loading={save.isPending}>保存角色</Button></Popconfirm></div>}
           <div className="account-inline-controls"><Select aria-label="账号状态" value={status} onChange={setStatus} options={[{ value: 'active', label: '正常' }, { value: 'restricted', label: '受限' }, { value: 'suspended', label: '暂停' }, { value: 'banned', label: '禁用' }]} />
             <Popconfirm title="确认变更账号状态？" description="停用会使该账号全部登录失效。" onConfirm={() => save.mutateAsync({ action: 'status', userNo: selectedUser, status }).catch(() => undefined)}><Button loading={save.isPending}>保存状态</Button></Popconfirm></div>
@@ -69,6 +74,6 @@ export default function AdminPanel({ permissions, rules }: { permissions: string
           { title: '时间', dataIndex: 'createdAt', render: timeText }, { title: '操作人', dataIndex: 'operatorNo' }, { title: '目标', dataIndex: 'targetNo' }, { title: '内容', dataIndex: 'detail' },
         ]} />
       </> }] : []),
-    ]} /> }]} />
+    ].filter((item) => section === 'rules' ? item.key === 'rules' || item.key === 'adjust' : item.key === section)} />
   </section>;
 }

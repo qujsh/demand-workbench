@@ -1,3 +1,4 @@
+import { usePermissions } from '../../account/hooks/usePermissions';
 import { CategoryDeletion } from '../components/CategoryDeletion';
 import { CategoryMigrationHistory } from '../components/CategoryMigrationHistory';
 import { useState } from 'react';
@@ -24,6 +25,7 @@ import {
 } from '../api/taskContentApi';
 
 export default function CategoryManagement({ returnPath }: { returnPath?: string }) {
+  const { can } = usePermissions();
   const navigate = useNavigate();
   const client = useQueryClient();
   const [tab, setTab] = useState('categories');
@@ -132,9 +134,9 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
                   onSearch={(value) => setKeyword(value.trim())}
                   style={{ width: 280 }}
                 />
-                <Button type="primary" onClick={() => openEditor(null)}>
+                {can('categories.create') && <Button type="primary" onClick={() => openEditor(null)}>
                   新增分类
-                </Button>
+                </Button>}
               </Space>
             </div>
             <Table
@@ -172,10 +174,10 @@ export default function CategoryManagement({ returnPath }: { returnPath?: string
                   width: 160,
                   render: (_, item: ManagedCategory) => (
                     <Space size={0} className="category-row-actions">
-                      <Button type="link" onClick={() => openEditor(item)}>
+                      {can('categories.edit') && <Button type="link" onClick={() => openEditor(item)}>
                         编辑
-                      </Button>
-                      <CategoryDeletion category={item} />
+                      </Button>}
+                      {can('categories.delete') && <CategoryDeletion category={item} />}
                     </Space>
                   ),
                 },
