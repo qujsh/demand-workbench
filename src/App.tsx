@@ -19,10 +19,12 @@ const Planning = lazy(() => import('./components/Planning'));
 const PublishWizard = lazy(() => import('./components/PublishWizard'));
 const CategoryManagement = lazy(() => import('./features/publishing/pages/CategoryManagement'));
 const SharePage = lazy(() => import('./features/shares/SharePage'));
+const CallAuditsPage = lazy(() => import('./features/open-platform/pages/CallAuditsPage'));
 const ApiKeysPage = lazy(() => import('./features/open-platform/pages/ApiKeysPage'));
+const CollaborationPage = lazy(() => import('./features/account/pages/CollaborationPage'));
 const SettingsPage = lazy(() => import('./features/auth/pages/SettingsPage'));
 
-type View = 'system' | 'shares' | 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings' | 'categories';
+type View = 'system' | 'shares' | 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings' | 'categories' | 'collaboration';
 
 const flattenNodes = (nodes: WorkItemNode[]): WorkItemNode[] =>
   nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
@@ -54,6 +56,7 @@ export default function App() {
       ? retainedPublishPath
       : location.pathname;
   const routeMatch =
+    matchPath('/requirements/:requirementId/collaboration', location.pathname) ||
     matchPath('/requirements/:requirementId/analysis', location.pathname) ||
     matchPath('/requirements/:requirementId/planning', location.pathname) ||
     matchPath('/requirements/:requirementId/publish', editorPath);
@@ -85,6 +88,8 @@ export default function App() {
       ? 'shares'
       : location.pathname === '/configuration/categories'
       ? 'categories'
+      : location.pathname.endsWith('/collaboration')
+        ? 'collaboration'
       : location.pathname.endsWith('/analysis')
           ? 'analysis'
           : location.pathname.endsWith('/planning')
@@ -208,7 +213,7 @@ export default function App() {
           个人设置
         </Link>
       )}
-      <Sidebar view={view === 'settings' ? 'system/settings' : view === 'system' ? `system/${location.pathname.split('/')[2]}` : view === 'analysis' ? 'requirements' : view} onChange={navigateSidebar} />
+      <Sidebar view={view === 'settings' ? 'system/settings' : view === 'system' ? `system/${location.pathname.split('/')[2]}` : (view === 'analysis' || view === 'collaboration') ? 'requirements' : view} onChange={navigateSidebar} />
       <div className="app-content min-w-0 flex-1">
         <Suspense
           fallback={
@@ -218,7 +223,8 @@ export default function App() {
           }
         >
           {access.isPending ? <div className="system-content"><Spin /></div> : access.isError ? <div className="system-content"><Alert type="error" title="无法加载权限" action={<Button onClick={() => void access.refetch()}>重试</Button>} /></div> : !allowed ? <div className="system-content"><Alert type="warning" title="暂无访问权限" description="请联系管理员分配所需角色。" action={<Link to="/system/settings"><Button>个人设置</Button></Link>} /></div> : <>
-          {view === 'system' && (location.pathname === '/system/api-keys' ? <ApiKeysPage /> : <SystemConfiguration page={location.pathname.split('/')[2] ?? ''} />)}
+          {view === 'collaboration' && requirementId && <CollaborationPage requirementNo={requirementId} />}
+          {view === 'system' && (location.pathname === '/system/call-audits' ? <CallAuditsPage /> : location.pathname === '/system/api-keys' ? <ApiKeysPage /> : <SystemConfiguration page={location.pathname.split('/')[2] ?? ''} />)}
           {view === 'categories' && <CategoryManagement returnPath={categoryReturnPath} />}
           {view === 'settings' && <SettingsPage />}
           {view === 'shares' && <SharePage />}

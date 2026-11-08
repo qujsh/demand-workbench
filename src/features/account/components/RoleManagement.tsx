@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import type { PlatformRole, RoleInput } from '../api/roleApi';
 import { useRoleConfiguration } from '../hooks/useRoleConfiguration';
 import { RoleEditor } from './RoleEditor';
+import { PermissionTree } from './PermissionTree';
 
 export function RoleManagement() {
   const { configuration, save } = useRoleConfiguration();
@@ -28,7 +29,7 @@ export function RoleManagement() {
     {location.state?.roleSaved && <Alert type="success" showIcon title="配置已保存，账号权限已更新并写入审计记录" />}
     <Tabs activeKey={tab} onChange={(key) => navigate(key === 'common' ? '/system/roles?tab=common' : '/system/roles', { replace: true })} items={[
       { key: 'roles', label: '角色列表', children: <>
-        <div className="system-toolbar"><p className="system-muted">每个账号分配一个平台角色，并自动继承公共权限。</p><Button type="primary" onClick={() => edit(null)}>新建角色</Button></div>
+        <div className="system-toolbar"><p className="system-muted">每个账号可分配多个平台角色，权限合并并自动继承公共权限。</p><Button type="primary" onClick={() => edit(null)}>新建角色</Button></div>
         <Table rowKey="code" dataSource={roles.filter((role) => !role.common)} scroll={{ x: 1020 }} pagination={{ pageSize: 10 }} columns={[
           { title: '角色名称', dataIndex: 'name', width: 200, render: (name: string, role: PlatformRole) => <Space>{name}{role.builtIn && <Tag>内置</Tag>}</Space> },
           { title: '说明', dataIndex: 'description', width: 200, render: (value: string) => value || '暂无说明' },
@@ -39,7 +40,8 @@ export function RoleManagement() {
       </> },
       { key: 'common', label: '公共权限', children: <>
         <Alert type="info" showIcon title="所有正常账号自动继承；角色权限与公共权限叠加。本人资料、密码、安全设置和退出登录始终可用。" />
-        <div className="system-toolbar"><Space wrap>{catalog.filter((p) => common?.permissions.includes(p.code)).map((p) => <Tag key={p.code}>{p.name}</Tag>)}{!common?.permissions.length && <span>暂无公共业务权限</span>}</Space><Button disabled={!common} onClick={() => { if (common) edit(common); }}>编辑公共权限</Button></div>
+        <div className="system-toolbar"><span className="system-muted">查看公共权限的层级与授权情况</span><Button disabled={!common} onClick={() => { if (common) edit(common); }}>编辑公共权限</Button></div>
+        <PermissionTree catalog={catalog.filter((permission) => permission.publicAllowed)} selected={common?.permissions ?? []} disabled onToggle={() => undefined} />
       </> },
     ]} />
 

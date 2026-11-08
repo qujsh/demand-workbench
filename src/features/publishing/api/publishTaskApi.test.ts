@@ -45,7 +45,7 @@ describe('publishTaskApi', () => {
     await cancelPublishTask('REQ-1');
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:8080/api/v1/requirements/publish-task/cancel?requirementNo=REQ-1',
+      'http://localhost:8070/api/v1/requirements/publish-task/cancel?requirementNo=REQ-1',
       expect.objectContaining({ method: 'POST' }),
     );
   });

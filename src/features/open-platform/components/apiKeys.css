@@ -14,21 +14,6 @@
   font-size: 14px;
   line-height: 1.6;
 }
-.api-key-guide {
-  margin-top: 20px;
-}
-.api-key-guide summary {
-  cursor: pointer;
-  color: var(--blue);
-}
-.api-key-guide pre {
-  padding: 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
 .api-key-secret {
   margin-top: 20px;
   overflow-wrap: anywhere;
@@ -38,4 +23,174 @@
   .api-key-heading {
     flex-wrap: wrap;
   }
+}
+.api-key-prefix {
+  align-self: flex-start;
+  max-width: 100%;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--surface);
+}
+.api-key-details {
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+}
+.api-key-detail-note {
+  color: var(--muted);
+  margin-top: 16px;
+  font-size: 12px;
+}
+.api-key-guide {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.mcp-section-heading h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.mcp-section-heading p {
+  margin: 0 0 20px;
+}
+.mcp-endpoint {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.mcp-endpoint > span:first-child {
+  color: var(--muted);
+  font-size: 12px;
+}
+.mcp-endpoint .ant-typography {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.mcp-steps {
+  list-style: decimal;
+  margin: 24px 0;
+  padding-left: 24px;
+}
+.mcp-steps > li {
+  padding-left: 8px;
+  margin-bottom: 24px;
+}
+.api-key-guide h4 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.mcp-steps p,
+.mcp-diagnostic p {
+  margin: 0 0 12px;
+}
+.mcp-code {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 14px;
+  background: var(--surface);
+}
+.mcp-code-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+.api-key-guide .mcp-code pre {
+  margin: 0;
+  padding: 16px;
+  border: 0;
+  background: transparent;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.api-key-guide .mcp-caption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.api-key-guide .mcp-content-note {
+  font-size: 12px;
+  margin: 0 0 24px;
+}
+.mcp-diagnostic {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+.mcp-diagnostic-input {
+  width: 100%;
+  max-width: 600px;
+}
+
+@media (max-width: 760px) {
+  .mcp-steps {
+    list-style: decimal;
+    padding-left: 18px;
+  }
+  .mcp-steps > li {
+    padding-left: 4px;
+  }
+}
+
+.api-key-intro {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.api-key-intro p {
+  margin: 0;
+}
+.api-key-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.api-key-row-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.api-key-row-name > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.api-key-tracking {
+  font-size: 13px;
+  white-space: nowrap;
+}
+.api-key-table {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.api-key-delete-copy {
+  margin: 20px 0;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.api-key-delete-copy p {
+  margin: 0 0 10px;
+}
+.api-key-delete-note {
+  color: var(--muted);
+  font-size: 13px;
 }

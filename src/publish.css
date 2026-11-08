@@ -722,9 +722,13 @@
 .task-category-control { display:flex; gap:8px; align-items:center; margin-top:7px; }
 .compact-wizard-layout .task-category-control .publish-select { flex:1; min-width:0; margin-top:0; height:38px; }
 .task-category-control > button { height:38px; flex-shrink:0; }
-.sidebar-config { margin-top:14px; padding-top:12px; border-top:1px solid #2b333e; }
+.sidebar-config { margin:0; padding:0; }
 .sidebar .config-chevron { margin-left:auto; }
-.sidebar button.sidebar-subitem { padding-left:39px; position:relative; }
+.sidebar button.sidebar-menu-item { padding-inline-start:calc(11px + var(--sidebar-depth, 0) * 28px); }
+@media (max-width:1050px) {
+  .sidebar button.sidebar-menu-item { padding-inline-start:0; }
+  .sidebar .config-chevron { display:none; }
+}
 .category-page { min-height:100vh; background:var(--page-bg, #f5f6fa); }
 .category-content { max-width:1060px; margin:32px auto; padding:0 28px; }
 .category-heading { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }

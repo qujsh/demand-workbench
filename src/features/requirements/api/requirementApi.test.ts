@@ -86,7 +86,7 @@ describe('requirementApi', () => {
 
     expect(result.requirementNo).toBe('REQ-KFYTYY-000025');
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:8080/api/v1/requirements/save',
+      'http://localhost:8070/api/v1/requirements/save',
       expect.objectContaining({ method: 'POST' }),
     );
     const request = fetchMock.mock.calls[0][1] as RequestInit;
@@ -126,7 +126,7 @@ describe('requirementApi', () => {
     await saveRequirement({ requirement: { ...requirement, id: 'REQ-KFYTYY-000025' } });
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:8080/api/v1/requirements/save?requirementNo=REQ-KFYTYY-000025',
+      'http://localhost:8070/api/v1/requirements/save?requirementNo=REQ-KFYTYY-000025',
       expect.any(Object),
     );
   });
@@ -162,7 +162,7 @@ describe('requirementApi', () => {
     await deleteRequirement('REQ-KFYTYY-000025');
 
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:8080/api/v1/requirements/delete?requirementNo=REQ-KFYTYY-000025',
+      'http://localhost:8070/api/v1/requirements/delete?requirementNo=REQ-KFYTYY-000025',
       expect.objectContaining({ method: 'POST' }),
     );
   });

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="480" viewBox="0 0 128 120" role="img" aria-labelledby="title desc">
+<title id="title">L1 正式发布人</title><desc id="desc">参考发布人徽章重绘的矢量版本</desc>
+<defs>
+ <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d6f8ff"/><stop offset=".22" stop-color="#3eaeef"/><stop offset=".42" stop-color="#d6f8ff"/><stop offset=".64" stop-color="#147ccb"/><stop offset=".83" stop-color="#d6f8ff"/><stop offset="1" stop-color="#063b78"/></linearGradient>
+ <linearGradient id="face" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#66d6ff"/><stop offset=".45" stop-color="#147ccb"/><stop offset="1" stop-color="#063b78"/></linearGradient>
+ <linearGradient id="paper" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#d6f8ff"/><stop offset="1" stop-color="#3eaeef"/></linearGradient>
+ <linearGradient id="shine" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+ <filter id="shadow" x="-25%" y="-20%" width="150%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="1.3" flood-color="#063b78" flood-opacity=".3"/></filter>
+</defs>
+<g filter="url(#shadow)">
+<path d="M64 5L108 29V80L64 108L20 80V29Z" fill="url(#rim)" stroke="#063b78" stroke-width=".8"/>
+<path d="M64 9L104 31V77L64 103L24 77V31Z" fill="none" stroke="#d6f8ff" stroke-width="1"/>
+<path d="M64 15L99 34V74L64 97L29 74V34Z" fill="url(#face)" stroke="#063b78" stroke-width="1.4"/>
+<path d="M64 17L97 35V72L64 94L31 72V35Z" fill="none" stroke="#d6f8ff" stroke-opacity=".7" stroke-width=".7"/>
+<path d="M32 36L64 19L96 36L32 63Z" fill="url(#shine)"/>
+<path d="M21 30L28 34M107 30L100 34M21 79L29 74M107 79L99 74M64 6V15M64 97V107" fill="none" stroke="#d6f8ff" stroke-width=".9"/>
+<circle cx="29" cy="31" r="1.25" fill="#d6f8ff" stroke="#063b78" stroke-width=".4"/><circle cx="99" cy="31" r="1.25" fill="#d6f8ff" stroke="#063b78" stroke-width=".4"/><circle cx="29" cy="74" r="1.25" fill="#d6f8ff" stroke="#063b78" stroke-width=".4"/><circle cx="99" cy="74" r="1.25" fill="#d6f8ff" stroke="#063b78" stroke-width=".4"/><circle cx="64" cy="12" r="1.25" fill="#d6f8ff" stroke="#063b78" stroke-width=".4"/><rect x="40" y="34" width="43" height="43" rx="3" fill="#063b78" stroke="#d6f8ff" stroke-width="1.3"/>
+ <path d="M45 41H77M45 47H77M45 53H72M45 59H66M45 65H60" stroke="#d6f8ff" opacity=".4"/>
+ <path d="M48 73L53 57L83 27Q87 25 91 29Q94 32 92 35L62 65Z" fill="url(#paper)" stroke="#063b78" stroke-width="1.3"/>
+ <path d="M53 57L62 65M78 32L87 41M57 61L84 34" fill="none" stroke="#3eaeef" stroke-width="1.6"/>
+ <path d="M48 73L52 62L59 69Z" fill="#063b78"/><path d="M48 73L55 66" stroke="#d6f8ff"/>
+<path d="M48 87L64 83L80 87V100L64 110L48 100Z" fill="url(#face)" stroke="url(#rim)" stroke-width="2"/>
+<path d="M51 89L64 86L77 89V98L64 106L51 98Z" fill="none" stroke="#d6f8ff" stroke-opacity=".6" stroke-width=".6"/>
+<text x="64" y="100" text-anchor="middle" fill="#d6f8ff" stroke="#063b78" stroke-width=".3" paint-order="stroke" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="600">L1</text>
+</g></svg>

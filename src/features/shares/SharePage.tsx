@@ -1,3 +1,4 @@
+import { usePermissions } from '../account/hooks/usePermissions';
 import { ShareReviewStatus } from './ShareReviewStatus';
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import {
@@ -44,6 +45,7 @@ import { RichTextView } from './shareRichText';
 
 export default function SharePage() {
   const { message, modal } = App.useApp();
+  const access = usePermissions();
   const [locateTag, setLocateTag] = useState<{ name: string } | null>(null);
   const [period, setPeriod] = useState('');
   const [anchorDate, setAnchorDate] = useState('');
@@ -94,6 +96,7 @@ export default function SharePage() {
     void message.error(error instanceof Error ? error.message : '操作失败，请重试');
   };
   const startNewRecord = () => {
+    if (!access.can('shares.create')) { void message.warning('暂无新建分享权限'); return; }
     if (editor) {
       void message.info('请先保存或关闭当前编辑器');
       return;
@@ -102,6 +105,7 @@ export default function SharePage() {
     setEditor('new');
   };
   const openRecord = async (record: ShareRecord, editing = false) => {
+    if (editing && !access.can('shares.edit')) { void message.warning('暂无编辑分享权限'); return; }
     if (editing && editor) {
       void message.info('请先保存或关闭当前编辑器');
       return;
@@ -155,6 +159,7 @@ export default function SharePage() {
     }
   };
   const attachReferences = async (refs: ShareReference[], target: string) => {
+    if (!access.can(target === 'new' ? 'shares.create' : 'shares.edit')) { void message.warning('暂无引用写入权限'); return; }
     if (target === 'current' && editor) {
       setIncomingReferences((values) => [...values, ...refs]);
       return;
@@ -341,6 +346,7 @@ export default function SharePage() {
               <ShareReviewStatus
                 record={record}
                 retrying={data.retryReview.isPending}
+                canRetry={access.can('shares.edit')}
                 onRetry={() => {
                   void data.retryReview.mutateAsync(record).catch(reportError);
                 }}
@@ -372,6 +378,7 @@ export default function SharePage() {
           </div>
           <Button
             type="primary"
+            disabled={!access.can('shares.create')}
             icon={<Plus size={16} />}
             onClick={() => {
               setIncomingReferences([]);
@@ -385,6 +392,7 @@ export default function SharePage() {
           <section className="share-main">
             <button
               className="share-quick-entry"
+              disabled={!access.can('shares.create')}
               onClick={() => {
                 setIncomingReferences([]);
                 startNewRecord();
@@ -426,6 +434,7 @@ export default function SharePage() {
                 />
                 <Button
                   className="share-mobile-tags"
+                  disabled={!access.can('shares.edit')}
                   aria-label="管理标签"
                   icon={<SlidersHorizontal size={16} />}
                   onClick={() => setTagManager(true)}
@@ -582,7 +591,7 @@ export default function SharePage() {
                 <Empty description={emptyDescription} image={Empty.PRESENTED_IMAGE_SIMPLE}>
                   {hasFilters ? (
                     <Button onClick={clearFilters}>清除筛选</Button>
-                  ) : status === 'SAVED' ? (
+                  ) : status === 'SAVED' && access.can('shares.create') ? (
                     <Button
                       onClick={() => {
                         setIncomingReferences([]);
@@ -647,6 +656,7 @@ export default function SharePage() {
                               <Button
                                 type="text"
                                 size="small"
+                                disabled={!access.can('shares.delete')}
                                 icon={<Check size={14} />}
                                 onClick={() => {
                                   void data.change
@@ -661,6 +671,7 @@ export default function SharePage() {
                                 <Button
                                   type="text"
                                   size="small"
+                                  disabled={!access.can('shares.edit')}
                                   icon={<PencilLine size={14} />}
                                   onClick={() => {
                                     void openRecord(record, true);
@@ -684,6 +695,7 @@ export default function SharePage() {
                                   type="text"
                                   size="small"
                                   danger
+                                  disabled={!access.can('shares.delete')}
                                   icon={<Trash2 size={14} />}
                                   onClick={() => remove(record)}
                                 >
@@ -730,7 +742,7 @@ export default function SharePage() {
             <div className="share-aside-title">
               <h2>我的标签</h2>
               {tagsLocked && (
-                <Button type="link" size="small" onClick={() => setTagManager(true)}>
+                <Button type="link" size="small" disabled={!access.can('shares.edit')} onClick={() => setTagManager(true)}>
                   {mergeTask?.status === 'FAILED'
                     ? '合并待重试'
                     : mergeTask?.status === 'QUEUED'
@@ -741,6 +753,7 @@ export default function SharePage() {
               <Button
                 type="text"
                 size="small"
+                disabled={!access.can('shares.edit')}
                 aria-label="打开标签管理"
                 onClick={() => setTagManager(true)}
               >
@@ -840,7 +853,8 @@ export default function SharePage() {
           detail &&
           !detail.deleted && (
             <Button
-              icon={<PencilLine size={14} />}
+              disabled={!access.can('shares.edit')}
+                                  icon={<PencilLine size={14} />}
               onClick={() => {
                 void openRecord(detail, true);
                 setDetail(null);

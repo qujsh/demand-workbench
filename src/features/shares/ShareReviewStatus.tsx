@@ -7,9 +7,11 @@ export function ShareReviewStatus({
   record,
   retrying,
   onRetry,
+  canRetry = true,
 }: {
   record: ShareRecord;
   retrying: boolean;
+  canRetry?: boolean;
   onRetry: () => void;
 }) {
   const review = record.review;
@@ -34,7 +36,7 @@ export function ShareReviewStatus({
         </span>
       </Tooltip>
       {review.status === 'failed' && (
-        <Button type="link" size="small" loading={retrying} onClick={onRetry}>
+        <Button type="link" size="small" loading={retrying} disabled={!canRetry} onClick={onRetry}>
           重试审核
         </Button>
       )}

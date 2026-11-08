@@ -1,6 +1,6 @@
 import type { ZodType } from 'zod';
 
-const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080').replace(/\/$/, '');
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8070').replace(/\/$/, '');
 
 export function buildApiUrl(path: string): string {
   return `${apiBaseUrl}${path}`;

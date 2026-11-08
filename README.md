@@ -10,7 +10,7 @@ Vite + React + TypeScript + Ant Design + Tailwind CSS + TanStack Query + React R
 
 - Node.js 22
 - npm 10 或更高版本
-- 后端默认运行在 `http://localhost:8080`
+- 后端默认运行在 `http://localhost:8070`
 
 ## 启动
 

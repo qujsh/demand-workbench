@@ -25,7 +25,7 @@ describe('workItemApi', () => {
 
     expect(result.deletedCount).toBe(2);
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:8080/api/v1/work-items/delete',
+      'http://localhost:8070/api/v1/work-items/delete',
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify({ workItemNos: ['WORK-1', 'SUB-1'] }),
@@ -54,7 +54,7 @@ describe('saveWorkItem', () => {
     expect(saved.id).toBe('DEC-1-MANUAL-1');
     expect(saved).not.toHaveProperty('children');
     expect(saved).not.toHaveProperty('selected');
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8080/api/v1/work-items/save', expect.objectContaining({
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:8070/api/v1/work-items/save', expect.objectContaining({
       method: 'POST',
       body: expect.stringContaining('"parentWorkItemNo":"DEC-1-WORK-1"'),
     }));

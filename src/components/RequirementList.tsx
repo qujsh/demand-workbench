@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { isPersistedRequirement } from '../features/requirements/api/requirementApi';
 import type { Requirement } from '../shared/types/workItem';
 import { Icon } from './Icons';
 
@@ -30,6 +32,7 @@ export default function RequirementList({
   publishingRequirementId, deletingRequirementId, cancellingRequirementId,
   isPublishing, isDeleting, isCancelling, isLoading, loadError, onRetry,
 }: Props) {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<Requirement | null>(null);
   const [cancelTarget, setCancelTarget] = useState<Requirement | null>(null);
@@ -54,6 +57,7 @@ export default function RequirementList({
           <span className="scale"><strong>{item.modules}</strong> 个模块 · <strong>{item.items}</strong> 个功能项</span>
           <span className="updated-at">{item.updated}</span>
           <span className="row-actions">
+            {isPersistedRequirement(item.id) && <button title="协作管理" aria-label={`协作管理：${item.title}`} onClick={(event) => { event.stopPropagation(); navigate(`/requirements/${encodeURIComponent(item.id)}/collaboration`); }}><Icon name="Users" size={15} /></button>}
             {item.stage !== '已发布' && <button className="publish-entry" disabled={isPublishing || isDeleting || isCancelling} onClick={(event) => { event.stopPropagation(); onPublish(item); }}><Icon name={isPublishing && publishingRequirementId === item.id ? 'LoaderCircle' : 'Send'} className={isPublishing && publishingRequirementId === item.id ? 'spin' : ''} size={14} />{isPublishing && publishingRequirementId === item.id ? '正在保存' : '任务发布'}</button>}
             {item.stage === '已发布' && <button className="cancel-entry" disabled={isCancelling || isDeleting} onClick={(event) => { event.stopPropagation(); setCancelTarget(item); }}>{isCancelling && cancellingRequirementId === item.id && <Icon name="LoaderCircle" className="spin" size={14} />}{isCancelling && cancellingRequirementId === item.id ? '取消中' : '取消'}</button>}
             <button className="delete-entry" title="删除需求" aria-label={`删除需求：${item.title}`} disabled={isPublishing || isDeleting || isCancelling} onClick={(event) => { event.stopPropagation(); setDeleteTarget(item); }}><Icon name={isDeleting && deletingRequirementId === item.id ? 'LoaderCircle' : 'Trash2'} className={isDeleting && deletingRequirementId === item.id ? 'spin' : ''} size={15} /></button><span className="open-entry" aria-hidden="true"><Icon name="ChevronRight" size={16} /></span>

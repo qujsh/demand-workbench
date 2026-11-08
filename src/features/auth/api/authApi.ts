@@ -3,6 +3,9 @@ import { requestJson } from '../../../shared/api/httpClient';
 
 const userSchema = z.object({
   userNo: z.string(),
+  memberNo: z.string().nullish(),
+  avatarMediaNo: z.string().nullish(),
+  bio: z.string().nullish(),
   nickname: z.string(),
   status: z.string(),
   phone: z.string().nullish(),
@@ -23,9 +26,11 @@ export type LoginBackground = z.infer<typeof backgroundSchema>;
 
 export const currentUserKey = ['auth', 'current-user'] as const;
 
-export async function saveProfile(nickname: string): Promise<CurrentUser> {
+export type ProfileDraft = { nickname: string; bio: string; avatarMediaNo: string };
+
+export async function saveProfile(profile: ProfileDraft): Promise<CurrentUser> {
   return (await requestJson('/api/v1/users/profile/save', envelope(userSchema), {
-    method: 'POST', body: JSON.stringify({ nickname }),
+    method: 'POST', body: JSON.stringify(profile),
   })).msg;
 }
 

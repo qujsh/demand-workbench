@@ -1,9 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { eligibilityKey, getPublisherEligibility, getSecurityEvents, getSessions, revokeSession, securityEventsKey, sessionsKey } from '../api/authApi';
+import { getSecurityEvents, getSessions, revokeSession, securityEventsKey, sessionsKey } from '../api/authApi';
 
 export function useAccountSecurity() {
   const client = useQueryClient();
-  const eligibility = useQuery({ queryKey: eligibilityKey, queryFn: getPublisherEligibility });
   const sessions = useQuery({ queryKey: sessionsKey, queryFn: getSessions });
   const events = useQuery({ queryKey: securityEventsKey, queryFn: getSecurityEvents });
   const revoke = useMutation({
@@ -15,5 +14,5 @@ export function useAccountSecurity() {
       ]);
     },
   });
-  return { eligibility, sessions, events, revoke };
+  return { sessions, events, revoke };
 }
