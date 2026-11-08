@@ -10,14 +10,14 @@ beforeAll(() => {
 });
 afterEach(cleanup);
 const catalog: PermissionDefinition[] = [
-  { code: 'requirements.use', name: '使用需求管理', group: '业务功能', description: '使用本人需求', publicAllowed: true },
+  { code: 'shares.use', name: '使用分享管理', group: '业务功能', description: '使用本人需求', publicAllowed: true },
   { code: 'categories.read', name: '查看分类', group: '分类管理', description: '查看列表', publicAllowed: false },
   { code: 'categories.edit', name: '编辑分类', group: '分类管理', description: '编辑分类资料', publicAllowed: false },
 ];
 const baseRole: PlatformRole = { code: 'public', name: '公共权限', description: '', enabled: true, version: 2, permissions: [], common: true, builtIn: true };
 it('uses Chinese checkboxes and automatically includes category read when edit is selected', async () => {
   const onSave = vi.fn().mockResolvedValue(undefined);
-  render(<RoleEditor role={null} catalog={catalog} common={['requirements.use']} pending={false} onSave={onSave} onCancel={vi.fn()} />);
+  render(<RoleEditor role={null} catalog={catalog} common={['shares.use']} pending={false} onSave={onSave} onCancel={vi.fn()} />);
   fireEvent.change(screen.getByLabelText('角色名称'), { target: { value: '分类编辑员' } });
   fireEvent.click(screen.getByRole('checkbox', { name: '编辑分类' }));
   expect((screen.getByRole('checkbox', { name: '查看分类' }) as HTMLInputElement).checked).toBe(true);
@@ -29,11 +29,11 @@ it('excludes management permissions from common configuration and requires confi
   const onSave = vi.fn().mockResolvedValue(undefined);
   render(<RoleEditor role={baseRole} catalog={catalog} common={[]} pending={false} onSave={onSave} onCancel={vi.fn()} />);
   expect(screen.queryByRole('checkbox', { name: '编辑分类' })).toBeNull();
-  fireEvent.click(screen.getByRole('checkbox', { name: '使用需求管理' }));
+  fireEvent.click(screen.getByRole('checkbox', { name: '使用分享管理' }));
   fireEvent.click(screen.getByRole('button', { name: '保存配置' }));
   expect(onSave).not.toHaveBeenCalled();
   fireEvent.click(await screen.findByRole('button', { name: '确认影响所有账号' }));
-  await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ code: 'public', version: 2, permissions: ['requirements.use'] })));
+  await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ code: 'public', version: 2, permissions: ['shares.use'] })));
 });
 it('renders the protected admin role without a save action', () => {
   render(<RoleEditor role={{ ...baseRole, code: 'admin', name: '平台管理员', common: false }} catalog={catalog} common={[]} pending={false} onSave={vi.fn()} onCancel={vi.fn()} />);
@@ -50,14 +50,14 @@ it('supports group selection, search without losing selections, and removing cat
   expect((screen.getByRole('checkbox', { name: '编辑分类' }) as HTMLInputElement).checked).toBe(true);
   fireEvent.change(screen.getByLabelText('搜索权限'), { target: { value: '需求' } });
   expect(screen.queryByRole('checkbox', { name: '编辑分类' })).toBeNull();
-  fireEvent.click(screen.getByRole('checkbox', { name: '使用需求管理' }));
+  fireEvent.click(screen.getByRole('checkbox', { name: '使用分享管理' }));
   fireEvent.change(screen.getByLabelText('搜索权限'), { target: { value: '' } });
   expect((screen.getByRole('checkbox', { name: '编辑分类' }) as HTMLInputElement).checked).toBe(true);
   fireEvent.click(screen.getByRole('checkbox', { name: '编辑分类' }));
   expect((screen.getByRole('checkbox', { name: '分类管理' }) as HTMLInputElement).indeterminate).toBe(true);
   fireEvent.click(screen.getByRole('checkbox', { name: '查看分类' }));
   fireEvent.click(screen.getByRole('button', { name: '保存配置' }));
-  await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ permissions: ['requirements.use'] })));
+  await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ permissions: ['shares.use'] })));
 }, 15000);
 it('toggles expansion with one button and restores pre-search expansion without clearing the query', async () => {
   render(<PermissionTree catalog={catalog} selected={[]} disabled={false} onToggle={vi.fn()} />);
@@ -76,12 +76,12 @@ it('toggles expansion with one button and restores pre-search expansion without 
 }, 15000);
 it('filters selected permissions without changing assignments or public inheritance', async () => {
   const onSave = vi.fn().mockResolvedValue(undefined);
-  render(<RoleEditor role={{ ...baseRole, code: 'custom', name: '分类人员', common: false, permissions: ['categories.read'] }} catalog={catalog} common={['requirements.use']} pending={false} onSave={onSave} onCancel={vi.fn()} />);
+  render(<RoleEditor role={{ ...baseRole, code: 'custom', name: '分类人员', common: false, permissions: ['categories.read'] }} catalog={catalog} common={['shares.use']} pending={false} onSave={onSave} onCancel={vi.fn()} />);
   fireEvent.click(screen.getByRole('checkbox', { name: '仅看已选' }));
   expect(screen.getByRole('checkbox', { name: '查看分类' })).toBeTruthy();
   expect(screen.queryByRole('checkbox', { name: '编辑分类' })).toBeNull();
-  expect(screen.queryByRole('checkbox', { name: '使用需求管理' })).toBeNull();
-  expect(screen.getByText('使用需求管理')).toBeTruthy();
+  expect(screen.queryByRole('checkbox', { name: '使用分享管理' })).toBeNull();
+  expect(screen.getByText('使用分享管理')).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: '保存配置' }));
   await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ permissions: ['categories.read'] })));
 });

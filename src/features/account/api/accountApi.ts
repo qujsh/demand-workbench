@@ -8,8 +8,6 @@ const overviewSchema = z.object({ role: z.string(), roleName: z.string().nullish
 const ruleSchema = z.object({ kind: z.enum(['publisher', 'contractor']), levelCode: z.string(), levelName: z.string(), sortOrder: z.number(), minPoints: z.number().nullable(), enabled: z.boolean(), version: z.number() });
 const adminUserSchema = z.object({ userNo: z.string(), memberNo: z.string().nullish(), nickname: z.string(), status: z.string(), role: z.string(), roles: z.array(z.string()), createdAt: z.string().nullish(), lastLoginAt: z.string().nullish() });
 const auditSchema = z.object({ id: z.number(), operatorNo: z.string(), action: z.string(), targetNo: z.string(), detail: z.string(), createdAt: z.string() });
-const memberSchema = z.object({ userNo: z.string(), memberNo: z.string().nullish(), nickname: z.string(), role: z.enum(['owner', 'manager', 'editor', 'viewer']) });
-const spaceSchema = z.object({ requirementNo: z.string(), role: z.enum(['owner', 'manager', 'editor', 'viewer']), members: z.array(memberSchema) });
 
 export type AdminUser = z.infer<typeof adminUserSchema>;
 export type AccountFilters = { keyword: string; role?: string; status?: 'active' | 'banned'; page: number; pageSize: number };
@@ -21,7 +19,6 @@ export const getAdminUserPage = (filters: AccountFilters, signal?: AbortSignal) 
   return requestJson(`/api/v1/admin/users/page?${params}`, apiResponseSchema(z.object({ items: z.array(adminUserSchema), total: z.number(), page: z.number(), pageSize: z.number() })), { signal });
 };
 export type LevelRule = z.infer<typeof ruleSchema>;
-export type MemberRole = z.infer<typeof memberSchema>['role'];
 export type Adjustment = { eventNo: string; userNo: string; kind: 'publisher' | 'contractor'; metric: 'growth' | 'credit'; delta: number; reason: string };
 export const accountKeys = { overview: ['account', 'overview'], rules: ['account', 'rules'], users: ['account', 'users'], audits: ['account', 'audits'] } as const;
 export const getOverview = (signal?: AbortSignal) => requestJson('/api/v1/users/identities', apiResponseSchema(overviewSchema), { signal });
@@ -40,8 +37,4 @@ export function saveAdmin(command: AdminCommand) {
     case 'rule': return post('/api/v1/admin/level-rules/save', command.rule);
     case 'adjust': return post('/api/v1/admin/identities/adjust', command.adjustment);
   }
-}
-export const getMembers = (no: string, signal?: AbortSignal) => requestJson(`/api/v1/requirements/members?requirementNo=${encodeURIComponent(no)}`, apiResponseSchema(spaceSchema), { signal });
-export function saveMember(no: string, userNo: string, role: MemberRole | null) {
-  return post(`/api/v1/requirements/members/${role === null ? 'remove' : 'save'}?requirementNo=${encodeURIComponent(no)}`, { userNo, ...(role === null ? {} : { role }) });
 }

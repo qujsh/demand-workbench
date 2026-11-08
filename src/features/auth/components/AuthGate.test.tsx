@@ -25,7 +25,7 @@ function UserView() {
   const { user, logout: exit } = useAuth();
   return <><span>{user.nickname}</span><button onClick={() => void exit()}>退出测试账号</button></>;
 }
-function mount(path = '/requirements') {
+function mount(path = '/shares') {
   const client = new QueryClient({ defaultOptions: { queries: { staleTime: 60_000, retry: false }, mutations: { retry: false } } });
   render(<QueryClientProvider client={client}><MemoryRouter initialEntries={[path]}><AuthGate><UserView /></AuthGate></MemoryRouter></QueryClientProvider>);
   return client;

@@ -1,103 +1,30 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import { Icon } from './components/Icons';
-import type { Requirement, WorkItemNode } from './shared/types/workItem';
-import { useSaveRequirement } from './features/requirements/hooks/useSaveRequirement';
-import { stageLabels, useRequirements } from './features/requirements/hooks/useRequirements';
-import { useDeleteRequirement } from './features/requirements/hooks/useDeleteRequirement';
-import { useCancelPublishTask } from './features/publishing/hooks/useCancelPublishTask';
-import { isPersistedRequirement } from './features/requirements/api/requirementApi';
 import { usePermissions } from './features/account/hooks/usePermissions';
 import { Alert, Button, Spin } from 'antd';
-import { ApiError } from './shared/api/httpClient';
-
 const SystemConfiguration = lazy(() => import('./features/account/pages/SystemConfiguration'));
-const RequirementList = lazy(() => import('./components/RequirementList'));
-const AnalysisWorkbench = lazy(() => import('./components/AnalysisWorkbench'));
-const Planning = lazy(() => import('./components/Planning'));
-const PublishWizard = lazy(() => import('./components/PublishWizard'));
-const CategoryManagement = lazy(() => import('./features/publishing/pages/CategoryManagement'));
+const CategoryManagement = lazy(() => import('./features/categories/pages/CategoryManagement'));
 const SharePage = lazy(() => import('./features/shares/SharePage'));
 const CallAuditsPage = lazy(() => import('./features/open-platform/pages/CallAuditsPage'));
 const ApiKeysPage = lazy(() => import('./features/open-platform/pages/ApiKeysPage'));
-const CollaborationPage = lazy(() => import('./features/account/pages/CollaborationPage'));
 const SettingsPage = lazy(() => import('./features/auth/pages/SettingsPage'));
-
-type View = 'system' | 'shares' | 'requirements' | 'analysis' | 'planning' | 'publishing' | 'settings' | 'categories' | 'collaboration';
-
-const flattenNodes = (nodes: WorkItemNode[]): WorkItemNode[] =>
-  nodes.flatMap((node) => [node, ...flattenNodes(node.children || [])]);
-
 export default function App() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const [requirements, setRequirements] = useState<Requirement[]>([]);
-  const [workItemsByRequirement, setWorkItemsByRequirement] = useState<
-    Record<string, WorkItemNode[]>
-  >({});
-  const [selected, setSelected] = useState<WorkItemNode[]>([]);
-  const [toast, setToast] = useState('');
-  const saveRequirementMutation = useSaveRequirement();
-  const deleteRequirementMutation = useDeleteRequirement();
-  const cancelPublishTaskMutation = useCancelPublishTask();
+  const navigate = useNavigate();
   const access = usePermissions();
-  const requirementsQuery = useRequirements(access.can('requirements.use'));
-
-  useEffect(() => {
-    if (requirementsQuery.data) setRequirements(requirementsQuery.data);
-  }, [requirementsQuery.data]);
-
-  const categoryReturnPath = location.state?.publishReturnPath as string | undefined;
-  const retainedPublishPath =
-    (location.state?.publishEditorPath as string | undefined) ?? categoryReturnPath;
-  const editorPath =
-    location.pathname === '/configuration/categories' && retainedPublishPath
-      ? retainedPublishPath
-      : location.pathname;
-  const routeMatch =
-    matchPath('/requirements/:requirementId/collaboration', location.pathname) ||
-    matchPath('/requirements/:requirementId/analysis', location.pathname) ||
-    matchPath('/requirements/:requirementId/planning', location.pathname) ||
-    matchPath('/requirements/:requirementId/publish', editorPath);
-  const requirementId = routeMatch?.params.requirementId;
-  const requirement = useMemo(
-    () => requirements.find((item) => item.id === requirementId) ?? requirements[0],
-    [requirementId, requirements],
-  );
-  const modules = requirement ? (workItemsByRequirement[requirement.id] ?? []) : [];
-  const setModules = useCallback(
-    (next: WorkItemNode[] | ((current: WorkItemNode[]) => WorkItemNode[])) => {
-      setWorkItemsByRequirement((current) => {
-        if (!requirement) return current;
-        const previous = current[requirement.id] ?? [];
-        return {
-          ...current,
-          [requirement.id]: typeof next === 'function' ? next(previous) : next,
-        };
-      });
-    },
-    [requirement],
-  );
-  const view: View =
-    location.pathname === '/system/settings'
-      ? 'settings'
-      : location.pathname.startsWith('/system/')
-      ? 'system'
-      : location.pathname.startsWith('/shares')
-      ? 'shares'
-      : location.pathname === '/configuration/categories'
-      ? 'categories'
-      : location.pathname.endsWith('/collaboration')
-        ? 'collaboration'
-      : location.pathname.endsWith('/analysis')
-          ? 'analysis'
-          : location.pathname.endsWith('/planning')
-            ? 'planning'
-            : location.pathname.endsWith('/publish')
-              ? 'publishing'
-              : 'requirements';
-
+  const [toast, setToast] = useState('');
+  const path = location.pathname;
+  const settings = path === '/system/settings';
+  const system = path.startsWith('/system/');
+  const categories = path === '/configuration/categories';
+  const shares = path === '/shares';
+  const allowed = shares
+    ? access.can('shares.use')
+    : categories
+      ? access.can('categories.read')
+      : true;
   useEffect(() => {
     const handler = (event: Event) => {
       const message = (event as CustomEvent<string>).detail;
@@ -108,239 +35,64 @@ export default function App() {
     return () => window.removeEventListener('toast', handler);
   }, []);
 
-  const openRequirement = (item: Requirement) => navigate(`/requirements/${item.id}/analysis`);
-  const openPublishing = async (
-    source: Requirement,
-    items: WorkItemNode[] = [],
-    patch: Partial<Requirement> = {},
-  ) => {
-    const pendingRequirement = { ...source, ...patch };
-    try {
-      const saved = await saveRequirementMutation.mutateAsync({
-        requirement: pendingRequirement,
-        title: pendingRequirement.title,
-        description: pendingRequirement.description,
-        aiDescription: pendingRequirement.aiDescription,
-      });
-      const persistedRequirement: Requirement = {
-        ...pendingRequirement,
-        id: saved.requirementNo,
-        title: saved.title,
-        description: saved.userDescription ?? '',
-        aiDescription: saved.aiDescription ?? '',
-        stage: stageLabels[saved.stage],
-        updated: '刚刚',
-        currentDecompositionNo: saved.currentDecompositionNo ?? undefined,
-      };
-      setRequirements((current) =>
-        current.map((item) => (item.id === source.id ? persistedRequirement : item)),
-      );
-      if (source.id !== saved.requirementNo) {
-        setWorkItemsByRequirement((current) => {
-          const sourceItems = current[source.id];
-          if (!sourceItems) return current;
-          const next = { ...current, [saved.requirementNo]: sourceItems };
-          delete next[source.id];
-          return next;
-        });
-      }
-      setSelected(items);
-      navigate(`/requirements/${saved.requirementNo}/publish`);
-    } catch (error) {
-      setToast(
-        error instanceof ApiError ? error.message : '无法连接后端服务，请确认服务已启动后重试',
-      );
-      window.setTimeout(() => setToast(''), 3000);
-    }
-  };
-  const createRequirement = () => {
-    const item: Requirement = {
-      id: `LOCAL-${Date.now()}`,
-      title: '',
-      description: '',
-      aiDescription: '',
-      updated: '刚刚',
-      stage: '草稿',
-      modules: 0,
-      items: 0,
-    };
-    setRequirements((current) => [item, ...current]);
-    openRequirement(item);
-  };
-  const deleteRequirement = async (item: Requirement) => {
-    try {
-      if (isPersistedRequirement(item.id)) {
-        await deleteRequirementMutation.mutateAsync(item.id);
-      }
-      setRequirements((current) => current.filter((requirement) => requirement.id !== item.id));
-      setWorkItemsByRequirement((current) => {
-        if (!current[item.id]) return current;
-        const next = { ...current };
-        delete next[item.id];
-        return next;
-      });
-      setToast('需求已删除');
-      window.setTimeout(() => setToast(''), 2400);
-    } catch (error) {
-      setToast(error instanceof ApiError ? error.message : '删除失败，请稍后重试');
-      window.setTimeout(() => setToast(''), 3000);
-      throw error;
-    }
-  };
-  const navigateSidebar = (target: string) => {
-    if (target === 'categories')
-      navigate('/configuration/categories', {
-        state: {
-          publishEditorPath: view === 'publishing' ? location.pathname : retainedPublishPath,
-        },
-      });
-    else if (target.startsWith('system/')) navigate(`/${target}`);
-    else if (target === 'shares') navigate('/shares');
-    else if (target === 'settings') navigate('/system/settings');
-    else if (target === 'requirements') navigate('/requirements');
-    else {
-      setToast('该模块将在后续版本开放');
-      window.setTimeout(() => setToast(''), 2200);
-    }
-  };
-
-  const requiredPermission = view === 'shares' ? 'shares.use' : view === 'categories' ? 'categories.read' : view === 'settings' || view === 'system' ? null : 'requirements.use';
-  const allowed = !requiredPermission || access.can(requiredPermission);
   return (
     <div className="app flex min-h-screen">
-      {view !== 'settings' && (
+      {!settings && (
         <Link to="/system/settings" className="settings-mobile-entry">
           个人设置
         </Link>
       )}
-      <Sidebar view={view === 'settings' ? 'system/settings' : view === 'system' ? `system/${location.pathname.split('/')[2]}` : (view === 'analysis' || view === 'collaboration') ? 'requirements' : view} onChange={navigateSidebar} />
+      <Sidebar
+        view={
+          system
+            ? `system/${path.split('/')[2]}`
+            : categories
+              ? 'categories'
+              : shares
+                ? 'shares'
+                : ''
+        }
+        onChange={(target) =>
+          navigate(target === 'categories' ? '/configuration/categories' : `/${target}`)
+        }
+      />
       <div className="app-content min-w-0 flex-1">
-        <Suspense
-          fallback={
-            <div className="grid min-h-screen place-items-center text-sm text-slate-500">
-              页面加载中...
-            </div>
-          }
-        >
-          {access.isPending ? <div className="system-content"><Spin /></div> : access.isError ? <div className="system-content"><Alert type="error" title="无法加载权限" action={<Button onClick={() => void access.refetch()}>重试</Button>} /></div> : !allowed ? <div className="system-content"><Alert type="warning" title="暂无访问权限" description="请联系管理员分配所需角色。" action={<Link to="/system/settings"><Button>个人设置</Button></Link>} /></div> : <>
-          {view === 'collaboration' && requirementId && <CollaborationPage requirementNo={requirementId} />}
-          {view === 'system' && (location.pathname === '/system/call-audits' ? <CallAuditsPage /> : location.pathname === '/system/api-keys' ? <ApiKeysPage /> : <SystemConfiguration page={location.pathname.split('/')[2] ?? ''} />)}
-          {view === 'categories' && <CategoryManagement returnPath={categoryReturnPath} />}
-          {view === 'settings' && <SettingsPage />}
-          {view === 'shares' && <SharePage />}
-          {view === 'requirements' && (
-            <RequirementList
-              requirements={requirements}
-              onOpen={openRequirement}
-              onCreate={createRequirement}
-              onPublish={(item: Requirement) => {
-                void openPublishing(item);
-              }}
-              onDelete={deleteRequirement}
-              deletingRequirementId={deleteRequirementMutation.variables}
-              isDeleting={deleteRequirementMutation.isPending}
-              cancellingRequirementId={cancelPublishTaskMutation.variables}
-              isCancelling={cancelPublishTaskMutation.isPending}
-              onCancel={async (item) => {
-                try {
-                  await cancelPublishTaskMutation.mutateAsync(item.id);
-                  setRequirements((current) =>
-                    current.map((requirement) =>
-                      requirement.id === item.id
-                        ? { ...requirement, stage: '已取消', updated: '刚刚' }
-                        : requirement,
-                    ),
-                  );
-                  setToast('任务已取消');
-                  window.setTimeout(() => setToast(''), 2400);
-                } catch (error) {
-                  setToast(error instanceof ApiError ? error.message : '取消失败，请稍后重试');
-                  window.setTimeout(() => setToast(''), 3000);
-                  throw error;
-                }
-              }}
-              publishingRequirementId={saveRequirementMutation.variables?.requirement.id}
-              isPublishing={saveRequirementMutation.isPending}
-              isLoading={requirementsQuery.isLoading}
-              loadError={requirementsQuery.error}
-              onRetry={() => void requirementsQuery.refetch()}
+        <Suspense fallback={<Spin />}>
+          {access.isPending ? (
+            <Spin />
+          ) : access.isError ? (
+            <Alert
+              type="error"
+              title="无法加载权限"
+              action={<Button onClick={() => void access.refetch()}>重试</Button>}
             />
-          )}
-          {view === 'analysis' && requirement && (
-            <AnalysisWorkbench
-              requirement={requirement}
-              modules={modules}
-              setModules={setModules}
-              onRequirementSaved={(saved: Requirement) => {
-                setRequirements((current) =>
-                  current.map((item) =>
-                    item.id === requirement.id || item.id === saved.id ? saved : item,
-                  ),
-                );
-                if (saved.id !== requirement.id) {
-                  setWorkItemsByRequirement((current) => {
-                    if (!current[requirement.id]) return current;
-                    const next = { ...current, [saved.id]: current[requirement.id] };
-                    delete next[requirement.id];
-                    return next;
-                  });
-                  navigate(`/requirements/${saved.id}/analysis`, { replace: true });
-                }
-              }}
-              onRequirementChange={(patch: Partial<Requirement>) => {
-                setRequirements((current) =>
-                  current.map((item) =>
-                    item.id === requirement.id ? { ...item, ...patch, updated: '刚刚' } : item,
-                  ),
-                );
-              }}
-              onBack={() => navigate('/requirements')}
-              onPublish={(items: WorkItemNode[], patch: Partial<Requirement> = {}) => {
-                void openPublishing(requirement, items, patch);
-              }}
-              isPublishing={saveRequirementMutation.isPending}
-            />
-          )}
-          {view === 'planning' && requirement && (
-            <Planning
-              title={requirement.title}
-              modules={modules}
-              setModules={setModules}
-              decompositionNo={requirement.currentDecompositionNo}
-              onBack={() => navigate(`/requirements/${requirement.id}/analysis`)}
-            />
-          )}
-          {(view === 'publishing' || (view === 'categories' && retainedPublishPath)) &&
-            requirement && (
-              <div hidden={view !== 'publishing'}>
-                <PublishWizard
-                  requirement={requirement}
-                  modules={modules}
-                  onManageCategories={() =>
-                    navigate('/configuration/categories', {
-                      state: {
-                        publishReturnPath: location.pathname,
-                        publishEditorPath: location.pathname,
-                      },
-                    })
-                  }
-                  selected={
-                    selected.length
-                      ? selected
-                      : flattenNodes(modules).filter(
-                          (item) => item.type === 'work' || item.type === 'subtask',
-                        )
-                  }
-                  onBack={() => navigate(`/requirements/${requirement.id}/analysis`)}
-                  onDone={() => {
-                    setToast('任务已发布');
-                    window.setTimeout(() => setToast(''), 2500);
-                    navigate('/requirements');
-                  }}
+          ) : !allowed ? (
+            <Alert type="warning" title="暂无访问权限" />
+          ) : (
+            <>
+              {settings ? (
+                <SettingsPage />
+              ) : system ? (
+                path === '/system/call-audits' ? (
+                  <CallAuditsPage />
+                ) : path === '/system/api-keys' ? (
+                  <ApiKeysPage />
+                ) : (
+                  <SystemConfiguration page={path.split('/')[2] ?? ''} />
+                )
+              ) : categories ? (
+                <CategoryManagement />
+              ) : shares ? (
+                <SharePage />
+              ) : (
+                <Alert
+                  type="info"
+                  title="页面不存在或已下线"
+                  action={<Link to="/shares">前往分享管理</Link>}
                 />
-              </div>
-            )}
-          </>}
+              )}
+            </>
+          )}
         </Suspense>
       </div>
       {toast && (

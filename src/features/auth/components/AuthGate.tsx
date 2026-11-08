@@ -45,6 +45,6 @@ export function AuthGate({ children }: PropsWithChildren) {
   </div>;
   if (passwordPage || !user) return <AuthPage initialPhone={user?.phone ?? undefined}
     onAuthenticated={authenticated} onPasswordSaved={passwordSaved} />;
-  if (publicPaths.includes(location.pathname)) return <Navigate to="/requirements" replace />;
+  if (publicPaths.includes(location.pathname)) return <Navigate to="/shares" replace />;
   return <AuthContext.Provider value={{ user, logout: handleLogout }}>{children}</AuthContext.Provider>;
 }
