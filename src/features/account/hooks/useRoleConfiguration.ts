@@ -3,9 +3,15 @@ import { getRoleConfiguration, roleKeys, saveRoleConfiguration } from '../api/ro
 
 export function useRoleConfiguration() {
   const client = useQueryClient();
-  const configuration = useQuery({ queryKey: roleKeys.configuration, queryFn: ({ signal }) => getRoleConfiguration(signal) });
-  const save = useMutation({ mutationFn: saveRoleConfiguration, onSuccess: async () => {
-    await client.invalidateQueries({ queryKey: ['account'] });
-  } });
+  const configuration = useQuery({
+    queryKey: roleKeys.configuration,
+    queryFn: ({ signal }) => getRoleConfiguration(signal),
+  });
+  const save = useMutation({
+    mutationFn: saveRoleConfiguration,
+    onSuccess: async () => {
+      await client.invalidateQueries({ queryKey: ['account'] });
+    },
+  });
   return { configuration, save };
 }

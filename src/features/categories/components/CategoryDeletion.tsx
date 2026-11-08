@@ -33,7 +33,7 @@ export function CategoryDeletion({ category }: { category: ManagedCategory }) {
           (key) => client.invalidateQueries({ queryKey: [key] }),
         ),
       );
-      void toast.success('分类已删除，关联任务迁移记录已保留');
+      void toast.success('分类已删除，操作记录已保留');
     },
     onError: (error: Error) => {
       void toast.error(error.message);

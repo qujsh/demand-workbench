@@ -6,4 +6,8 @@ export function memberNumber(user: { userNo: string; memberNo?: string | null })
 }
 
 /** 审计保留原始内容，展示时统一历史数字账号的称呼。 */
-export const memberReferenceText = (value: string) => value.replace(/\bUSER-(\d+)\b/gi, (_, digits: string) => `MEM-${digits.replace(/^0+(?=\d)/, '').padStart(6, '0')}`);
+export const memberReferenceText = (value: string) =>
+  value.replace(
+    /\bUSER-(\d+)\b/gi,
+    (_, digits: string) => `MEM-${digits.replace(/^0+(?=\d)/, '').padStart(6, '0')}`,
+  );

@@ -13,15 +13,23 @@ export function AuthGate({ children }: PropsWithChildren) {
   const queryClient = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
-  const userQuery = useQuery({ queryKey: currentUserKey, queryFn: getCurrentUser, retry: false, refetchOnWindowFocus: true });
+  const userQuery = useQuery({
+    queryKey: currentUserKey,
+    queryFn: getCurrentUser,
+    retry: false,
+    refetchOnWindowFocus: true,
+  });
   const unauthorized = userQuery.error instanceof ApiError && userQuery.error.status === 401;
   const user = unauthorized ? undefined : userQuery.data;
   const passwordPage = location.pathname.startsWith('/password/');
 
   const clearAccountCache = async () => {
     await queryClient.cancelQueries();
-    queryClient.removeQueries({ predicate: (query) => query.queryKey[0] !== 'auth'
-      || (query.queryKey[1] !== 'current-user' && query.queryKey[1] !== 'login-background') });
+    queryClient.removeQueries({
+      predicate: (query) =>
+        query.queryKey[0] !== 'auth' ||
+        (query.queryKey[1] !== 'current-user' && query.queryKey[1] !== 'login-background'),
+    });
   };
   const handleLogout = async () => {
     await logout();
@@ -31,20 +39,45 @@ export function AuthGate({ children }: PropsWithChildren) {
   };
   const authenticated = async () => {
     await clearAccountCache();
-    await queryClient.fetchQuery({ queryKey: currentUserKey, queryFn: getCurrentUser, staleTime: 0 });
+    await queryClient.fetchQuery({
+      queryKey: currentUserKey,
+      queryFn: getCurrentUser,
+      staleTime: 0,
+    });
   };
   const passwordSaved = async () => {
     await clearAccountCache();
     queryClient.setQueryData(currentUserKey, null);
   };
 
-  if (userQuery.isPending) return <div className="auth-loading"><Spin /></div>;
-  if (userQuery.isError && !unauthorized && !user) return <div className="auth-loading">
-    <Alert type="error" title="暂时无法连接服务" description="请检查网络后重试。" showIcon
-      action={<Button onClick={() => void userQuery.refetch()}>重试</Button>} />
-  </div>;
-  if (passwordPage || !user) return <AuthPage initialPhone={user?.phone ?? undefined}
-    onAuthenticated={authenticated} onPasswordSaved={passwordSaved} />;
+  if (userQuery.isPending)
+    return (
+      <div className="auth-loading">
+        <Spin />
+      </div>
+    );
+  if (userQuery.isError && !unauthorized && !user)
+    return (
+      <div className="auth-loading">
+        <Alert
+          type="error"
+          title="暂时无法连接服务"
+          description="请检查网络后重试。"
+          showIcon
+          action={<Button onClick={() => void userQuery.refetch()}>重试</Button>}
+        />
+      </div>
+    );
+  if (passwordPage || !user)
+    return (
+      <AuthPage
+        initialPhone={user?.phone ?? undefined}
+        onAuthenticated={authenticated}
+        onPasswordSaved={passwordSaved}
+      />
+    );
   if (publicPaths.includes(location.pathname)) return <Navigate to="/shares" replace />;
-  return <AuthContext.Provider value={{ user, logout: handleLogout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, logout: handleLogout }}>{children}</AuthContext.Provider>
+  );
 }

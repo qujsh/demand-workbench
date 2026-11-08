@@ -24,7 +24,7 @@ export function CategoryMigrationHistory() {
         <strong>删除与迁移记录</strong>
         <Input.Search
           aria-label="搜索分类迁移记录"
-          placeholder="旧分类名称、编号或任务编号"
+          placeholder="旧分类名称或编号"
           allowClear
           maxLength={64}
           style={{ width: 300 }}
@@ -32,7 +32,7 @@ export function CategoryMigrationHistory() {
         />
       </div>
       <p className="category-edit-note">
-        这里保留删除时的分类名称和任务清单；任务后来再次迁移，也不会覆盖本次记录。
+        这里保留分类调整记录。0.0.2 暂无任务业务，任务关联数量为零；历史查询接口继续保留。
       </p>
       {query.isError && (
         <Alert

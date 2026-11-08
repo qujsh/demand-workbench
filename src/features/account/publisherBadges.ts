@@ -12,5 +12,19 @@ import l5 from './assets/publisher/l5-thumbnail.png';
 import l5Preview from './assets/publisher/l5-large.png';
 
 // 同一张来源图裁切，预览保持原始像素，缩略图按比例缩小。
-export const publisherBadges: Record<string, string | undefined> = { L0: l0, L1: l1, L2: l2, L3: l3, L4: l4, L5: l5 };
-export const publisherBadgePreviews: Record<string, string | undefined> = { L0: l0Preview, L1: l1Preview, L2: l2Preview, L3: l3Preview, L4: l4Preview, L5: l5Preview };
+export const publisherBadges: Record<string, string | undefined> = {
+  L0: l0,
+  L1: l1,
+  L2: l2,
+  L3: l3,
+  L4: l4,
+  L5: l5,
+};
+export const publisherBadgePreviews: Record<string, string | undefined> = {
+  L0: l0Preview,
+  L1: l1Preview,
+  L2: l2Preview,
+  L3: l3Preview,
+  L4: l4Preview,
+  L5: l5Preview,
+};

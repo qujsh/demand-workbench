@@ -1,6 +1,5 @@
 import '@testing-library/dom';
 
-
 // Ant Design 的响应式控件在 JSDOM 中需要观察器接口。
 Object.defineProperty(globalThis, 'ResizeObserver', {
   configurable: true,

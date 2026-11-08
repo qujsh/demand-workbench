@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getSecurityEvents, getSessions, revokeSession, securityEventsKey, sessionsKey } from '../api/authApi';
+import {
+  getSecurityEvents,
+  getSessions,
+  revokeSession,
+  securityEventsKey,
+  sessionsKey,
+} from '../api/authApi';
 
 export function useAccountSecurity() {
   const client = useQueryClient();

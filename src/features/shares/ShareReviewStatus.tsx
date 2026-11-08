@@ -1,6 +1,6 @@
 import { Button, Tooltip } from 'antd';
 import { LoaderCircle, CircleAlert } from 'lucide-react';
-import type { ShareRecord } from './shareDemo';
+import type { ShareRecord } from './shareModels';
 
 /** 公开申请与实际可见范围分开展示，服务异常不误报为违规。 */
 export function ShareReviewStatus({

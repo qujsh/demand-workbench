@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import * as api from '../api/shareApi';
-import type { ShareRecord } from '../shareDemo';
+import type { ShareRecord } from '../shareModels';
 
 /** 服务端数据只保留在Query缓存；编辑器维护独立本地草稿。 */
 export function useShares(filters: api.ShareFilters) {

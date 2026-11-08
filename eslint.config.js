@@ -17,8 +17,8 @@ export default tseslint.config(
         CustomEvent: 'readonly',
         Event: 'readonly',
         RequestInit: 'readonly',
-        AbortSignal: 'readonly'
-      }
+        AbortSignal: 'readonly',
+      },
     },
     plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
     rules: {
@@ -27,7 +27,7 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'react-hooks/set-state-in-effect': 'off',
-      'no-unused-vars': 'off'
-    }
-  }
+      'no-unused-vars': 'off',
+    },
+  },
 );

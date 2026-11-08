@@ -124,9 +124,11 @@ export default function CategoryManagement() {
                   onSearch={(value) => setKeyword(value.trim())}
                   style={{ width: 280 }}
                 />
-                {can('categories.create') && <Button type="primary" onClick={() => openEditor(null)}>
-                  新增分类
-                </Button>}
+                {can('categories.create') && (
+                  <Button type="primary" onClick={() => openEditor(null)}>
+                    新增分类
+                  </Button>
+                )}
               </Space>
             </div>
             <Table
@@ -164,9 +166,11 @@ export default function CategoryManagement() {
                   width: 160,
                   render: (_, item: ManagedCategory) => (
                     <Space size={0} className="category-row-actions">
-                      {can('categories.edit') && <Button type="link" onClick={() => openEditor(item)}>
-                        编辑
-                      </Button>}
+                      {can('categories.edit') && (
+                        <Button type="link" onClick={() => openEditor(item)}>
+                          编辑
+                        </Button>
+                      )}
                       {can('categories.delete') && <CategoryDeletion category={item} />}
                     </Space>
                   ),

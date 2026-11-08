@@ -1,3 +1,4 @@
+import { useShareEditorLayout } from './hooks/useShareEditorLayout';
 import { useRef, useState, useEffect } from 'react';
 import { App, Alert, Button, DatePicker, Image, Input, Modal, Select, Spin } from 'antd';
 import {
@@ -17,7 +18,7 @@ import { recordDocument, documentImages } from './shareRichTextModel';
 import { uploadShareImage } from './api/shareApi';
 import type { useFloatingRecords } from './hooks/useFloatingRecords';
 import { extractTags } from './shareTags';
-import type { ShareRecord, ShareReference } from './shareDemo';
+import type { ShareRecord, ShareReference } from './shareModels';
 
 interface Props {
   floating: ReturnType<typeof useFloatingRecords>;
@@ -70,55 +71,19 @@ export function ShareEditor({
   const imageNumbers = useRef(
     new Map((record?.images ?? []).map((src, index) => [src, record?.mediaNos?.[index] ?? ''])),
   );
-  const [expanded, setExpanded] = useState(false);
-  const [detached, setDetached] = useState(false);
-  const [layoutNode, setLayoutNode] = useState<HTMLDivElement | null>(null);
-  const [closeHidden, setCloseHidden] = useState(false);
-  useEffect(() => {
-    const modal = layoutNode?.closest('.share-editor-modal');
-    if (!modal) return;
-    let idle: ReturnType<typeof setTimeout>;
-    const restore = () => {
-      const button = modal.querySelector('.ant-modal-close')?.getBoundingClientRect();
-      const editor = modal.querySelector('.share-rich-editor')?.getBoundingClientRect();
-      setCloseHidden(
-        Boolean(
-          button &&
-          editor &&
-          editor.top < button.bottom + 8 &&
-          editor.bottom > button.top &&
-          editor.right > button.left,
-        ),
-      );
-    };
-    const onScroll = (event: Event) => {
-      if (
-        !(event.target instanceof Element) ||
-        !event.target.matches('.share-modal-body, .share-editor-main')
-      )
-        return;
-      setCloseHidden(true);
-      clearTimeout(idle);
-      idle = setTimeout(restore, 180);
-    };
-    modal.addEventListener('scroll', onScroll, true);
-    idle = setTimeout(restore, 250);
-    return () => {
-      modal.removeEventListener('scroll', onScroll, true);
-      clearTimeout(idle);
-    };
-  }, [expanded, detached, layoutNode]);
-
-  const [editorPosition, setEditorPosition] = useState({ x: 16, y: 20 });
-  const [detachedWidth, setDetachedWidth] = useState(360);
-  const editorDrag = useRef<{ x: number; y: number; left: number; top: number } | null>(null);
-  const toggleDetached = () => {
-    const dateLeft = document.querySelector('.share-date')?.getBoundingClientRect().left;
-    setDetachedWidth(Math.min(400, Math.max(280, (dateLeft ?? 388) - 28), window.innerWidth - 24));
-    setDetached((value) => !value);
-    setExpanded(false);
-    setEditorPosition({ x: 16, y: 20 });
-  };
+  const {
+    setDetached,
+    expanded,
+    setExpanded,
+    detached,
+    setLayoutNode,
+    closeHidden,
+    editorPosition,
+    setEditorPosition,
+    detachedWidth,
+    editorDragRef,
+    toggleDetached,
+  } = useShareEditorLayout();
   const [floatingSearch, setFloatingSearch] = useState('');
   const floatingItems = floating.query.data ?? [];
   const filteredFloating = floatingItems.filter((item) =>
@@ -385,7 +350,7 @@ export function ShareEditor({
               if (event.button !== 0) return;
               event.preventDefault();
               event.currentTarget.setPointerCapture(event.pointerId);
-              editorDrag.current = {
+              editorDragRef.current = {
                 x: event.clientX,
                 y: event.clientY,
                 left: editorPosition.x,
@@ -393,7 +358,7 @@ export function ShareEditor({
               };
             }}
             onPointerMove={(event) => {
-              const drag = editorDrag.current;
+              const drag = editorDragRef.current;
               if (!drag) return;
               setEditorPosition({
                 x: Math.max(
@@ -410,10 +375,10 @@ export function ShareEditor({
               });
             }}
             onPointerUp={() => {
-              editorDrag.current = null;
+              editorDragRef.current = null;
             }}
             onPointerCancel={() => {
-              editorDrag.current = null;
+              editorDragRef.current = null;
             }}
           >
             <Move size={15} />

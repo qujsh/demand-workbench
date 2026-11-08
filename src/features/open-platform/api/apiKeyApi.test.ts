@@ -40,13 +40,11 @@ describe('API密钥契约', () => {
   it('展示后端的权限错误', async () => {
     vi.stubGlobal(
       'fetch',
-      vi
-        .fn()
-        .mockResolvedValue(
-          new Response(JSON.stringify({ errorMsg: '没有权限', errorCode: 'S048109003' }), {
-            status: 403,
-          }),
-        ),
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ errorMsg: '没有权限', errorCode: 'S048109003' }), {
+          status: 403,
+        }),
+      ),
     );
     await expect(listApiKeys()).rejects.toMatchObject({ status: 403, message: '没有权限' });
   });

@@ -5,5 +5,12 @@ import { AuthGate } from '../features/auth/components/AuthGate';
 export const router = createBrowserRouter([
   { path: '/', element: <Navigate to="/shares" replace /> },
   { path: '/settings', element: <Navigate to="/system/settings" replace /> },
-  { path: '*', element: <AuthGate><App /></AuthGate> },
+  {
+    path: '*',
+    element: (
+      <AuthGate>
+        <App />
+      </AuthGate>
+    ),
+  },
 ]);

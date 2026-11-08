@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { expect, it, vi, afterEach } from 'vitest';
 import { ShareReviewStatus } from './ShareReviewStatus';
-import type { ShareRecord, ShareReview } from './shareDemo';
+import type { ShareRecord, ShareReview } from './shareModels';
 
 afterEach(cleanup);
 
