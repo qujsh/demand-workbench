@@ -1,0 +1,20 @@
+flowchart TB
+ P[自由人联合体 0.0.2 · 当前功能地图]
+ P --> M
+ P --> A
+ P --> O
+ subgraph M[成员空间]
+ direction TB
+ M1[登录与个人设置] ~~~ M2[分享 · 草稿 · 回收站]
+ M2 ~~~ M3[标签 · 浮窗 · 引用]
+ end
+ subgraph A[管理配置]
+ direction TB
+ A1[账号 · 角色 · 权限] ~~~ A2[平台分类配置]
+ A2 ~~~ A3[成长信用 · 操作审计]
+ end
+ subgraph O[开放平台]
+ direction TB
+ O1[本人 API Key] ~~~ O2[MCP 四个分享工具]
+ O2 ~~~ O3[调用审计]
+ end
