@@ -1,0 +1,75 @@
+name: Deploy frontend to Qiniu
+
+on:
+  workflow_dispatch:
+    inputs:
+      restore_sha:
+        description: '回滚时填写曾成功上传的完整 40 位提交 SHA；正常发布留空'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qiniu-web-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      RELEASE_SHA: ${{ github.sha }}
+      RESTORE_SHA: ${{ inputs.restore_sha }}
+      QINIU_WEB_BUCKET: ${{ vars.QINIU_WEB_BUCKET }}
+      QINIU_WEB_ORIGIN: ${{ vars.QINIU_WEB_ORIGIN }}
+      QINIU_SPA_FALLBACK_READY: ${{ vars.QINIU_SPA_FALLBACK_READY }}
+      VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+      VITE_MCP_PUBLIC_URL: ${{ vars.VITE_MCP_PUBLIC_URL }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: deploy/web/requirements.txt
+      - name: Validate deployment configuration
+        run: python3 deploy/web/publish.py --validate
+      - name: Test deployment scripts
+        run: python3 -m unittest discover -s deploy/web/tests -v
+      - name: Install frontend dependencies
+        if: inputs.restore_sha == ''
+        run: npm ci
+      - name: Check and build frontend
+        if: inputs.restore_sha == ''
+        run: |
+          set -euo pipefail
+          npm run typecheck
+          npm run lint
+          npm run test -- --maxWorkers=1
+          npm run build -- --base="/releases/$RELEASE_SHA/"
+      - name: Install Qiniu SDK
+        run: python3 -m pip install --disable-pip-version-check -r deploy/web/requirements.txt
+      - name: Publish or restore frontend
+        env:
+          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+        run: python3 deploy/web/publish.py
+      - name: Show deployment result
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          if [ -f deploy/web/publish.py ]; then
+            python3 deploy/web/publish.py --summary
+          else
+            printf '## 前端发布未完成\n\n未取得发布报告，请检查失败步骤。\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
