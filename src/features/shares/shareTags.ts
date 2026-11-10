@@ -90,18 +90,16 @@ export function tagReadingDocument(document: JSONContent): JSONContent {
               .filter((pos) => pos > 0 && pos < value.length),
           ]),
         ].sort((a, b) => a - b);
-        return cuts
-          .slice(0, -1)
-          .map((from, index) => ({
-            ...node,
-            text: value.slice(from, cuts[index + 1]),
-            marks: [
-              ...(node.marks ?? []),
-              ...(ranges.some((range) => start + from >= range.from && start + from < range.to)
-                ? [{ type: 'shareTag' }]
-                : []),
-            ],
-          }));
+        return cuts.slice(0, -1).map((from, index) => ({
+          ...node,
+          text: value.slice(from, cuts[index + 1]),
+          marks: [
+            ...(node.marks ?? []),
+            ...(ranges.some((range) => start + from >= range.from && start + from < range.to)
+              ? [{ type: 'shareTag' }]
+              : []),
+          ],
+        }));
       }),
     };
   }

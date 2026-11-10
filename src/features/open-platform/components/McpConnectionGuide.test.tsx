@@ -4,21 +4,19 @@ import { McpConnectionGuide } from './McpConnectionGuide';
 afterEach(() => vi.unstubAllGlobals());
 it('服务端诊断立即清除输入且不回显密钥', async () => {
   const token = 'dw_sk_transient';
-  const fetch = vi
-    .fn()
-    .mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          success: true,
-          msg: {
-            keyNo: 'KEY-test',
-            scopes: ['shares:create'],
-            tools: ['create_share'],
-            requestNo: 'CALL-test',
-          },
-        }),
-      ),
-    );
+  const fetch = vi.fn().mockResolvedValue(
+    new Response(
+      JSON.stringify({
+        success: true,
+        msg: {
+          keyNo: 'KEY-test',
+          scopes: ['shares:create'],
+          tools: ['create_share'],
+          requestNo: 'CALL-test',
+        },
+      }),
+    ),
+  );
   vi.stubGlobal('fetch', fetch);
   render(<McpConnectionGuide />);
   fireEvent.click(screen.getByText('连接 MCP 与诊断'));

@@ -1,6 +1,7 @@
+import { useShareTimeline } from './hooks/useShareTimeline';
 import { usePermissions } from '../account/hooks/usePermissions';
-import { ShareReviewStatus } from './ShareReviewStatus';
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { ShareRecordContent } from './ShareRecordContent';
+import { useState, useEffect, useRef } from 'react';
 import {
   Alert,
   App,
@@ -9,7 +10,6 @@ import {
   Drawer,
   Popover,
   Empty,
-  Image,
   Input,
   Segmented,
   Select,
@@ -18,9 +18,7 @@ import {
 import {
   CalendarDays,
   Check,
-  Globe2,
   Hash,
-  LockKeyhole,
   PanelsTopLeft,
   PencilLine,
   Plus,
@@ -29,9 +27,9 @@ import {
   Trash2,
 } from 'lucide-react';
 import dayjs from 'dayjs';
-import { type ShareRecord, type ShareReference } from './shareDemo';
+import { type ShareRecord } from './shareModels';
 import { useShares } from './hooks/useShares';
-import { getShare } from './api/shareApi';
+import { useShareEditingSession } from './hooks/useShareEditingSession';
 import { ShareEditor } from './ShareEditor';
 import { ShareTagAdd } from './ShareTagAdd';
 import { ShareTagMergeProgress } from './ShareTagMergeProgress';
@@ -40,8 +38,6 @@ import { ShareTagSorter } from './ShareTagSorter';
 import { ShareFloating } from './ShareFloating';
 import { useFloatingRecords } from './hooks/useFloatingRecords';
 import './shares.css';
-import { recordDocument, documentImages } from './shareRichTextModel';
-import { RichTextView } from './shareRichText';
 
 export default function SharePage() {
   const { message, modal } = App.useApp();
@@ -52,18 +48,11 @@ export default function SharePage() {
   const [navigationYear, setNavigationYear] = useState(dayjs().format('YYYY'));
   const [browseDate, setBrowseDate] = useState('');
   const [openFloats, setOpenFloats] = useState<string[]>([]);
-  const [incomingReferences, setIncomingReferences] = useState<ShareReference[]>([]);
   const floating = useFloatingRecords();
-  const scrollAnchor = useRef<{ id: string; top: number } | null>(null);
-  const paging = useRef(false);
-  const lastScroll = useRef(0);
-  const restoringScroll = useRef(false);
   const [keyword, setKeyword] = useState('');
   const [filter, setFilter] = useState('全部记录');
   const [tag, setTag] = useState('');
   const [visibility, setVisibility] = useState('all');
-  const [editor, setEditor] = useState<ShareRecord | 'new' | null>(null);
-  const [detail, setDetail] = useState<ShareRecord | null>(null);
   const [tagManager, setTagManager] = useState(false);
   const [mergingTags, setMergingTags] = useState(false);
   const [mergeSelection, setMergeSelection] = useState<string[]>([]);
@@ -95,31 +84,28 @@ export default function SharePage() {
   const reportError = (error: unknown) => {
     void message.error(error instanceof Error ? error.message : '操作失败，请重试');
   };
-  const startNewRecord = () => {
-    if (!access.can('shares.create')) { void message.warning('暂无新建分享权限'); return; }
-    if (editor) {
-      void message.info('请先保存或关闭当前编辑器');
-      return;
-    }
-    setIncomingReferences([]);
-    setEditor('new');
+  const clearFilters = () => {
+    setTag('');
+    setKeyword('');
+    setPeriod('');
+    setVisibility('all');
   };
-  const openRecord = async (record: ShareRecord, editing = false) => {
-    if (editing && !access.can('shares.edit')) { void message.warning('暂无编辑分享权限'); return; }
-    if (editing && editor) {
-      void message.info('请先保存或关闭当前编辑器');
-      return;
-    }
-    try {
-      const full = await getShare(record.id, editing);
-      if (editing) {
-        setIncomingReferences([]);
-        setEditor(full);
-      } else setDetail(full);
-    } catch (error) {
-      reportError(error);
-    }
-  };
+  const {
+    editor,
+    setEditor,
+    detail,
+    setDetail,
+    incomingReferences,
+    setIncomingReferences,
+    startNewRecord,
+    openRecord,
+    attachReferences,
+    save,
+    remove,
+  } = useShareEditingSession(data, access.can, reportError, (record) => {
+    setFilter(record.draft ? '草稿' : '全部记录');
+    clearFilters();
+  });
   const mergeTask = data.mergeTask.data?.task;
   const tagsLocked = Boolean(mergeTask && mergeTask.status !== 'COMPLETED');
   const observedMerge = useRef<string | null>(null);
@@ -140,12 +126,6 @@ export default function SharePage() {
     }
   };
   const hasFilters = Boolean(tag || keyword || period || visibility !== 'all');
-  const clearFilters = () => {
-    setTag('');
-    setKeyword('');
-    setPeriod('');
-    setVisibility('all');
-  };
   const openFloat = (id: string) =>
     setOpenFloats((ids) =>
       ids.includes(id) ? [...ids.filter((value) => value !== id), id] : [...ids, id],
@@ -158,90 +138,14 @@ export default function SharePage() {
       reportError(error);
     }
   };
-  const attachReferences = async (refs: ShareReference[], target: string) => {
-    if (!access.can(target === 'new' ? 'shares.create' : 'shares.edit')) { void message.warning('暂无引用写入权限'); return; }
-    if (target === 'current' && editor) {
-      setIncomingReferences((values) => [...values, ...refs]);
-      return;
-    }
-    if (editor) {
-      void message.info('请先保存或关闭当前编辑器，或引用到当前记录');
-      return;
-    }
-    if (target === 'new') {
-      setIncomingReferences(refs);
-      setEditor('new');
-      return;
-    }
-    try {
-      const record = await getShare(target, true);
-      setIncomingReferences(refs.filter((ref) => ref.recordNo !== target));
-      setEditor(record);
-    } catch (error) {
-      reportError(error);
-    }
-  };
-  const loadDirection = async (direction: 'older' | 'newer') => {
-    if (paging.current || data.records.isFetching) return;
-    paging.current = true;
-    const visible = [...document.querySelectorAll<HTMLElement>('[data-share-record]')].find(
-      (node) => node.getBoundingClientRect().bottom > 100,
-    );
-    scrollAnchor.current = visible
-      ? { id: visible.dataset.shareRecord!, top: visible.getBoundingClientRect().top }
-      : null;
-    try {
-      if (direction === 'older') await data.records.fetchNextPage();
-      else await data.records.fetchPreviousPage();
-    } catch (error) {
-      reportError(error);
-    } finally {
-      paging.current = false;
-    }
-  };
-  const recordIds = records.map((record) => record.id).join('|');
-  useLayoutEffect(() => {
-    const saved = scrollAnchor.current;
-    if (!saved) return;
-    const node = document.querySelector<HTMLElement>(`[data-share-record="${saved.id}"]`);
-    if (node) {
-      restoringScroll.current = true;
-      window.scrollBy(0, node.getBoundingClientRect().top - saved.top);
-      lastScroll.current = window.scrollY;
-      requestAnimationFrame(() => {
-        restoringScroll.current = false;
-      });
-    }
-    scrollAnchor.current = null;
-  }, [recordIds]);
-  useEffect(() => {
-    const scroll = () => {
-      if (restoringScroll.current) return;
-      const y = window.scrollY;
-      const direction = y < lastScroll.current ? 'newer' : 'older';
-      lastScroll.current = y;
-      const nodes = [...document.querySelectorAll<HTMLElement>('[data-share-record]')];
-      const visible = nodes.find((node) => node.getBoundingClientRect().bottom > 120);
-      if (visible) setBrowseDate(visible.dataset.shareDate ?? '');
-      if (!nodes.length || data.records.isError) return;
-      if (
-        direction === 'newer' &&
-        data.records.hasPreviousPage &&
-        nodes[0].getBoundingClientRect().top > -200
-      )
-        void loadDirection('newer');
-      if (
-        direction === 'older' &&
-        data.records.hasNextPage &&
-        nodes[nodes.length - 1].getBoundingClientRect().bottom < window.innerHeight + 350
-      )
-        void loadDirection('older');
-    };
-    window.addEventListener('scroll', scroll, { passive: true });
-    return () => window.removeEventListener('scroll', scroll);
-  });
+  const { loadDirection, resetScrollAnchor } = useShareTimeline(
+    records,
+    data.records,
+    setBrowseDate,
+    reportError,
+  );
   const locate = (date: string) => {
-    scrollAnchor.current = null;
+    resetScrollAnchor();
     setPeriod('');
     setAnchorDate(date);
     setBrowseDate(date);
@@ -257,110 +161,25 @@ export default function SharePage() {
       : status === 'TRASH'
         ? '回收站是空的'
         : '这里还没有记录';
-  const save = async (record: ShareRecord) => {
-    try {
-      await data.save.mutateAsync(record);
-      setEditor(null);
-      setFilter(record.draft ? '草稿' : '全部记录');
-      clearFilters();
-      void message.success(
-        record.draft
-          ? '草稿已保存'
-          : record.visibility === 'public'
-            ? '已保存，公开内容需审核通过后可见'
-            : '记录已保存',
-      );
-    } catch (error) {
-      reportError(error);
-      throw error;
-    }
-  };
-  const remove = (record: ShareRecord) =>
-    modal.confirm({
-      title: '将这条记录移入回收站？',
-      content: '可以在回收站中恢复。',
-      okText: '移入回收站',
-      cancelText: '取消',
-      onOk: async () => {
-        try {
-          await data.change.mutateAsync({ record, restore: false });
-          setDetail(null);
-        } catch (error) {
-          reportError(error);
-          throw error;
-        }
-      },
-    });
-  const content = (record: ShareRecord, full = false) => {
-    const images = [...new Set([...record.images, ...documentImages(record.document)])];
-    return (
-      <>
-        <div className={full ? 'share-record-body full' : 'share-record-body'}>
-          {record.document ? (
-            <RichTextView document={recordDocument(record.body, record.document)} />
-          ) : (
-            record.body
-          )}
-        </div>
-        {images.length > 0 && (
-          <div className="share-record-images">
-            <Image.PreviewGroup items={images}>
-              {(full ? images : images.slice(0, 3)).map((src, i) => (
-                <div className="share-record-thumbnail" key={src}>
-                  <Image
-                    src={src}
-                    alt={`${record.title} 图片 ${i + 1}`}
-                    height={full ? 240 : 108}
-                  />
-                  {!full && i === 2 && (record.imageCount ?? images.length) > 3 && (
-                    <span
-                      className="share-image-more"
-                      onClick={() => {
-                        void openRecord(record);
-                      }}
-                    >
-                      +{(record.imageCount ?? images.length) - 3}
-                    </span>
-                  )}
-                </div>
-              ))}
-            </Image.PreviewGroup>
-          </div>
-        )}
-        <div className="share-record-bottom">
-          <div className="share-record-tags">
-            {record.tags.map((name) => (
-              <button
-                key={name}
-                onClick={() => {
-                  setTag(name);
-                  setDetail(null);
-                }}
-              >
-                # {name}
-              </button>
-            ))}
-          </div>
-          <div className="share-record-review">
-            {!record.draft && !record.deleted && (
-              <ShareReviewStatus
-                record={record}
-                retrying={data.retryReview.isPending}
-                canRetry={access.can('shares.edit')}
-                onRetry={() => {
-                  void data.retryReview.mutateAsync(record).catch(reportError);
-                }}
-              />
-            )}
-            <span className="share-visibility">
-              {record.visibility === 'private' ? <LockKeyhole size={12} /> : <Globe2 size={12} />}
-              {record.visibility === 'private' ? '仅自己可见' : '公开分享'}
-            </span>
-          </div>
-        </div>
-      </>
-    );
-  };
+  const content = (record: ShareRecord, full = false) => (
+    <ShareRecordContent
+      record={record}
+      full={full}
+      retrying={data.retryReview.isPending}
+      canRetry={access.can('shares.edit')}
+      onOpen={(value) => {
+        void openRecord(value);
+      }}
+      onTag={(name) => {
+        setTag(name);
+        setDetail(null);
+      }}
+      onRetry={(value) => {
+        void data.retryReview.mutateAsync(value).catch(reportError);
+      }}
+    />
+  );
+
   return (
     <main className="shares-page">
       <div className="topbar">
@@ -742,7 +561,12 @@ export default function SharePage() {
             <div className="share-aside-title">
               <h2>我的标签</h2>
               {tagsLocked && (
-                <Button type="link" size="small" disabled={!access.can('shares.edit')} onClick={() => setTagManager(true)}>
+                <Button
+                  type="link"
+                  size="small"
+                  disabled={!access.can('shares.edit')}
+                  onClick={() => setTagManager(true)}
+                >
                   {mergeTask?.status === 'FAILED'
                     ? '合并待重试'
                     : mergeTask?.status === 'QUEUED'
@@ -854,7 +678,7 @@ export default function SharePage() {
           !detail.deleted && (
             <Button
               disabled={!access.can('shares.edit')}
-                                  icon={<PencilLine size={14} />}
+              icon={<PencilLine size={14} />}
               onClick={() => {
                 void openRecord(detail, true);
                 setDetail(null);

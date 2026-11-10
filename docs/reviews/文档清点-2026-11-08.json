@@ -1,0 +1,158 @@
+[
+  {
+    "file": "docs/样式与组件规范.md",
+    "project": "frontend",
+    "lines": 107,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/编码规范.md",
+    "project": "frontend",
+    "lines": 118,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/前端架构.md",
+    "project": "frontend",
+    "lines": 57,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/Skill使用说明.md",
+    "project": "frontend",
+    "lines": 19,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/测试规范.md",
+    "project": "frontend",
+    "lines": 109,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/接口与状态管理规范.md",
+    "project": "frontend",
+    "lines": 38,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/账号与短信认证接入.md",
+    "project": "frontend",
+    "lines": 86,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/七牛云上传接入.md",
+    "project": "frontend",
+    "lines": 93,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/分享管理前后端技术设计.md",
+    "project": "frontend",
+    "lines": 1157,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/分享图片访问与配置.md",
+    "project": "frontend",
+    "lines": 54,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/分享管理实现与验证.md",
+    "project": "frontend",
+    "lines": 59,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/标签合并实现说明.md",
+    "project": "frontend",
+    "lines": 88,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/成员资料与编号.md",
+    "project": "frontend",
+    "lines": 46,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/系统配置与角色权限.md",
+    "project": "frontend",
+    "lines": 57,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/开放平台与MCP接入.md",
+    "project": "frontend",
+    "lines": 52,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/统一存储对象台账设计.md",
+    "project": "frontend",
+    "lines": 44,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/时间线定位与浮窗引用实现.md",
+    "project": "frontend",
+    "lines": 73,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/design/公开内容审核实现与验证.md",
+    "project": "frontend",
+    "lines": 32,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/prd/PRD.md",
+    "project": "frontend",
+    "lines": 588,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/prd/分享模块产品方案.md",
+    "project": "frontend",
+    "lines": 219,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/architecture.md",
+    "project": "backend",
+    "lines": 60,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/api.md",
+    "project": "backend",
+    "lines": 635,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/coding-standards.md",
+    "project": "backend",
+    "lines": 278,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/release-0.0.2-reset.md",
+    "project": "backend",
+    "lines": 15,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/ai-integration.md",
+    "project": "backend",
+    "lines": 52,
+    "broken_local_links": []
+  },
+  {
+    "file": "docs/open-platform.md",
+    "project": "backend",
+    "lines": 64,
+    "broken_local_links": []
+  }
+]

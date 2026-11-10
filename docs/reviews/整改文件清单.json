@@ -1,0 +1,1325 @@
+[
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/.editorconfig",
+    "relativePath": ".editorconfig",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/.prettierignore",
+    "relativePath": ".prettierignore",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/README.md",
+    "relativePath": "README.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/分享图片访问与配置.md",
+    "relativePath": "docs/design/分享图片访问与配置.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/分享管理前后端技术设计.md",
+    "relativePath": "docs/design/分享管理前后端技术设计.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/分享管理实现与验证.md",
+    "relativePath": "docs/design/分享管理实现与验证.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/时间线定位与浮窗引用实现.md",
+    "relativePath": "docs/design/时间线定位与浮窗引用实现.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/统一存储对象台账设计.md",
+    "relativePath": "docs/design/统一存储对象台账设计.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/history/README.md",
+    "relativePath": "docs/history/README.md",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/prd/PRD.md",
+    "relativePath": "docs/prd/PRD.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/prd/分享模块产品方案.md",
+    "relativePath": "docs/prd/分享模块产品方案.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/reviews/整改文件清单.json",
+    "relativePath": "docs/reviews/整改文件清单.json",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/reviews/自由人联合体0.0.2项目工程质量整改报告.md",
+    "relativePath": "docs/reviews/自由人联合体0.0.2项目工程质量整改报告.md",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/七牛云上传接入.md",
+    "relativePath": "docs/七牛云上传接入.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/文档索引.md",
+    "relativePath": "docs/文档索引.md",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/样式与组件规范.md",
+    "relativePath": "docs/样式与组件规范.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/测试规范.md",
+    "relativePath": "docs/测试规范.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/编码规范.md",
+    "relativePath": "docs/编码规范.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/账号与短信认证接入.md",
+    "relativePath": "docs/账号与短信认证接入.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/eslint.config.js",
+    "relativePath": "eslint.config.js",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/app/providers.tsx",
+    "relativePath": "src/app/providers.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/app/router.tsx",
+    "relativePath": "src/app/router.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/components/Icons.tsx",
+    "relativePath": "src/components/Icons.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/components/Sidebar.tsx",
+    "relativePath": "src/components/Sidebar.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/accountPresentation.ts",
+    "relativePath": "src/features/account/accountPresentation.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/api/accountApi.test.ts",
+    "relativePath": "src/features/account/api/accountApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/api/accountApi.ts",
+    "relativePath": "src/features/account/api/accountApi.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/api/permissionApi.test.ts",
+    "relativePath": "src/features/account/api/permissionApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/api/permissionApi.ts",
+    "relativePath": "src/features/account/api/permissionApi.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/api/roleApi.test.ts",
+    "relativePath": "src/features/account/api/roleApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/api/roleApi.ts",
+    "relativePath": "src/features/account/api/roleApi.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/AccountCenter.tsx",
+    "relativePath": "src/features/account/components/AccountCenter.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/AccountManagement.tsx",
+    "relativePath": "src/features/account/components/AccountManagement.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/AdminPanel.tsx",
+    "relativePath": "src/features/account/components/AdminPanel.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionManagement.tsx",
+    "relativePath": "src/features/account/components/PermissionManagement.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionNodeEditor.test.tsx",
+    "relativePath": "src/features/account/components/PermissionNodeEditor.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionNodeEditor.tsx",
+    "relativePath": "src/features/account/components/PermissionNodeEditor.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionResourceForm.test.tsx",
+    "relativePath": "src/features/account/components/PermissionResourceForm.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionResourceForm.tsx",
+    "relativePath": "src/features/account/components/PermissionResourceForm.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionResourceStatus.tsx",
+    "relativePath": "src/features/account/components/PermissionResourceStatus.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/PermissionTree.tsx",
+    "relativePath": "src/features/account/components/PermissionTree.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/RoleEditor.test.tsx",
+    "relativePath": "src/features/account/components/RoleEditor.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/RoleEditor.tsx",
+    "relativePath": "src/features/account/components/RoleEditor.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/components/RoleManagement.tsx",
+    "relativePath": "src/features/account/components/RoleManagement.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/contractorBadges.ts",
+    "relativePath": "src/features/account/contractorBadges.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/hooks/useAccountPlatform.ts",
+    "relativePath": "src/features/account/hooks/useAccountPlatform.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/hooks/usePermissionDirectory.ts",
+    "relativePath": "src/features/account/hooks/usePermissionDirectory.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/hooks/usePermissions.ts",
+    "relativePath": "src/features/account/hooks/usePermissions.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/hooks/useRoleConfiguration.ts",
+    "relativePath": "src/features/account/hooks/useRoleConfiguration.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/pages/SystemConfiguration.tsx",
+    "relativePath": "src/features/account/pages/SystemConfiguration.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/permissionResources.ts",
+    "relativePath": "src/features/account/permissionResources.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/publisherBadges.ts",
+    "relativePath": "src/features/account/publisherBadges.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/account/system.css",
+    "relativePath": "src/features/account/system.css",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/api/authApi.test.ts",
+    "relativePath": "src/features/auth/api/authApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/api/authApi.ts",
+    "relativePath": "src/features/auth/api/authApi.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/api/avatarApi.test.ts",
+    "relativePath": "src/features/auth/api/avatarApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/api/avatarApi.ts",
+    "relativePath": "src/features/auth/api/avatarApi.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/auth.css",
+    "relativePath": "src/features/auth/auth.css",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/AccountSecurity.tsx",
+    "relativePath": "src/features/auth/components/AccountSecurity.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/AuthGate.test.tsx",
+    "relativePath": "src/features/auth/components/AuthGate.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/AuthGate.tsx",
+    "relativePath": "src/features/auth/components/AuthGate.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/LoginBackground.test.tsx",
+    "relativePath": "src/features/auth/components/LoginBackground.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/LoginBackground.tsx",
+    "relativePath": "src/features/auth/components/LoginBackground.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/PasswordSecurity.tsx",
+    "relativePath": "src/features/auth/components/PasswordSecurity.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/components/ProfileEditor.tsx",
+    "relativePath": "src/features/auth/components/ProfileEditor.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/hooks/useAccountSecurity.ts",
+    "relativePath": "src/features/auth/hooks/useAccountSecurity.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/hooks/useAuthActions.ts",
+    "relativePath": "src/features/auth/hooks/useAuthActions.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/hooks/useAuthPanelTransition.ts",
+    "relativePath": "src/features/auth/hooks/useAuthPanelTransition.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/pages/AuthPage.tsx",
+    "relativePath": "src/features/auth/pages/AuthPage.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/pages/SettingsPage.tsx",
+    "relativePath": "src/features/auth/pages/SettingsPage.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/auth/pages/settings.css",
+    "relativePath": "src/features/auth/pages/settings.css",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/categories/api/taskCategoryApi.test.ts",
+    "relativePath": "src/features/categories/api/taskCategoryApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/categories/categories.css",
+    "relativePath": "src/features/categories/categories.css",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/categories/components/CategoryDeletion.tsx",
+    "relativePath": "src/features/categories/components/CategoryDeletion.tsx",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/categories/components/CategoryMigrationHistory.tsx",
+    "relativePath": "src/features/categories/components/CategoryMigrationHistory.tsx",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/categories/pages/CategoryManagement.test.tsx",
+    "relativePath": "src/features/categories/pages/CategoryManagement.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/categories/pages/CategoryManagement.tsx",
+    "relativePath": "src/features/categories/pages/CategoryManagement.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/open-platform/api/apiKeyApi.test.ts",
+    "relativePath": "src/features/open-platform/api/apiKeyApi.test.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/open-platform/components/McpConnectionGuide.test.tsx",
+    "relativePath": "src/features/open-platform/components/McpConnectionGuide.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareEditor.tsx",
+    "relativePath": "src/features/shares/ShareEditor.tsx",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareFloating.tsx",
+    "relativePath": "src/features/shares/ShareFloating.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/SharePage.tsx",
+    "relativePath": "src/features/shares/SharePage.tsx",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareRecordContent.test.tsx",
+    "relativePath": "src/features/shares/ShareRecordContent.test.tsx",
+    "status": "new",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareRecordContent.tsx",
+    "relativePath": "src/features/shares/ShareRecordContent.tsx",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareReviewStatus.test.tsx",
+    "relativePath": "src/features/shares/ShareReviewStatus.test.tsx",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareReviewStatus.tsx",
+    "relativePath": "src/features/shares/ShareReviewStatus.tsx",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/api/shareApi.ts",
+    "relativePath": "src/features/shares/api/shareApi.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditingSession.test.tsx",
+    "relativePath": "src/features/shares/hooks/useShareEditingSession.test.tsx",
+    "status": "new",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditingSession.ts",
+    "relativePath": "src/features/shares/hooks/useShareEditingSession.ts",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditorLayout.test.tsx",
+    "relativePath": "src/features/shares/hooks/useShareEditorLayout.test.tsx",
+    "status": "new",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditorLayout.ts",
+    "relativePath": "src/features/shares/hooks/useShareEditorLayout.ts",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareTimeline.ts",
+    "relativePath": "src/features/shares/hooks/useShareTimeline.ts",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShares.ts",
+    "relativePath": "src/features/shares/hooks/useShares.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/shareDemo.ts",
+    "relativePath": "src/features/shares/shareDemo.ts",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/shareModels.ts",
+    "relativePath": "src/features/shares/shareModels.ts",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/shareTags.ts",
+    "relativePath": "src/features/shares/shareTags.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/shared/identity/memberPresentation.ts",
+    "relativePath": "src/shared/identity/memberPresentation.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/styles.css",
+    "relativePath": "src/styles.css",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/tailwind.css",
+    "relativePath": "src/tailwind.css",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/test/setup.ts",
+    "relativePath": "src/test/setup.ts",
+    "status": "modified",
+    "category": "纯格式或模型引用迁移",
+    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "validation": "typecheck、ESLint、76用例、生产构建"
+  },
+  {
+    "project": "frontend",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/vite.config.ts",
+    "relativePath": "vite.config.ts",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/.editorconfig",
+    "relativePath": ".editorconfig",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/.gitignore",
+    "relativePath": ".gitignore",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/.mvn/wrapper/maven-wrapper.jar",
+    "relativePath": ".mvn/wrapper/maven-wrapper.jar",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/.mvn/wrapper/maven-wrapper.properties",
+    "relativePath": ".mvn/wrapper/maven-wrapper.properties",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/AGENTS.md",
+    "relativePath": "AGENTS.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/README.md",
+    "relativePath": "README.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/ai-integration.md",
+    "relativePath": "docs/ai-integration.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/api.md",
+    "relativePath": "docs/api.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/architecture.md",
+    "relativePath": "docs/architecture.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/coding-standards.md",
+    "relativePath": "docs/coding-standards.md",
+    "status": "modified",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/README.md",
+    "relativePath": "docs/history/README.md",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/ai-integration.md",
+    "relativePath": "docs/history/ai-integration.md",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/architecture.md",
+    "relativePath": "docs/history/architecture.md",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/prompts/publish-summary-system.st",
+    "relativePath": "docs/history/prompts/publish-summary-system.st",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/prompts/reward-analysis-system.st",
+    "relativePath": "docs/history/prompts/reward-analysis-system.st",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/prompts/work-item-decomposition-system.st",
+    "relativePath": "docs/history/prompts/work-item-decomposition-system.st",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/docs/history/prompts/源码逆向分析与知识地图建设",
+    "relativePath": "docs/history/prompts/源码逆向分析与知识地图建设",
+    "status": "new",
+    "category": "文档/归档/交付记录",
+    "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
+    "validation": "文档相对链接检查、对照代码/测试结果"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/pom.xml",
+    "relativePath": "pom.xml",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/common/ApiExceptionHandler.java",
+    "relativePath": "src/main/java/com/demandworkbench/common/ApiExceptionHandler.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/config/DeepSeekProperties.java",
+    "relativePath": "src/main/java/com/demandworkbench/config/DeepSeekProperties.java",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/discovery/application/DirectMediaStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/discovery/application/DirectMediaStorage.java",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/discovery/infrastructure/media/QiniuDirectMediaStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/discovery/infrastructure/media/QiniuDirectMediaStorage.java",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/discovery/infrastructure/media/QiniuProperties.java",
+    "relativePath": "src/main/java/com/demandworkbench/discovery/infrastructure/media/QiniuProperties.java",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/discovery/infrastructure/persistence/MyBatisCategoryMigrationRepository.java",
+    "relativePath": "src/main/java/com/demandworkbench/discovery/infrastructure/persistence/MyBatisCategoryMigrationRepository.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/identity/application/AvatarService.java",
+    "relativePath": "src/main/java/com/demandworkbench/identity/application/AvatarService.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/openplatform/application/ApiKeyRepository.java",
+    "relativePath": "src/main/java/com/demandworkbench/openplatform/application/ApiKeyRepository.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/openplatform/application/ApiKeyService.java",
+    "relativePath": "src/main/java/com/demandworkbench/openplatform/application/ApiKeyService.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/openplatform/infrastructure/ApiKeyMapper.java",
+    "relativePath": "src/main/java/com/demandworkbench/openplatform/infrastructure/ApiKeyMapper.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/openplatform/infrastructure/MyBatisApiKeyRepository.java",
+    "relativePath": "src/main/java/com/demandworkbench/openplatform/infrastructure/MyBatisApiKeyRepository.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/application/ShareMediaService.java",
+    "relativePath": "src/main/java/com/demandworkbench/shares/application/ShareMediaService.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/application/ShareStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/shares/application/ShareStorage.java",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/infrastructure/DeepSeekShareReviewClient.java",
+    "relativePath": "src/main/java/com/demandworkbench/shares/infrastructure/DeepSeekShareReviewClient.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/infrastructure/PrivateShareStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/shares/infrastructure/PrivateShareStorage.java",
+    "status": "modified",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/storage/application/DirectMediaStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/storage/application/DirectMediaStorage.java",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/storage/application/ImageStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/storage/application/ImageStorage.java",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/storage/infrastructure/QiniuDirectMediaStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/storage/infrastructure/QiniuDirectMediaStorage.java",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/storage/infrastructure/QiniuProperties.java",
+    "relativePath": "src/main/java/com/demandworkbench/storage/infrastructure/QiniuProperties.java",
+    "status": "new",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/resources/prompts/publish-summary-system.st",
+    "relativePath": "src/main/resources/prompts/publish-summary-system.st",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/resources/prompts/reward-analysis-system.st",
+    "relativePath": "src/main/resources/prompts/reward-analysis-system.st",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/resources/prompts/work-item-decomposition-system.st",
+    "relativePath": "src/main/resources/prompts/work-item-decomposition-system.st",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/resources/prompts/源码逆向分析与知识地图建设",
+    "relativePath": "src/main/resources/prompts/源码逆向分析与知识地图建设",
+    "status": "deleted/moved",
+    "category": "工程配置/代码治理",
+    "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
+    "validation": "前端完整check；后端隔离副本测试/打包；冻结文件hash核对"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/java/com/demandworkbench/common/ApiExceptionHandlerTest.java",
+    "relativePath": "src/test/java/com/demandworkbench/common/ApiExceptionHandlerTest.java",
+    "status": "new",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/java/com/demandworkbench/identity/application/AvatarServiceTest.java",
+    "relativePath": "src/test/java/com/demandworkbench/identity/application/AvatarServiceTest.java",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/java/com/demandworkbench/openplatform/OpenPlatformIntegrationTest.java",
+    "relativePath": "src/test/java/com/demandworkbench/openplatform/OpenPlatformIntegrationTest.java",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/java/com/demandworkbench/shares/ShareIntegrationTest.java",
+    "relativePath": "src/test/java/com/demandworkbench/shares/ShareIntegrationTest.java",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  },
+  {
+    "project": "backend",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/resources/application.properties",
+    "relativePath": "src/test/resources/application.properties",
+    "status": "modified",
+    "category": "自动化测试/测试隔离",
+    "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
+    "validation": "前端76用例；后端101项0失败1条件跳过"
+  }
+]

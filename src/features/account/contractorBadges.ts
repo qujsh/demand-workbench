@@ -40,5 +40,48 @@ import j19Preview from './assets/contractor/j19-large.png';
 import j20Preview from './assets/contractor/j20-large.png';
 
 // 使用用户提供的徽章原图；J1–J20 分别提供大图预览和缩略图。
-export const contractorBadges: Record<string, string | undefined> = { J1: j1, J2: j2, J3: j3, J4: j4, J5: j5, J6: j6, J7: j7, J8: j8, J9: j9, J10: j10, J11: j11, J12: j12, J13: j13, J14: j14, J15: j15, J16: j16, J17: j17, J18: j18, J19: j19, J20: j20 };
-export const contractorBadgePreviews: Record<string, string | undefined> = { ...contractorBadges, J1: j1Preview, J2: j2Preview, J3: j3Preview, J4: j4Preview, J5: j5Preview, J6: j6Preview, J7: j7Preview, J8: j8Preview, J9: j9Preview, J10: j10Preview, J11: j11Preview, J12: j12Preview, J13: j13Preview, J14: j14Preview, J15: j15Preview, J16: j16Preview, J17: j17Preview, J18: j18Preview, J19: j19Preview, J20: j20Preview };
+export const contractorBadges: Record<string, string | undefined> = {
+  J1: j1,
+  J2: j2,
+  J3: j3,
+  J4: j4,
+  J5: j5,
+  J6: j6,
+  J7: j7,
+  J8: j8,
+  J9: j9,
+  J10: j10,
+  J11: j11,
+  J12: j12,
+  J13: j13,
+  J14: j14,
+  J15: j15,
+  J16: j16,
+  J17: j17,
+  J18: j18,
+  J19: j19,
+  J20: j20,
+};
+export const contractorBadgePreviews: Record<string, string | undefined> = {
+  ...contractorBadges,
+  J1: j1Preview,
+  J2: j2Preview,
+  J3: j3Preview,
+  J4: j4Preview,
+  J5: j5Preview,
+  J6: j6Preview,
+  J7: j7Preview,
+  J8: j8Preview,
+  J9: j9Preview,
+  J10: j10Preview,
+  J11: j11Preview,
+  J12: j12Preview,
+  J13: j13Preview,
+  J14: j14Preview,
+  J15: j15Preview,
+  J16: j16Preview,
+  J17: j17Preview,
+  J18: j18Preview,
+  J19: j19Preview,
+  J20: j20Preview,
+};

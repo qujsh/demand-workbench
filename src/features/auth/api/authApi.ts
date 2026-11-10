@@ -29,9 +29,12 @@ export const currentUserKey = ['auth', 'current-user'] as const;
 export type ProfileDraft = { nickname: string; bio: string; avatarMediaNo: string };
 
 export async function saveProfile(profile: ProfileDraft): Promise<CurrentUser> {
-  return (await requestJson('/api/v1/users/profile/save', envelope(userSchema), {
-    method: 'POST', body: JSON.stringify(profile),
-  })).msg;
+  return (
+    await requestJson('/api/v1/users/profile/save', envelope(userSchema), {
+      method: 'POST',
+      body: JSON.stringify(profile),
+    })
+  ).msg;
 }
 
 export async function getLoginBackground(): Promise<LoginBackground> {
@@ -66,13 +69,23 @@ export async function logout(): Promise<void> {
 }
 
 const sessionSchema = z.object({
-  sessionNo: z.string(), device: z.string(), createdAt: z.string(), expiresAt: z.string(), current: z.boolean(),
+  sessionNo: z.string(),
+  device: z.string(),
+  createdAt: z.string(),
+  expiresAt: z.string(),
+  current: z.boolean(),
 });
 const securityEventSchema = z.object({
-  id: z.number(), event: z.string(), device: z.string(), createdAt: z.string(),
+  id: z.number(),
+  event: z.string(),
+  device: z.string(),
+  createdAt: z.string(),
 });
 const eligibilitySchema = z.object({
-  level: z.string().nullable(), levelName: z.string(), canPublish: z.boolean(), message: z.string(),
+  level: z.string().nullable(),
+  levelName: z.string(),
+  canPublish: z.boolean(),
+  message: z.string(),
 });
 
 export const sessionsKey = ['auth', 'sessions'] as const;
@@ -84,32 +97,49 @@ export async function getSessions() {
 }
 
 export async function getSecurityEvents() {
-  return (await requestJson('/api/v1/users/security-events', envelope(z.array(securityEventSchema)))).msg;
+  return (
+    await requestJson('/api/v1/users/security-events', envelope(z.array(securityEventSchema)))
+  ).msg;
 }
 
 export async function getPublisherEligibility() {
-  return (await requestJson('/api/v1/users/publisher-eligibility', envelope(eligibilitySchema))).msg;
+  return (await requestJson('/api/v1/users/publisher-eligibility', envelope(eligibilitySchema)))
+    .msg;
 }
 
 export async function revokeSession(sessionNo: string | null) {
-  const path = sessionNo === null ? '/api/v1/users/sessions/revoke-others'
-    : `/api/v1/users/sessions/revoke?sessionNo=${encodeURIComponent(sessionNo)}`;
+  const path =
+    sessionNo === null
+      ? '/api/v1/users/sessions/revoke-others'
+      : `/api/v1/users/sessions/revoke?sessionNo=${encodeURIComponent(sessionNo)}`;
   await requestJson(path, envelope(z.string()), { method: 'POST' });
 }
 
 export async function loginWithPassword(phone: string, password: string): Promise<CurrentUser> {
-  return (await requestJson('/api/v1/auth/password/login', envelope(userSchema), {
-    method: 'POST', body: JSON.stringify({ phone, password }),
-  })).msg;
+  return (
+    await requestJson('/api/v1/auth/password/login', envelope(userSchema), {
+      method: 'POST',
+      body: JSON.stringify({ phone, password }),
+    })
+  ).msg;
 }
 
-export async function savePassword(values: { phone: string; code: string; password: string }, reset: boolean): Promise<void> {
+export async function savePassword(
+  values: { phone: string; code: string; password: string },
+  reset: boolean,
+): Promise<void> {
   await requestJson(`/api/v1/auth/password/${reset ? 'reset' : 'set'}`, envelope(z.string()), {
-    method: 'POST', body: JSON.stringify({ phone: values.phone, code: values.code, password: values.password }),
+    method: 'POST',
+    body: JSON.stringify({ phone: values.phone, code: values.code, password: values.password }),
   });
 }
 
 export const passwordStatusKey = ['auth', 'password-status'] as const;
 export async function getPasswordStatus() {
-  return (await requestJson('/api/v1/users/password/status', envelope(z.object({ hasPassword: z.boolean() })))).msg;
+  return (
+    await requestJson(
+      '/api/v1/users/password/status',
+      envelope(z.object({ hasPassword: z.boolean() })),
+    )
+  ).msg;
 }

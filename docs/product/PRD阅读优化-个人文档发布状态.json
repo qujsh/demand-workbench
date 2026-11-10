@@ -1,0 +1,163 @@
+{
+  "documentId": "BKrJd31fgohjdgx4LWxcDM8ZnQc",
+  "url": "https://my.feishu.cn/docx/BKrJd31fgohjdgx4LWxcDM8ZnQc",
+  "chapters": [
+    "阅读指引",
+    "1 先了解当前产品",
+    "2 谁可以使用哪些功能",
+    "3 登录并设置个人资料",
+    "4 记录内容，再回顾与对照",
+    "5 内容如何公开，失败后怎么办",
+    "6 整理标签，管理图片",
+    "7 管理成员、角色和菜单",
+    "8 平台分类是独立配置",
+    "9 成长信用与管理操作记录",
+    "10 让外部工具使用本人的分享",
+    "11 还需要共同确认的事情",
+    "附录A 版本范围与验证依据",
+    "附录B 完整规则与实现追溯",
+    "附录C 系统关系与上传技术流程"
+  ],
+  "images": [
+    {
+      "caption": "图1 三个使用空间",
+      "path": "assets/0.0.2-reading/01-map.png",
+      "blockId": "doxcnqThKocIfXBDJ9u3z2HCwpe",
+      "width": 720
+    },
+    {
+      "caption": "图2 当前登录页",
+      "path": "assets/0.0.2/01-login.png",
+      "blockId": "doxcnR6akBtyzCqdW8Vo1uPlGCe",
+      "width": 760
+    },
+    {
+      "caption": "图3 登录主流程",
+      "path": "assets/0.0.2-reading/02-login.png",
+      "blockId": "doxcn3XtDfMxG0mIb8pz6zHtRwh",
+      "width": 426
+    },
+    {
+      "caption": "图4 个人设置",
+      "path": "assets/0.0.2/05-profile.png",
+      "blockId": "doxcnYASAf3sF0EH6LWRY3ITg9g",
+      "width": 760
+    },
+    {
+      "caption": "图5 分享工作空间与区域编号",
+      "path": "assets/0.0.2/02-shares.png",
+      "blockId": "doxcnAQg1KXPWLbwtWOQILF4Vdc",
+      "width": 760
+    },
+    {
+      "caption": "图6 两种保存动作",
+      "path": "assets/0.0.2-reading/editor-detail.png",
+      "blockId": "doxcnOrCr149E4w45wyGQohj0lb",
+      "width": 500
+    },
+    {
+      "caption": "图7 正式记录与编辑副本",
+      "path": "assets/0.0.2-reading/03-working-copy.png",
+      "blockId": "doxcnGkhjdnQEgWDFbX6iWDgrAd",
+      "width": 440
+    },
+    {
+      "caption": "图8 放大编辑器与辅助区",
+      "path": "assets/0.0.2/04-expanded-editor.png",
+      "blockId": "doxcnjhylFfw8141zTw3JdKBgKc",
+      "width": 760
+    },
+    {
+      "caption": "图9 回收站中的记录",
+      "path": "assets/0.0.2/15-trash.png",
+      "blockId": "doxcnSiSoY8ryQQ6kDtjRt0lvCf",
+      "width": 760
+    },
+    {
+      "caption": "图10 申请公开的主流程",
+      "path": "assets/0.0.2-reading/04-review.png",
+      "blockId": "doxcn8OScF120d88WC6hkRaVY9e",
+      "width": 750
+    },
+    {
+      "caption": "图11 标签合并的用户流程",
+      "path": "assets/0.0.2-reading/05-tag-merge.png",
+      "blockId": "doxcnIfn1CMLbjx2tgn0rup6n6c",
+      "width": 453
+    },
+    {
+      "caption": "图12 图片从选择到生效",
+      "path": "assets/0.0.2-reading/06-image-user.png",
+      "blockId": "doxcn2QXctRS17DFIozLDLtJYqc",
+      "width": 480
+    },
+    {
+      "caption": "图13 账号管理",
+      "path": "assets/0.0.2/06-accounts.png",
+      "blockId": "doxcn4SkOW1Irs7lyQ5PNfj0vrW",
+      "width": 760
+    },
+    {
+      "caption": "图14 角色与公共权限",
+      "path": "assets/0.0.2/07-roles.png",
+      "blockId": "doxcnVpx3fIcYHz3oiW6Kr6Oyde",
+      "width": 760
+    },
+    {
+      "caption": "图15 权限目录",
+      "path": "assets/0.0.2/08-permissions.png",
+      "blockId": "doxcnxSaLIp5CjA3V0hMczvZjKg",
+      "width": 760
+    },
+    {
+      "caption": "图16 平台分类",
+      "path": "assets/0.0.2/09-categories.png",
+      "blockId": "doxcnyRlm3kR96O3BLY6oQwfNNe",
+      "width": 760
+    },
+    {
+      "caption": "图17 成长规则",
+      "path": "assets/0.0.2/10-growth.png",
+      "blockId": "doxcnrv2bKdHw3XhwBhs0eBE53h",
+      "width": 760
+    },
+    {
+      "caption": "图18 管理操作审计",
+      "path": "assets/0.0.2/13-admin-audits.png",
+      "blockId": "doxcniX0PjOqIdV9tWBf9SBUkLd",
+      "width": 760
+    },
+    {
+      "caption": "图19 密钥创建与连接指引",
+      "path": "assets/0.0.2-reading/key-detail.png",
+      "blockId": "doxcnIrCwIyqjvPpZcb8xH9scrc",
+      "width": 760
+    },
+    {
+      "caption": "图20 连接外部工具的步骤",
+      "path": "assets/0.0.2-reading/07-key.png",
+      "blockId": "doxcnS8pLrj5d8ySD48ZJil4dge",
+      "width": 276
+    },
+    {
+      "caption": "图21 调用审计",
+      "path": "assets/0.0.2/12-call-audits.png",
+      "blockId": "doxcn09D7Jp9XesGtd4eeSssdte",
+      "width": 760
+    },
+    {
+      "caption": "图22 核心对象的四种关系",
+      "path": "assets/0.0.2-reading/09-entities.png",
+      "blockId": "doxcnsFoiPXpKlvgKNLTwACXEJe",
+      "width": 760
+    },
+    {
+      "caption": "图23 图片上传的技术交互",
+      "path": "assets/0.0.2-reading/08-upload-tech.png",
+      "blockId": "doxcn01w2oy9jSSabSnxZx0Jbic",
+      "width": 638
+    }
+  ],
+  "replacedRevision": 106,
+  "revisionId": 197
+}

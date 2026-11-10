@@ -6,7 +6,7 @@ import { Columns2, Layers, FileText, Minus, Move, Maximize2, X } from 'lucide-re
 import dayjs from 'dayjs';
 import { getShare } from './api/shareApi';
 import { useFloatingRecords } from './hooks/useFloatingRecords';
-import type { ShareReference } from './shareDemo';
+import type { ShareReference } from './shareModels';
 import { RichTextView } from './shareRichText';
 import { recordDocument } from './shareRichTextModel';
 

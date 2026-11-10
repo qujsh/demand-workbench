@@ -2,7 +2,7 @@ import { z } from 'zod';
 import dayjs from 'dayjs';
 import { buildApiUrl, requestJson, ApiError } from '../../../shared/api/httpClient';
 import { apiResponseSchema } from '../../../shared/api/apiResponseSchema';
-import type { ShareRecord } from '../shareDemo';
+import type { ShareRecord } from '../shareModels';
 
 const tagSchema = z.object({
   tagNo: z.string(),

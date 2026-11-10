@@ -1,0 +1,95 @@
+.category-page {
+  min-height: 100vh;
+  background: var(--page-bg, #f5f6fa);
+}
+.category-content {
+  max-width: 1060px;
+  margin: 32px auto;
+  padding: 0 28px;
+}
+.category-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.category-heading h1 {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.category-heading p {
+  color: var(--muted);
+  margin: 0;
+}
+.category-create {
+  background: white;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.category-create-row {
+  display: flex;
+  gap: 10px;
+  max-width: 540px;
+  margin-top: 12px;
+}
+.category-create p {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 10px 0 0;
+}
+
+.category-list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.category-edit-fields {
+  display: grid;
+  gap: 18px;
+  padding-top: 8px;
+}
+.category-edit-fields > div > span:first-child {
+  display: block;
+  margin-bottom: 8px;
+}
+.category-edit-note,
+.category-edit-fields small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.category-edit-fields small {
+  display: block;
+  margin-top: 6px;
+}
+.category-edit-fields .category-status-field {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.category-edit-fields .category-status-field > span:first-child {
+  margin: 0;
+}
+
+.category-create-row {
+  max-width: 800px;
+  align-items: flex-end;
+}
+.category-create-field {
+  flex: 1;
+  min-width: 0;
+}
+.category-create-field > span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.category-row-actions {
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}

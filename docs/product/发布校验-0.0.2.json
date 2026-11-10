@@ -1,0 +1,26 @@
+{
+  "documentUrl": "https://my.feishu.cn/docx/BKrJd31fgohjdgx4LWxcDM8ZnQc",
+  "title": "自由人联合体 0.0.2 产品说明与功能 PRD",
+  "revisionId": 105,
+  "localSource": "自由人联合体-0.0.2-产品说明与功能PRD.md",
+  "screenshots": 16,
+  "mermaidDiagrams": 8,
+  "publishedImages": 24,
+  "nativeTables": 27,
+  "localAssetsChecked": true,
+  "externalProvidersTested": false,
+  "notes": [
+    "仅文档与复用 Skill 新增，未修改业务源码",
+    "截图使用临时隔离环境，真实云服务未联调"
+  ],
+  "imageOrderMatchesSource": true,
+  "allPublishedImagesHaveSource": true,
+  "visualCheckedSections": [
+    "标题与版本表",
+    "功能地图",
+    "分享页面截图",
+    "实现索引宽表",
+    "文末",
+    "待确认事项"
+  ]
+}

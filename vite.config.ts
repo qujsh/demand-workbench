@@ -10,5 +10,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    // 组件测试包含多个 Ant Design 弹层，限制进程数避免资源竞争触发5秒超时。
+    maxWorkers: 1,
   },
 });

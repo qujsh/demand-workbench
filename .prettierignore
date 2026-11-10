@@ -2,3 +2,9 @@ node_modules
 dist
 design-reference
 package-lock.json
+
+# 审查快照保留原始证据，不参与源码格式化。
+docs/reviews
+
+# Q17冻结：保留API默认地址入口原文件，避免夹带配置改动。
+src/shared/api/httpClient.ts

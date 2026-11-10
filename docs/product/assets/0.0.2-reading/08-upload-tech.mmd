@@ -1,0 +1,12 @@
+sequenceDiagram
+ participant U as 浏览器
+ participant B as 后端
+ participant Q as 七牛私有空间
+ U->>B: 申请限定用途的上传凭证
+ B-->>U: 返回上传凭证
+ U->>Q: 上传图片
+ U->>B: 提交上传完成信息
+ B->>Q: 核验实际大小、类型和摘要
+ Q-->>B: 返回云对象信息
+ B-->>U: 登记可绑定的媒体
+ U->>B: 保存记录或资料并绑定
