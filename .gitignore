@@ -19,6 +19,8 @@ test-results/
 # 系统和 IDE 本地文件
 .DS_Store
 ._*
+__pycache__/
+web-deployment-result.json
 .idea/
 
 # 本地设计参考和导出产物
