@@ -4,7 +4,7 @@
 
 ## 一次性准备
 
-1. 创建专用**公开空间** `freeligo-web`，不要复用业务图片空间或私有空间。
+1. 创建专用**公开空间** `freeligo-workbench`，不要复用业务图片空间或私有空间。
 2. 绑定自定义域名（例如 `https://www.example.com`），配置 DNS、HTTPS 证书。国内 CDN 使用已备案域名。新空间的七牛测试域名存在强制下载/静态页面限制，本脚本不支持使用测试域名作为正式站点入口。
 3. 开启默认首页，访问 `/` 和 `/index.html` 都应直接返回 `200` 和 `text/html`，不能强制下载或跳转到其他地址。
 4. 当前前端保留 Browser 路由。必须在实际使用的七牛托管/CDN方案中配置**页面路径内部回退到根 index.html，响应 200，并保留地址栏原路径**。至少 `/shares`、`/system/settings`、登录和其他前端路由刷新都应正常。仅配置默认首页不够，普通返回 404 的自定义错误页也不算完成。`/releases/*` 下真实文件必须按原路径访问，缺失 JS/CSS 应返回 404，不能返回 HTML。如果所用产品不支持这种回退，先调整托管方案或另行将前端切换为 Hash 路由，不要仅设置确认变量绕过此要求。
@@ -29,7 +29,6 @@
 
 | 名称                       | 示例/要求                                                     |
 | -------------------------- | ------------------------------------------------------------- |
-| `QINIU_WEB_BUCKET`         | `freeligo-web`，独立公开空间                                  |
 | `QINIU_WEB_ORIGIN`         | `https://www.example.com`，不含路径、参数或末尾文件名         |
 | `VITE_API_BASE_URL`        | `https://api.example.com`，不附加 `/api`，不能是 localhost/IP |
 | `VITE_MCP_PUBLIC_URL`      | 可留空，或 `https://api.example.com/mcp`                      |
@@ -78,3 +77,5 @@ npm run check
 ```
 
 生产域名、Cookie/CORS、真实登录、图片直传和移动端业务联调需等配置完成后验收。发布脚本成功只证明静态文件及路由访问通过，不表示这些业务已经验证。
+
+目标空间已在工作流中固定为 `freeligo-workbench`；无需配置 Repository variable `QINIU_WEB_BUCKET`，已有同名变量不再被读取。

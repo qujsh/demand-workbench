@@ -13,7 +13,7 @@ SHA = "a" * 40
 
 class ConfigurationTest(unittest.TestCase):
     def setUp(self):
-        self.env = dict(RELEASE_SHA=SHA, QINIU_WEB_BUCKET="freeligo-web",
+        self.env = dict(RELEASE_SHA=SHA, QINIU_WEB_BUCKET="freeligo-workbench",
                         QINIU_WEB_ORIGIN="https://www.example.com",
                         VITE_API_BASE_URL="https://api.example.com",
                         QINIU_SPA_FALLBACK_READY="true")
@@ -110,7 +110,7 @@ class ImmutableStorageTest(unittest.TestCase):
     def test_same_commit_with_changed_build_is_rejected(self):
         storage = web.QiniuStorage.__new__(web.QiniuStorage)
         storage.sdk = SimpleNamespace(etag=lambda _: "new-hash")
-        storage.bucket = "freeligo-web"
+        storage.bucket = "freeligo-workbench"
         storage.manager = Mock()
         storage.manager.stat.return_value = ({"hash": "old-hash"}, SimpleNamespace(status_code=200))
         with self.assertRaises(ValueError):

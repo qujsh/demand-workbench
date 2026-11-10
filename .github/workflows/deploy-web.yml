@@ -23,7 +23,7 @@ jobs:
     env:
       RELEASE_SHA: ${{ github.sha }}
       RESTORE_SHA: ${{ inputs.restore_sha }}
-      QINIU_WEB_BUCKET: ${{ vars.QINIU_WEB_BUCKET }}
+      QINIU_WEB_BUCKET: freeligo-workbench
       QINIU_WEB_ORIGIN: ${{ vars.QINIU_WEB_ORIGIN }}
       QINIU_SPA_FALLBACK_READY: ${{ vars.QINIU_SPA_FALLBACK_READY }}
       VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
