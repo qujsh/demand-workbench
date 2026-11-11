@@ -2458,3 +2458,24 @@
   color: var(--text-secondary, #7e899b);
   font-size: 12px;
 }
+
+.share-picture-upload {
+  width: 88px;
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.share-picture-upload small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -95,6 +95,9 @@ export function ShareEditor({
   const [previewIndex, setPreviewIndex] = useState(0);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [readingImages, setReadingImages] = useState(false);
+  const uploadingImages = useRef(false);
+  const [pendingImages, setPendingImages] = useState<File[]>([]);
+  const [failedImages, setFailedImages] = useState<File[]>([]);
   const [title, setTitle] = useState(record?.title ?? '');
   const [initialDocument] = useState(() => {
     const doc = recordDocument(record?.body ?? '', record?.document);
@@ -227,7 +230,15 @@ export function ShareEditor({
     return commit();
   };
   const addImages = async (files: File[]) => {
+    if (saving || uploadingImages.current) {
+      void message.info('请等待当前上传或保存完成后再添加图片');
+      return;
+    }
     const remaining = 9 - images.length;
+    if (remaining <= 0) {
+      void message.warning('最多添加 9 张图片，请先移除部分图片');
+      return;
+    }
     const valid = files.filter(
       (file) =>
         ['image/jpeg', 'image/png', 'image/webp'].includes(file.type) &&
@@ -237,16 +248,23 @@ export function ShareEditor({
     if (valid.length !== files.length) void message.warning('已跳过不支持或超过 10MB 的图片');
     if (valid.length > remaining)
       void message.warning(`最多添加 9 张图片，本次仅添加前 ${remaining} 张`);
+    const selected = valid.slice(0, remaining);
+    if (!selected.length) return;
+    uploadingImages.current = true;
+    setPendingImages(selected);
+    setFailedImages((current) => current.filter((file) => !selected.includes(file)));
     setReadingImages(true);
     try {
-      const results = await Promise.allSettled(
-        valid.slice(0, remaining).map((file) => uploadShareImage(file)),
-      );
+      const results = await Promise.allSettled(selected.map((file) => uploadShareImage(file)));
       const added = results.flatMap((result) => {
         if (result.status !== 'fulfilled') return [];
         imageNumbers.current.set(result.value.src, result.value.mediaNo);
         return [result.value.src];
       });
+      setFailedImages((current) => [
+        ...current,
+        ...selected.filter((_, index) => results[index].status === 'rejected'),
+      ]);
       const failed = results.find((result) => result.status === 'rejected');
       if (failed?.status === 'rejected')
         void message.error(
@@ -254,6 +272,8 @@ export function ShareEditor({
         );
       setImages((current) => [...current, ...added].slice(0, 9));
     } finally {
+      uploadingImages.current = false;
+      setPendingImages([]);
       setReadingImages(false);
     }
   };
@@ -440,6 +460,7 @@ export function ShareEditor({
             tags={tags}
             expanded={expanded}
             tagsLocked={tagsLocked}
+            onPasteImages={(files) => void addImages(files)}
             detached={detached}
             onToggleDetached={toggleDetached}
             onToggleExpanded={() => {
@@ -460,7 +481,7 @@ export function ShareEditor({
             <header className="share-picture-heading">
               <span>图片</span>
               <span>{images.length} / 9</span>
-              <small>支持批量添加</small>
+              <small>支持批量添加 · 正文中可直接粘贴截图（⌘V / Ctrl+V）</small>
             </header>
             <div className="share-picture-grid">
               {images.length < 9 && (
@@ -475,6 +496,36 @@ export function ShareEditor({
                   <span>{readingImages ? '上传中…' : '添加图片'}</span>
                 </Button>
               )}
+              {pendingImages.map((file, index) => (
+                <div className="share-picture-upload" role="status" key={`pending-${index}`}>
+                  <Spin size="small" />
+                  <span>上传中…</span>
+                  <small title={file.name}>{file.name}</small>
+                </div>
+              ))}
+              {failedImages.map((file, index) => (
+                <div className="share-picture-upload" role="status" key={`failed-${index}`}>
+                  <span>上传失败</span>
+                  <small title={file.name}>{file.name}</small>
+                  <Button
+                    size="small"
+                    disabled={readingImages || saving}
+                    onClick={() => void addImages([file])}
+                  >
+                    重试
+                  </Button>
+                  <Button
+                    type="text"
+                    size="small"
+                    disabled={readingImages || saving}
+                    onClick={() =>
+                      setFailedImages((current) => current.filter((item) => item !== file))
+                    }
+                  >
+                    移除
+                  </Button>
+                </div>
+              ))}
               {images.map((src, i) => (
                 <div className="share-picture-tile" key={`${src}-${i}`}>
                   <button

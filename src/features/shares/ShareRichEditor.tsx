@@ -33,6 +33,7 @@ interface Props {
   detached?: boolean;
   onToggleDetached?: () => void;
   onToggleExpanded: () => void;
+  onPasteImages?: (files: File[]) => void;
   ref: Ref<ShareRichEditorHandle>;
 }
 export function ShareRichEditor({
@@ -43,8 +44,13 @@ export function ShareRichEditor({
   detached,
   onToggleDetached,
   onToggleExpanded,
+  onPasteImages,
   ref,
 }: Props) {
+  const pasteImages = useRef(onPasteImages);
+  useEffect(() => {
+    pasteImages.current = onPasteImages;
+  }, [onPasteImages]);
   const locked = useRef(tagsLocked);
   useEffect(() => {
     locked.current = tagsLocked;
@@ -92,7 +98,7 @@ export function ShareRichEditor({
         underline: false,
         link: { openOnClick: false, autolink: false, protocols: ['https', 'http', 'mailto'] },
       }),
-      Placeholder.configure({ placeholder: '此刻有什么想记录的？' }),
+      Placeholder.configure({ placeholder: '此刻有什么想写的？' }),
     ],
     content: initial,
     shouldRerenderOnTransaction: true,
@@ -162,8 +168,11 @@ export function ShareRichEditor({
         return false;
       },
       handlePaste: (_, event) => {
-        if (!event.clipboardData?.files.length) return false;
+        const files = Array.from(event.clipboardData?.files ?? []);
+        if (!files.length) return false;
         event.preventDefault();
+        const images = files.filter((file) => file.type.startsWith('image/'));
+        if (images.length) pasteImages.current?.(images);
         return true;
       },
       handleDrop: (_, event) => {
