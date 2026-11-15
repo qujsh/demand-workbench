@@ -2479,3 +2479,283 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.share-editor-footer-settings {
+  align-items: center;
+}
+.share-publish-preview-hint {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+  padding: 0 24px 16px;
+}
+.share-publish-note {
+  max-height: 88dvh;
+  overflow-y: auto;
+  color: var(--text);
+}
+.share-publish-note-media {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  height: min(760px, 88dvh);
+  overflow: hidden;
+}
+.share-publish-gallery {
+  position: relative;
+  background: var(--share-gallery-background, #f0f1f3);
+  min-width: 0;
+  min-height: 0;
+}
+.share-publish-track {
+  display: flex;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.share-publish-track img {
+  width: 100%;
+  height: 100%;
+  flex: 0 0 100%;
+  object-fit: contain;
+  scroll-snap-align: start;
+}
+.share-publish-gallery .share-publish-previous,
+.share-publish-gallery .share-publish-next {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  border: 0;
+  box-shadow: none;
+  opacity: 0;
+  transition:
+    opacity 300ms,
+    transform 300ms;
+}
+.share-publish-previous {
+  left: 0;
+  transform: translate(-12px, -50%);
+}
+.share-publish-next {
+  right: 0;
+  transform: translate(12px, -50%);
+}
+.share-publish-arrow-disc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: white;
+  background: rgba(64, 64, 64, 0.25);
+  backdrop-filter: blur(10px);
+}
+.share-publish-gallery:is(:hover, :focus-within) .share-publish-previous,
+.share-publish-gallery:is(:hover, :focus-within) .share-publish-next {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+.share-publish-gallery button:disabled {
+  visibility: hidden;
+}
+@media (hover: none) {
+  .share-publish-gallery .share-publish-previous,
+  .share-publish-gallery .share-publish-next {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+  .share-publish-gallery .share-publish-counter {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .share-publish-gallery .share-publish-previous,
+  .share-publish-gallery .share-publish-next {
+    transition: none;
+  }
+}
+.share-publish-counter {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms;
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 20px;
+  background: rgba(64, 64, 64, 0.25);
+  backdrop-filter: saturate(150%) blur(10px);
+  color: white;
+  padding: 4px 8px;
+  line-height: 16px;
+  font-size: 12px;
+}
+.share-publish-reading {
+  padding: 28px;
+  min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.share-publish-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.share-publish-author strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+.share-publish-author div > span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.share-publish-reading h1 {
+  margin: 0 0 20px;
+  font-size: 23px;
+  line-height: 1.55;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.share-publish-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 17px/1.8 var(--font-reading);
+}
+.share-publish-references {
+  margin-top: 24px;
+  color: var(--primary);
+}
+.share-publish-references h3 {
+  font-size: 14px;
+  color: var(--muted);
+}
+@media (max-width: 700px) {
+  .share-publish-body {
+    font-size: 16px;
+  }
+  .share-publish-note-media {
+    display: block;
+    height: auto;
+    overflow-y: auto;
+  }
+  .share-publish-gallery {
+    height: 60dvh;
+  }
+  .share-publish-reading {
+    padding: 22px 20px 30px;
+    overflow: visible;
+  }
+  .share-publish-reading h1 {
+    font-size: 21px;
+  }
+  .share-editor-save-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+.share-publish-detail-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+@media (min-width: 701px) {
+  .share-publish-note:not(.share-publish-note-media) {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    height: min(760px, 88dvh);
+    overflow: hidden;
+  }
+}
+.share-publish-track {
+  cursor: grab;
+  overscroll-behavior-x: contain;
+}
+.share-publish-track[data-dragging] {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+.share-publish-track img {
+  user-select: none;
+}
+.share-publish-counter {
+  top: 16px;
+  right: 16px;
+  bottom: auto;
+  left: auto;
+  transform: none;
+}
+.share-publish-gallery:is(:hover, :focus-within) .share-publish-counter {
+  opacity: 1;
+}
+.share-publish-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  padding: 0;
+  max-width: calc(100% - 32px);
+}
+.share-publish-dots button {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.share-publish-dots button span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffffb3;
+  box-shadow: 0 0 5px #0004;
+  transition:
+    background 180ms,
+    transform 180ms;
+}
+.share-publish-dots button[aria-current] span {
+  background: white;
+  transform: scale(1.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share-publish-counter {
+    transition: none;
+  }
+}
+.share-publish-mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px 16px;
+  flex-wrap: wrap;
+}
+.share-publish-mode-bar .share-publish-preview-hint {
+  padding: 0;
+}
+.share-publish-preview-with-modes .share-publish-note,
+.share-publish-preview-with-modes .share-cover-stage {
+  max-height: calc(100dvh - 180px);
+}
+@media (min-width: 701px) {
+  .share-publish-preview-with-modes .share-publish-note {
+    height: min(760px, calc(100dvh - 180px));
+  }
+}
+@media (max-width: 650px) {
+  .share-publish-preview-with-modes .share-publish-note,
+  .share-publish-preview-with-modes .share-cover-stage {
+    max-height: calc(100dvh - 210px);
+  }
+}

@@ -1,5 +1,7 @@
 import { useShareTimeline } from './hooks/useShareTimeline';
 import { usePermissions } from '../account/hooks/usePermissions';
+import { SharePublishPreview } from './SharePublishPreview';
+import { ShareReviewStatus } from './ShareReviewStatus';
 import { ShareRecordContent } from './ShareRecordContent';
 import { useState, useEffect, useRef } from 'react';
 import {
@@ -668,50 +670,56 @@ export default function SharePage() {
           onSave={save}
         />
       )}
-      <Drawer
-        title="记录详情"
-        open={Boolean(detail)}
-        width={720}
-        onClose={() => setDetail(null)}
-        extra={
-          detail &&
-          !detail.deleted && (
-            <Button
-              disabled={!access.can('shares.edit')}
-              icon={<PencilLine size={14} />}
-              onClick={() => {
-                void openRecord(detail, true);
-                setDetail(null);
-              }}
-            >
-              编辑
-            </Button>
-          )
-        }
-      >
-        {detail && (
-          <div className="share-detail">
-            <span>{dayjs(detail.date).format('YYYY 年 M 月 D 日 HH:mm')}</span>
-            <h2>{detail.title || '一条记录'}</h2>
-            {content(detail, true)}
-            {detail.references?.length ? (
-              <div className="share-reference-list">
-                <strong>关联记录</strong>
-                {detail.references.map((ref) => (
-                  <Button
-                    type="link"
-                    key={ref.recordNo}
-                    disabled={ref.unavailable}
-                    onClick={() => openFloat(ref.recordNo)}
+      {detail && (
+        <SharePublishPreview
+          key={detail.id}
+          record={detail}
+          detail
+          onClose={() => setDetail(null)}
+          onOpenReference={openFloat}
+          actions={
+            !detail.deleted && (
+              <Button
+                disabled={!access.can('shares.edit')}
+                icon={<PencilLine size={14} />}
+                onClick={() => {
+                  void openRecord(detail, true);
+                  setDetail(null);
+                }}
+              >
+                编辑
+              </Button>
+            )
+          }
+          status={
+            <div className="share-record-bottom">
+              <div className="share-record-tags">
+                {detail.tags.map((name) => (
+                  <button
+                    key={name}
+                    onClick={() => {
+                      setTag(name);
+                      setDetail(null);
+                    }}
                   >
-                    {ref.title || '一条记录'} ↗
-                  </Button>
+                    # {name}
+                  </button>
                 ))}
               </div>
-            ) : null}
-          </div>
-        )}
-      </Drawer>
+              {!detail.draft && !detail.deleted && (
+                <ShareReviewStatus
+                  record={detail}
+                  retrying={data.retryReview.isPending}
+                  canRetry={access.can('shares.edit')}
+                  onRetry={() => {
+                    void data.retryReview.mutateAsync(detail).catch(reportError);
+                  }}
+                />
+              )}
+            </div>
+          }
+        />
+      )}
       <Drawer
         title="管理标签"
         open={tagManager}

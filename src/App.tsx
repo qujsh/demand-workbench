@@ -9,6 +9,7 @@ const CategoryManagement = lazy(() => import('./features/categories/pages/Catego
 const SharePage = lazy(() => import('./features/shares/SharePage'));
 const CallAuditsPage = lazy(() => import('./features/open-platform/pages/CallAuditsPage'));
 const ApiKeysPage = lazy(() => import('./features/open-platform/pages/ApiKeysPage'));
+const LegalManagement = lazy(() => import('./features/legal/LegalManagement'));
 const SettingsPage = lazy(() => import('./features/auth/pages/SettingsPage'));
 export default function App() {
   const location = useLocation();
@@ -20,11 +21,14 @@ export default function App() {
   const system = path.startsWith('/system/');
   const categories = path === '/configuration/categories';
   const shares = path === '/shares';
-  const allowed = shares
-    ? access.can('shares.use')
-    : categories
-      ? access.can('categories.read')
-      : true;
+  const allowed =
+    path === '/system/legal'
+      ? access.can('legal.manage')
+      : shares
+        ? access.can('shares.use')
+        : categories
+          ? access.can('categories.read')
+          : true;
   useEffect(() => {
     const handler = (event: Event) => {
       const message = (event as CustomEvent<string>).detail;
@@ -73,7 +77,9 @@ export default function App() {
               {settings ? (
                 <SettingsPage />
               ) : system ? (
-                path === '/system/call-audits' ? (
+                path === '/system/legal' ? (
+                  <LegalManagement />
+                ) : path === '/system/call-audits' ? (
                   <CallAuditsPage />
                 ) : path === '/system/api-keys' ? (
                   <ApiKeysPage />

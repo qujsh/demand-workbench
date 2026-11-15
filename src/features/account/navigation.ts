@@ -1,5 +1,6 @@
 /** 业务代码注册页面绑定；权限管理只配置菜单名称、层级和授权，不接收任意路由或图标代码。 */
 export const navigationBindings: Record<string, { target: string; icon: string }> = {
+  'legal.manage': { target: 'system/legal', icon: 'FileText' },
   'shares.use': { target: 'shares', icon: 'Pencil' },
   'categories.read': { target: 'categories', icon: 'ListFilter' },
   'settings.view': { target: 'system/settings', icon: 'UserRound' },

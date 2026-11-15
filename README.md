@@ -14,3 +14,8 @@
 Node/npm沿用项目环境，依赖以package-lock.json固定；npm ci后npm run dev。完整验证npm run check与npm run format:check。当前API/CORS/七牛域名配置沿用原值；本次不新增匿名公开页或完整E2E。
 
 后端为同机demand-workbench-backend项目，当前同为release-0.0.2。既有审查报告及本次整改记录位于docs/reviews，保留历史证据，不视为每次发布验收。
+
+
+## 协议HTML与版本管理（2026-11-14）
+
+已实现B端上传HTML、预览、自动递增发布版本和用户同意记录；C端公开固定版本页面、登录明确勾选及版本冲突重新确认。需要手动重启后端执行新增Flyway迁移，再由管理员分别上传并发布两份正式HTML，未配置时C端主动登录会被阻止。详见 [协议实现与验证](docs/协议管理.md)。
