@@ -100,6 +100,44 @@ describe('笔记API持久化边界', () => {
     expect(body.record.tags).toBeUndefined();
     expect(body.record.images).toBeUndefined();
   });
+  it('地点随正式内容和编辑草稿分别恢复，保存时允许清除', async () => {
+    const location = {
+      name: '西湖',
+      address: '杭州市西湖区',
+      city: '杭州',
+      poiId: 'B-test',
+      longitude: 120.14,
+      latitude: 30.25,
+    };
+    const fetch = vi.fn(
+      async (_url: string, init?: RequestInit) =>
+        new Response(
+          JSON.stringify(
+            envelope(
+              init?.method === 'POST'
+                ? { recordNo: 'SHARE-one', version: 4, status: 'SAVED', draftVersion: null }
+                : {
+                    ...detail,
+                    location,
+                    workingCopy: { ...detail.workingCopy, payload: { ...input, location: null } },
+                  },
+            ),
+          ),
+          { status: 200 },
+        ),
+    );
+    vi.stubGlobal('fetch', fetch);
+    const formal = await getNote('SHARE-one');
+    expect(formal.location).toEqual(location);
+    const copy = await getNote('SHARE-one', true);
+    expect(copy.location).toBeNull();
+    await saveNote(formal);
+    expect(JSON.parse(String(fetch.mock.calls.at(-1)?.[1]?.body)).record.location).toEqual(
+      location,
+    );
+    await saveNote({ ...formal, location: null });
+    expect(JSON.parse(String(fetch.mock.calls.at(-1)?.[1]?.body)).record.location).toBeNull();
+  });
   it('定位后的向上游标请求保留日期与筛选上下文', async () => {
     const fetch = vi.fn(
       async () =>
@@ -176,6 +214,34 @@ describe('笔记API持久化边界', () => {
       ),
     );
     await expect(getNote('SHARE-one')).rejects.toMatchObject({ status: 409, code: 'S048107002' });
+  });
+});
+
+describe('回收站历史记录兼容', () => {
+  const historicalReview = {
+    taskNo: null, status: 'approved', completedCount: 0, totalCount: 0,
+    message: '旧展示数据未执行审核', policyVersion: 'local-preview-fixture-v1',
+  };
+  const filters = { status: 'TRASH' as const, keyword: '', tagNo: '', visibility: '', period: '' };
+  const trashed = { ...detail, deletedAt: '2026-11-11T15:34:34Z', review: historicalReview };
+  const page = (record: unknown) => ({ items: [record], matchedCount: 1, hasMore: false, nextCursor: null });
+  it('有内容的回收站能读取无真实审核任务的历史记录，并保留恢复所需编号和版本', async () => {
+    const fetcher = vi.fn(async () => new Response(JSON.stringify(envelope(page(trashed)))));
+    vi.stubGlobal('fetch', fetcher);
+    const result = await listNotes(filters, '');
+    expect(result.matchedCount).toBe(1);
+    expect(result.items[0]).toMatchObject({ id: detail.recordNo, deleted: true, version: 3,
+      timelineDate: trashed.deletedAt, review: null, visibility: 'public' });
+  });
+  it.each(['queued', 'running', 'failed'])('无任务编号和任务数的%s记录仍报告协议错误', async status => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(envelope(page({
+      ...trashed, review: { ...historicalReview, status },
+    }))))));
+    await expect(listNotes(filters, '')).rejects.toMatchObject({ code: 'INVALID_API_RESPONSE' });
+  });
+  it('历史展示元数据不能混入真实审核任务列表', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(envelope([historicalReview])))));
+    await expect(getNoteReviews()).rejects.toMatchObject({ code: 'INVALID_API_RESPONSE' });
   });
 });
 

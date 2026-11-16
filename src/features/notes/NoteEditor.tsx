@@ -1,8 +1,10 @@
 import { NotePublishPreview } from './NotePublishPreview';
+import { NoteLocationPicker } from './NoteLocationPicker';
+import type { NoteLocation } from './api/amapSdk';
 import { useNoteEditorLayout } from './hooks/useNoteEditorLayout';
 import { useRef, useState, useEffect } from 'react';
 import { App, Alert, Button, DatePicker, Image, Input, Modal, Switch, Spin } from 'antd';
-import { CalendarDays, Plus, X, Hash, ExternalLink, Check, Move } from 'lucide-react';
+import { CalendarDays, Plus, X, Hash, ExternalLink, Check, Move, MapPin } from 'lucide-react';
 import dayjs from 'dayjs';
 import { NoteRichEditor, type NoteRichEditorHandle } from './NoteRichEditor';
 import { recordDocument, documentImages } from './noteRichTextModel';
@@ -57,6 +59,8 @@ export function NoteEditor({
         ...fresh.filter((ref) => !values.some((value) => value.recordNo === ref.recordNo)),
       ]);
   }, [incomingReferences, record?.id]);
+  const [location, setLocation] = useState<NoteLocation | null>(record?.location ?? null);
+  const [locationOpen, setLocationOpen] = useState(false);
   const [publishPreview, setPublishPreview] = useState<NoteRecord | null>(null);
   const [saving, setSaving] = useState(false);
   const creatingId = useRef(crypto.randomUUID());
@@ -121,7 +125,22 @@ export function NoteEditor({
     ...new Set([...(record?.images ?? []), ...documentImages(record?.document)]),
   ]);
   const [images, setImages] = useState(initialImages);
+  const [draggedImage, setDraggedImage] = useState<string | null>(null);
+  const [imageDropTarget, setImageDropTarget] = useState<string | null>(null);
+  const moveImage = (src: string, targetIndex: number) => {
+    if (readingImages || saving) return;
+    setImages((current) => {
+      const from = current.indexOf(src);
+      if (from < 0 || targetIndex < 0 || targetIndex >= current.length || from === targetIndex)
+        return current;
+      const next = [...current];
+      next.splice(from, 1);
+      next.splice(targetIndex, 0, src);
+      return next;
+    });
+  };
   const changed =
+    JSON.stringify(location) !== JSON.stringify(record?.location ?? null) ||
     references.map((ref) => ref.recordNo).join() !== (record?.referenceNos ?? []).join() ||
     images.join() !== initialImages.join() ||
     title !== (record?.title ?? '') ||
@@ -214,6 +233,7 @@ export function NoteEditor({
           document,
           tags: extractTags(body),
           date,
+          location,
           visibility,
           images,
           referenceNos: references.map((ref) => ref.recordNo),
@@ -313,6 +333,7 @@ export function NoteEditor({
               body: snapshot.text,
               document: snapshot.document,
               date,
+              location,
               visibility,
               images,
               tags: extractTags(snapshot.text),
@@ -340,8 +361,22 @@ export function NoteEditor({
   );
   return (
     <>
+      {locationOpen && (
+        <NoteLocationPicker
+          value={location}
+          onClose={() => setLocationOpen(false)}
+          onSelect={(value) => {
+            setLocation(value);
+            setLocationOpen(false);
+          }}
+        />
+      )}
       {publishPreview && (
-        <NotePublishPreview record={publishPreview} onClose={() => setPublishPreview(null)} />
+        <NotePublishPreview
+          record={publishPreview}
+          location={location ?? undefined}
+          onClose={() => setPublishPreview(null)}
+        />
       )}
       <Modal
         open
@@ -512,7 +547,7 @@ export function NoteEditor({
               <header className="note-picture-heading">
                 <span>图片</span>
                 <span>{images.length} / 9</span>
-                <small>支持批量添加 · 正文中可直接粘贴截图（⌘V / Ctrl+V）</small>
+                <small>可拖动排序 · 首图为封面 · 支持粘贴截图（⌘V / Ctrl+V）</small>
               </header>
               <div className="note-picture-grid">
                 {images.length < 9 && (
@@ -558,17 +593,57 @@ export function NoteEditor({
                   </div>
                 ))}
                 {images.map((src, i) => (
-                  <div className="note-picture-tile" key={`${src}-${i}`}>
+                  <div
+                    className={`note-picture-tile${draggedImage === src ? ' note-picture-dragging' : ''}${imageDropTarget === src && draggedImage !== src ? ' note-picture-drop-target' : ''}`}
+                    key={src}
+                    draggable={!readingImages && !saving && images.length > 1}
+                    onDragStart={(event) => {
+                      if (readingImages || saving) {
+                        event.preventDefault();
+                        return;
+                      }
+                      event.dataTransfer.effectAllowed = 'move';
+                      event.dataTransfer.setData('text/plain', src);
+                      setDraggedImage(src);
+                    }}
+                    onDragOver={(event) => {
+                      if (!draggedImage || readingImages || saving) return;
+                      event.preventDefault();
+                      event.dataTransfer.dropEffect = 'move';
+                      setImageDropTarget(src);
+                    }}
+                    onDrop={(event) => {
+                      if (!draggedImage) return;
+                      event.preventDefault();
+                      moveImage(draggedImage, i);
+                      setDraggedImage(null);
+                      setImageDropTarget(null);
+                    }}
+                    onDragEnd={() => {
+                      setDraggedImage(null);
+                      setImageDropTarget(null);
+                    }}
+                  >
                     <button
                       type="button"
                       className="note-picture-preview"
                       aria-label={`放大图片 ${i + 1}`}
+                      title="拖动调整顺序；也可按 Alt + 左右方向键移动"
+                      onKeyDown={(event) => {
+                        if (
+                          event.altKey &&
+                          (event.key === 'ArrowLeft' || event.key === 'ArrowRight')
+                        ) {
+                          event.preventDefault();
+                          moveImage(src, i + (event.key === 'ArrowLeft' ? -1 : 1));
+                        }
+                      }}
                       onClick={() => {
                         setPreviewIndex(i);
                         setPreviewOpen(true);
                       }}
                     >
-                      <img src={src} alt={`记录图片 ${i + 1}`} />
+                      <img src={src} alt={`记录图片 ${i + 1}`} draggable={false} />
                     </button>
                     <span className="note-picture-number">{i + 1}</span>
                     <Button
@@ -610,10 +685,7 @@ export function NoteEditor({
                       disabled={ref.unavailable}
                       onClick={() => onOpenReference?.(ref.recordNo)}
                     >
-                      <span
-                        className="note-editor-reference-title"
-                        title={ref.title || '一条记录'}
-                      >
+                      <span className="note-editor-reference-title" title={ref.title || '一条记录'}>
                         {ref.title || '一条记录'}
                       </span>
                       {ref.occurredAt && (
@@ -654,6 +726,30 @@ export function NoteEditor({
                     if (value) setDate(value.format('YYYY-MM-DDTHH:mm'));
                   }}
                 />
+              </div>
+              <div className="note-editor-location-row">
+                <MapPin size={16} aria-hidden="true" />
+                <span>笔记地点</span>
+                <Button
+                  type="default"
+                  icon={!location ? <Plus size={14} aria-hidden="true" /> : undefined}
+                  disabled={saving}
+                  onClick={() => setLocationOpen(true)}
+                  className="note-editor-location-button"
+                  title={location?.address || undefined}
+                >
+                  {location?.name || '添加地点'}
+                </Button>
+                {location && (
+                  <Button
+                    type="text"
+                    size="small"
+                    disabled={saving}
+                    aria-label="移除地点"
+                    icon={<X size={14} />}
+                    onClick={() => setLocation(null)}
+                  />
+                )}
               </div>
             </div>
           </div>

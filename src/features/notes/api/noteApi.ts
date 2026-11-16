@@ -1,3 +1,4 @@
+import { noteLocationSchema } from './amapSdk';
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import { buildApiUrl, requestJson, ApiError } from '../../../shared/api/httpClient';
@@ -24,6 +25,7 @@ const referenceSchema = z.object({
   unavailable: z.boolean(),
 });
 const inputSchema = z.object({
+  location: noteLocationSchema.nullable().optional(),
   title: z.string().nullable(),
   document: documentSchema,
   documentSchemaVersion: z.literal(1),
@@ -49,8 +51,21 @@ export const noteReviewSchema = z.object({
   message: z.string(),
   policyVersion: z.string(),
 });
+/** 历史展示数据只带公开状态，没有实际审核任务；不作为可轮询或重试的任务。 */
+const recordReviewSchema = z.union([
+  noteReviewSchema,
+  z.object({
+    taskNo: z.null(),
+    status: z.literal('approved'),
+    completedCount: z.literal(0),
+    totalCount: z.literal(0),
+    message: z.string(),
+    policyVersion: z.string(),
+  }).transform(() => null),
+]);
 const summarySchema = z.object({
-  review: noteReviewSchema.nullable().default(null),
+  location: noteLocationSchema.nullable().optional(),
+  review: recordReviewSchema.nullable().default(null),
   requestedVisibility: z.enum(['PRIVATE', 'PUBLIC']).optional(),
   recordNo: z.string(),
   title: z.string().nullable(),
@@ -110,6 +125,7 @@ function post<T>(path: string, schema: z.ZodType<T>, body: unknown) {
 export function toNoteRecord(value: z.infer<typeof summarySchema>): NoteRecord {
   return {
     id: value.recordNo,
+    location: value.location ?? null,
     review: value.review,
     requestedVisibility:
       (value.requestedVisibility ?? value.visibility) === 'PUBLIC' ? 'public' : 'private',
@@ -181,6 +197,7 @@ export async function getNote(id: string, editing = false): Promise<NoteRecord> 
   const copy = value.workingCopy;
   return {
     ...result,
+    location: copy.payload.location ?? null,
     title: copy.payload.title ?? '',
     body: copy.bodyText,
     document: copy.payload.document,
@@ -202,6 +219,7 @@ export function saveNote(record: NoteRecord) {
     expectedDraftVersion: record.draftVersion ?? null,
     action: record.draft ? 'DRAFT' : 'SAVE',
     record: {
+      location: record.location ?? null,
       title: record.title || null,
       document: record.document,
       documentSchemaVersion: 1,

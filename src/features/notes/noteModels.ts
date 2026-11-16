@@ -1,3 +1,4 @@
+import type { NoteLocation } from './api/amapSdk';
 import type { JSONContent } from '@tiptap/react';
 export interface NoteReference {
   recordNo: string;
@@ -15,6 +16,7 @@ export interface NoteReview {
   policyVersion: string;
 }
 export interface NoteRecord {
+  location?: NoteLocation | null;
   review?: NoteReview | null;
   requestedVisibility?: 'private' | 'public';
   referenceNos?: string[];

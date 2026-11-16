@@ -1,3 +1,4 @@
+import type { NoteLocation } from './api/amapSdk';
 import { useState } from 'react';
 import { Avatar, ConfigProvider, Segmented } from 'antd';
 import { BatteryFull, ChevronLeft, Heart, Signal, Star, Wifi } from 'lucide-react';
@@ -11,10 +12,11 @@ import './noteMobilePreview.css';
 
 interface Props {
   record: NoteRecord;
+  location?: NoteLocation;
   images: string[];
 }
 
-export function NoteMobilePreview({ record, images }: Props) {
+export function NoteMobilePreview({ record, images, location }: Props) {
   const [mode, setMode] = useState<'note' | 'cover'>('note');
   const { user } = useAuth();
   return (
@@ -108,7 +110,7 @@ export function NoteMobilePreview({ record, images }: Props) {
         <div className="note-mobile-screen">
           {mode === 'note' ? (
             <>
-              <NotePreview record={record} images={images} />
+              <NotePreview record={record} images={images} location={location} />
               <p className="note-mobile-date">{dayjs(record.date).format('M月D日 HH:mm')}</p>
             </>
           ) : (

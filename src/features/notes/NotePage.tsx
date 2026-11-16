@@ -4,6 +4,7 @@ import { NotePublishPreview } from './NotePublishPreview';
 import { NoteReviewStatus } from './NoteReviewStatus';
 import { NoteRecordContent } from './NoteRecordContent';
 import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Alert,
   App,
@@ -52,7 +53,18 @@ export default function NotePage() {
   const [openFloats, setOpenFloats] = useState<string[]>([]);
   const floating = useFloatingRecords();
   const [keyword, setKeyword] = useState('');
-  const [filter, setFilter] = useState('全部笔记');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get('view') === 'trash' ? '回收站'
+    : searchParams.get('view') === 'drafts' ? '草稿' : '全部笔记';
+  function setFilter(value: string) {
+    setSearchParams(current => {
+      const next = new URLSearchParams(current);
+      if (value === '回收站') next.set('view', 'trash');
+      else if (value === '草稿') next.set('view', 'drafts');
+      else next.delete('view');
+      return next;
+    }, { replace: true });
+  }
   const [tag, setTag] = useState('');
   const [visibility, setVisibility] = useState('all');
   const [tagManager, setTagManager] = useState(false);

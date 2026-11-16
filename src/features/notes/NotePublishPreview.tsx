@@ -1,3 +1,4 @@
+import type { NoteLocation } from './api/amapSdk';
 import { useRef, type ReactNode } from 'react';
 import { NotePreview } from './NotePreview';
 import { NoteMobilePreview } from './NoteMobilePreview';
@@ -7,6 +8,7 @@ import type { NoteRecord } from './noteModels';
 
 interface Props {
   record: NoteRecord;
+  location?: NoteLocation;
   onClose: () => void;
   detail?: boolean;
   actions?: ReactNode;
@@ -17,6 +19,7 @@ interface Props {
 /** 与 C 端 NoteReader 一致：图片完整展示，正文按公开详情的纯文本呈现。 */
 export function NotePublishPreview({
   record,
+  location,
   onClose,
   detail = false,
   actions,
@@ -60,6 +63,7 @@ export function NotePublishPreview({
       <div className="note-preview-workspace">
         <div className="note-preview-desktop">
           <NotePreview
+            location={location}
             record={record}
             images={images}
             detail={detail}
@@ -67,7 +71,7 @@ export function NotePublishPreview({
             onOpenReference={onOpenReference}
           />
         </div>
-        <NoteMobilePreview record={record} images={images} />
+        <NoteMobilePreview record={record} images={images} location={location} />
       </div>
     </Modal>
   );

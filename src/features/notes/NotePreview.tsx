@@ -1,5 +1,6 @@
+import type { NoteLocation } from './api/amapSdk';
 import { Avatar, Button } from 'antd';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import dayjs from 'dayjs';
 import { useAuth } from '../auth/authContext';
 import { avatarUrl } from '../auth';
@@ -9,6 +10,7 @@ import type { ReactNode } from 'react';
 
 interface Props {
   record: NoteRecord;
+  location?: NoteLocation;
   images: string[];
   detail?: boolean;
   status?: ReactNode;
@@ -16,6 +18,7 @@ interface Props {
 }
 export function NotePreview({
   record,
+  location = record.location ?? undefined,
   images,
   detail = false,
   status,
@@ -169,6 +172,12 @@ export function NotePreview({
               </p>
             ))}
           </section>
+        )}
+        {location && (
+          <p className="note-preview-location" title={location.address || undefined}>
+            <MapPin size={15} aria-hidden="true" />
+            <span>{location.name}</span>
+          </p>
         )}
         {status}
       </div>

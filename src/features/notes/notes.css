@@ -1130,6 +1130,36 @@
 .note-editor-settings[hidden] {
   display: none;
 }
+.note-editor-location-row .note-editor-location-button {
+  min-width: 112px;
+  max-width: min(320px, 60vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text, #172033);
+  padding-inline: 12px;
+}
+.note-editor-location-button > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-location-intro {
+  color: var(--muted, #7e899b);
+  margin: 8px 0 24px;
+}
+.note-preview-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 20px 0 0;
+  color: var(--muted, #7e899b);
+  font-size: 13px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+.note-preview-location svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
 .note-rich-toolbar .note-editor-detach,
 .note-rich-toolbar .note-editor-expand {
   margin-left: auto;
@@ -2758,4 +2788,15 @@
   .note-publish-preview-with-modes .note-cover-stage {
     max-height: calc(100dvh - 210px);
   }
+}
+
+.note-picture-tile[draggable='true'] .note-picture-preview {
+  cursor: grab;
+}
+.note-picture-tile.note-picture-dragging {
+  opacity: 0.45;
+}
+.note-picture-tile.note-picture-drop-target {
+  outline: 2px solid var(--blue, #4268f6);
+  outline-offset: 3px;
 }
