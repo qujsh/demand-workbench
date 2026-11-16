@@ -6,7 +6,7 @@ import { usePermissions } from './features/account/hooks/usePermissions';
 import { Alert, Button, Spin } from 'antd';
 const SystemConfiguration = lazy(() => import('./features/account/pages/SystemConfiguration'));
 const CategoryManagement = lazy(() => import('./features/categories/pages/CategoryManagement'));
-const SharePage = lazy(() => import('./features/shares/SharePage'));
+const NotePage = lazy(() => import('./features/notes/NotePage'));
 const CallAuditsPage = lazy(() => import('./features/open-platform/pages/CallAuditsPage'));
 const ApiKeysPage = lazy(() => import('./features/open-platform/pages/ApiKeysPage'));
 const LegalManagement = lazy(() => import('./features/legal/LegalManagement'));
@@ -20,12 +20,12 @@ export default function App() {
   const settings = path === '/system/settings';
   const system = path.startsWith('/system/');
   const categories = path === '/configuration/categories';
-  const shares = path === '/shares';
+  const notes = path === '/notes';
   const allowed =
     path === '/system/legal'
       ? access.can('legal.manage')
-      : shares
-        ? access.can('shares.use')
+      : notes
+        ? access.can('notes.use')
         : categories
           ? access.can('categories.read')
           : true;
@@ -52,8 +52,8 @@ export default function App() {
             ? `system/${path.split('/')[2]}`
             : categories
               ? 'categories'
-              : shares
-                ? 'shares'
+              : notes
+                ? 'notes'
                 : ''
         }
         onChange={(target) =>
@@ -88,13 +88,13 @@ export default function App() {
                 )
               ) : categories ? (
                 <CategoryManagement />
-              ) : shares ? (
-                <SharePage />
+              ) : notes ? (
+                <NotePage />
               ) : (
                 <Alert
                   type="info"
                   title="页面不存在或已下线"
-                  action={<Link to="/shares">前往分享管理</Link>}
+                  action={<Link to="/notes">前往笔记管理</Link>}
                 />
               )}
             </>

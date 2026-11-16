@@ -48,19 +48,19 @@
     "broken_local_links": []
   },
   {
-    "file": "docs/design/分享管理前后端技术设计.md",
+    "file": "docs/design/笔记管理前后端技术设计.md",
     "project": "frontend",
     "lines": 1157,
     "broken_local_links": []
   },
   {
-    "file": "docs/design/分享图片访问与配置.md",
+    "file": "docs/design/笔记图片访问与配置.md",
     "project": "frontend",
     "lines": 54,
     "broken_local_links": []
   },
   {
-    "file": "docs/design/分享管理实现与验证.md",
+    "file": "docs/design/笔记管理实现与验证.md",
     "project": "frontend",
     "lines": 59,
     "broken_local_links": []
@@ -114,7 +114,7 @@
     "broken_local_links": []
   },
   {
-    "file": "docs/prd/分享模块产品方案.md",
+    "file": "docs/prd/笔记模块产品方案.md",
     "project": "frontend",
     "lines": 219,
     "broken_local_links": []

@@ -5,7 +5,7 @@ const key = {
   keyNo: 'KEY-test',
   name: 'Codex',
   prefix: 'dw_sk_example',
-  scopes: ['shares:read'],
+  scopes: ['notes:read'],
   createdAt: '2026-11-06T00:00:00Z',
   expiresAt: '2027-01-01T00:00:00Z',
   revokedAt: null,
@@ -29,7 +29,7 @@ describe('API密钥契约', () => {
       .mockResolvedValueOnce(success({ key, secret: 'one-time-secret' }))
       .mockResolvedValueOnce(success('已撤销'));
     vi.stubGlobal('fetch', fetch);
-    const command = { name: 'Codex', scopes: ['shares:read'] as const, validDays: 90 };
+    const command = { name: 'Codex', scopes: ['notes:read'] as const, validDays: 90 };
     expect((await createApiKey({ ...command, scopes: [...command.scopes] })).secret).toBe(
       'one-time-secret',
     );

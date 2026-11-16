@@ -11,13 +11,13 @@ it('审计查询绑定范围、分页与筛选，拒绝不符合契约的数据'
     await listCallAudits({
       scope: 'self',
       keyNo: 'KEY-a',
-      tool: 'create_share',
+      tool: 'create_note',
       page: 2,
       pageSize: 20,
     }),
   ).toEqual(data);
   expect(fetch.mock.calls[0][0]).toContain(
-    'scope=self&keyNo=KEY-a&tool=create_share&page=2&pageSize=20',
+    'scope=self&keyNo=KEY-a&tool=create_note&page=2&pageSize=20',
   );
   fetch.mockResolvedValue(
     new Response(JSON.stringify({ success: true, msg: { ...data, records: [{}] } })),

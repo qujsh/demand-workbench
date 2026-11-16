@@ -21,9 +21,9 @@ import type { ApiKey, CreateKey } from '../api/apiKeyApi';
 import './apiKeys.css';
 
 const scopeNames = {
-  'shares:read': '读取分享',
-  'shares:create': '创建分享',
-  'shares:update': '更新分享',
+  'notes:read': '读取笔记',
+  'notes:create': '创建笔记',
+  'notes:update': '更新笔记',
 };
 const status = (key: ApiKey) =>
   key.revokedAt
@@ -82,7 +82,7 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
       <div className="api-key-intro">
         <p>
           列表展示你的 API
-          密钥。完整密钥仅在创建时显示，请妥善保存，不要分享给他人或暴露在浏览器等客户端代码中。
+          密钥。完整密钥仅在创建时显示，请妥善保存，不要笔记给他人或暴露在浏览器等客户端代码中。
         </p>
         <p>密钥权限与账号当前权限共同决定可用能力。单个账号最多可拥有 20 把有效密钥。</p>
       </div>
@@ -92,7 +92,7 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
         )}
         <Button
           type="primary"
-          disabled={permissions !== undefined && !permissions.includes('shares.use')}
+          disabled={permissions !== undefined && !permissions.includes('notes.use')}
           onClick={() => setOpen(true)}
         >
           创建 API 密钥
@@ -295,7 +295,7 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
             form={form}
             layout="vertical"
             onFinish={(values) => void submit(values)}
-            initialValues={{ scopes: ['shares:read'], validDays: 90 }}
+            initialValues={{ scopes: ['notes:read'], validDays: 90 }}
           >
             <Form.Item
               name="name"
@@ -315,10 +315,10 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
                   label,
                   disabled:
                     permissions !== undefined &&
-                    (value === 'shares:create'
-                      ? !permissions.includes('shares.create')
-                      : value === 'shares:update'
-                        ? !permissions.includes('shares.edit')
+                    (value === 'notes:create'
+                      ? !permissions.includes('notes.create')
+                      : value === 'notes:update'
+                        ? !permissions.includes('notes.edit')
                         : false),
                 }))}
               />
