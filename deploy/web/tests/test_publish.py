@@ -121,5 +121,56 @@ class ImmutableStorageTest(unittest.TestCase):
             storage.upload("releases/sha/index.html", Path("index.html"))
 
 
+
+class UploadRegionsTest(unittest.TestCase):
+    def test_upload_receives_bucket_discovery_instead_of_empty_default_zone(self):
+        # SDK imports are replaced so the suite also runs before pip install in CI.
+        import sys
+        from types import ModuleType
+        sdk = ModuleType("qiniu")
+        config = ModuleType("qiniu.config")
+        config.set_default = Mock()
+        sdk.config = config
+        sdk.Region = Mock()
+        sdk.Auth = Mock()
+        sdk.BucketManager = Mock()
+        sdk.CdnManager = Mock()
+        sdk.etag = Mock(return_value="expected")
+        sdk.put_file_v2 = Mock(return_value=({"hash": "expected"}, SimpleNamespace(status_code=200)))
+        sdk.BucketManager.return_value.stat.return_value = (None, SimpleNamespace(status_code=612))
+        provider = ModuleType("qiniu.http.regions_provider")
+        provider.get_default_regions_provider = Mock(return_value=["discovered-region"])
+        endpoint = ModuleType("qiniu.http.endpoint")
+        endpoint.Endpoint = SimpleNamespace(from_host=lambda host: host)
+        modules = {"qiniu": sdk, "qiniu.config": config, "qiniu.http": ModuleType("qiniu.http"),
+                   "qiniu.http.regions_provider": provider, "qiniu.http.endpoint": endpoint}
+        with patch.dict(sys.modules, modules):
+            storage = web.QiniuStorage("web-bucket", {"QINIU_ACCESS_KEY": "fake-ak", "QINIU_SECRET_KEY": "fake-sk"})
+            storage.upload("releases/test/app.js", Path("app.js"))
+        query = provider.get_default_regions_provider.call_args.kwargs
+        self.assertEqual(query["bucket_name"], "web-bucket")
+        self.assertEqual(query["preferred_scheme"], "https")
+        self.assertEqual(sdk.put_file_v2.call_args.kwargs["regions"], ["discovered-region"])
+
+    def test_sdk_exception_secrets_are_not_logged_or_saved(self):
+        import contextlib
+        import io
+        import json
+        env = dict(RELEASE_SHA=SHA, QINIU_WEB_BUCKET="web-bucket",
+                   QINIU_WEB_ORIGIN="https://www.example.com", VITE_API_BASE_URL="https://api.example.com",
+                   VITE_MANAGEMENT_URL="https://fed.example.com/#/notes", VITE_DATA_SOURCE="api")
+        log = io.StringIO()
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "result.json"
+            with patch.dict("os.environ", env, clear=True), patch("sys.argv", ["publish.py"]), \
+                    patch.object(web, "REPORT", report), \
+                    patch.object(web, "QiniuStorage", side_effect=RuntimeError("secret-upload-token")), \
+                    contextlib.redirect_stderr(log), self.assertRaises(SystemExit):
+                web.main()
+            result = json.loads(report.read_text())
+        self.assertNotIn("secret-upload-token", log.getvalue())
+        self.assertNotIn("secret-upload-token", str(result))
+        self.assertIn("RuntimeError", result["reason"])
+
 if __name__ == "__main__":
     unittest.main()
