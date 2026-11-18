@@ -28,8 +28,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/分享图片访问与配置.md",
-    "relativePath": "docs/design/分享图片访问与配置.md",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/笔记图片访问与配置.md",
+    "relativePath": "docs/design/笔记图片访问与配置.md",
     "status": "modified",
     "category": "文档/归档/交付记录",
     "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
@@ -37,8 +37,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/分享管理前后端技术设计.md",
-    "relativePath": "docs/design/分享管理前后端技术设计.md",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/笔记管理前后端技术设计.md",
+    "relativePath": "docs/design/笔记管理前后端技术设计.md",
     "status": "modified",
     "category": "文档/归档/交付记录",
     "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
@@ -46,8 +46,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/分享管理实现与验证.md",
-    "relativePath": "docs/design/分享管理实现与验证.md",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/design/笔记管理实现与验证.md",
+    "relativePath": "docs/design/笔记管理实现与验证.md",
     "status": "modified",
     "category": "文档/归档/交付记录",
     "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
@@ -91,8 +91,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/prd/分享模块产品方案.md",
-    "relativePath": "docs/prd/分享模块产品方案.md",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/docs/prd/笔记模块产品方案.md",
+    "relativePath": "docs/prd/笔记模块产品方案.md",
     "status": "modified",
     "category": "文档/归档/交付记录",
     "reason": "明确当前版本入口与历史边界，保留原设计和验证证据",
@@ -176,7 +176,7 @@
     "relativePath": "eslint.config.js",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -185,7 +185,7 @@
     "relativePath": "src/app/providers.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -194,7 +194,7 @@
     "relativePath": "src/app/router.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -203,7 +203,7 @@
     "relativePath": "src/components/Icons.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -212,7 +212,7 @@
     "relativePath": "src/components/Sidebar.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -221,7 +221,7 @@
     "relativePath": "src/features/account/accountPresentation.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -230,7 +230,7 @@
     "relativePath": "src/features/account/api/accountApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -239,7 +239,7 @@
     "relativePath": "src/features/account/api/accountApi.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -248,7 +248,7 @@
     "relativePath": "src/features/account/api/permissionApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -257,7 +257,7 @@
     "relativePath": "src/features/account/api/permissionApi.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -266,7 +266,7 @@
     "relativePath": "src/features/account/api/roleApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -275,7 +275,7 @@
     "relativePath": "src/features/account/api/roleApi.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -284,7 +284,7 @@
     "relativePath": "src/features/account/components/AccountCenter.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -293,7 +293,7 @@
     "relativePath": "src/features/account/components/AccountManagement.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -302,7 +302,7 @@
     "relativePath": "src/features/account/components/AdminPanel.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -311,7 +311,7 @@
     "relativePath": "src/features/account/components/PermissionManagement.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -329,7 +329,7 @@
     "relativePath": "src/features/account/components/PermissionNodeEditor.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -347,7 +347,7 @@
     "relativePath": "src/features/account/components/PermissionResourceForm.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -356,7 +356,7 @@
     "relativePath": "src/features/account/components/PermissionResourceStatus.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -365,7 +365,7 @@
     "relativePath": "src/features/account/components/PermissionTree.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -383,7 +383,7 @@
     "relativePath": "src/features/account/components/RoleEditor.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -392,7 +392,7 @@
     "relativePath": "src/features/account/components/RoleManagement.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -401,7 +401,7 @@
     "relativePath": "src/features/account/contractorBadges.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -410,7 +410,7 @@
     "relativePath": "src/features/account/hooks/useAccountPlatform.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -419,7 +419,7 @@
     "relativePath": "src/features/account/hooks/usePermissionDirectory.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -428,7 +428,7 @@
     "relativePath": "src/features/account/hooks/usePermissions.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -437,7 +437,7 @@
     "relativePath": "src/features/account/hooks/useRoleConfiguration.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -446,7 +446,7 @@
     "relativePath": "src/features/account/pages/SystemConfiguration.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -455,7 +455,7 @@
     "relativePath": "src/features/account/permissionResources.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -464,7 +464,7 @@
     "relativePath": "src/features/account/publisherBadges.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -473,7 +473,7 @@
     "relativePath": "src/features/account/system.css",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -482,7 +482,7 @@
     "relativePath": "src/features/auth/api/authApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -491,7 +491,7 @@
     "relativePath": "src/features/auth/api/authApi.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -500,7 +500,7 @@
     "relativePath": "src/features/auth/api/avatarApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -509,7 +509,7 @@
     "relativePath": "src/features/auth/api/avatarApi.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -518,7 +518,7 @@
     "relativePath": "src/features/auth/auth.css",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -527,7 +527,7 @@
     "relativePath": "src/features/auth/components/AccountSecurity.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -545,7 +545,7 @@
     "relativePath": "src/features/auth/components/AuthGate.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -563,7 +563,7 @@
     "relativePath": "src/features/auth/components/LoginBackground.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -572,7 +572,7 @@
     "relativePath": "src/features/auth/components/PasswordSecurity.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -581,7 +581,7 @@
     "relativePath": "src/features/auth/components/ProfileEditor.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -590,7 +590,7 @@
     "relativePath": "src/features/auth/hooks/useAccountSecurity.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -599,7 +599,7 @@
     "relativePath": "src/features/auth/hooks/useAuthActions.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -608,7 +608,7 @@
     "relativePath": "src/features/auth/hooks/useAuthPanelTransition.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -617,7 +617,7 @@
     "relativePath": "src/features/auth/pages/AuthPage.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -626,7 +626,7 @@
     "relativePath": "src/features/auth/pages/SettingsPage.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -635,7 +635,7 @@
     "relativePath": "src/features/auth/pages/settings.css",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -644,7 +644,7 @@
     "relativePath": "src/features/categories/api/taskCategoryApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -653,7 +653,7 @@
     "relativePath": "src/features/categories/categories.css",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -689,7 +689,7 @@
     "relativePath": "src/features/categories/pages/CategoryManagement.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -698,7 +698,7 @@
     "relativePath": "src/features/open-platform/api/apiKeyApi.test.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -712,8 +712,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareEditor.tsx",
-    "relativePath": "src/features/shares/ShareEditor.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NoteEditor.tsx",
+    "relativePath": "src/features/notes/NoteEditor.tsx",
     "status": "modified",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -721,17 +721,17 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareFloating.tsx",
-    "relativePath": "src/features/shares/ShareFloating.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NoteFloating.tsx",
+    "relativePath": "src/features/notes/NoteFloating.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/SharePage.tsx",
-    "relativePath": "src/features/shares/SharePage.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NotePage.tsx",
+    "relativePath": "src/features/notes/NotePage.tsx",
     "status": "modified",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -739,8 +739,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareRecordContent.test.tsx",
-    "relativePath": "src/features/shares/ShareRecordContent.test.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NoteRecordContent.test.tsx",
+    "relativePath": "src/features/notes/NoteRecordContent.test.tsx",
     "status": "new",
     "category": "自动化测试/测试隔离",
     "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
@@ -748,8 +748,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareRecordContent.tsx",
-    "relativePath": "src/features/shares/ShareRecordContent.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NoteRecordContent.tsx",
+    "relativePath": "src/features/notes/NoteRecordContent.tsx",
     "status": "new",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -757,8 +757,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareReviewStatus.test.tsx",
-    "relativePath": "src/features/shares/ShareReviewStatus.test.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NoteReviewStatus.test.tsx",
+    "relativePath": "src/features/notes/NoteReviewStatus.test.tsx",
     "status": "modified",
     "category": "自动化测试/测试隔离",
     "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
@@ -766,26 +766,26 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/ShareReviewStatus.tsx",
-    "relativePath": "src/features/shares/ShareReviewStatus.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/NoteReviewStatus.tsx",
+    "relativePath": "src/features/notes/NoteReviewStatus.tsx",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/api/shareApi.ts",
-    "relativePath": "src/features/shares/api/shareApi.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/api/noteApi.ts",
+    "relativePath": "src/features/notes/api/noteApi.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditingSession.test.tsx",
-    "relativePath": "src/features/shares/hooks/useShareEditingSession.test.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/hooks/useNoteEditingSession.test.tsx",
+    "relativePath": "src/features/notes/hooks/useNoteEditingSession.test.tsx",
     "status": "new",
     "category": "自动化测试/测试隔离",
     "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
@@ -793,8 +793,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditingSession.ts",
-    "relativePath": "src/features/shares/hooks/useShareEditingSession.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/hooks/useNoteEditingSession.ts",
+    "relativePath": "src/features/notes/hooks/useNoteEditingSession.ts",
     "status": "new",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -802,8 +802,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditorLayout.test.tsx",
-    "relativePath": "src/features/shares/hooks/useShareEditorLayout.test.tsx",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/hooks/useNoteEditorLayout.test.tsx",
+    "relativePath": "src/features/notes/hooks/useNoteEditorLayout.test.tsx",
     "status": "new",
     "category": "自动化测试/测试隔离",
     "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",
@@ -811,8 +811,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareEditorLayout.ts",
-    "relativePath": "src/features/shares/hooks/useShareEditorLayout.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/hooks/useNoteEditorLayout.ts",
+    "relativePath": "src/features/notes/hooks/useNoteEditorLayout.ts",
     "status": "new",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -820,8 +820,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShareTimeline.ts",
-    "relativePath": "src/features/shares/hooks/useShareTimeline.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/hooks/useNoteTimeline.ts",
+    "relativePath": "src/features/notes/hooks/useNoteTimeline.ts",
     "status": "new",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -829,17 +829,17 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/hooks/useShares.ts",
-    "relativePath": "src/features/shares/hooks/useShares.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/hooks/useNotes.ts",
+    "relativePath": "src/features/notes/hooks/useNotes.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/shareDemo.ts",
-    "relativePath": "src/features/shares/shareDemo.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/noteDemo.ts",
+    "relativePath": "src/features/notes/noteDemo.ts",
     "status": "deleted/moved",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -847,8 +847,8 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/shareModels.ts",
-    "relativePath": "src/features/shares/shareModels.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/noteModels.ts",
+    "relativePath": "src/features/notes/noteModels.ts",
     "status": "new",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -856,11 +856,11 @@
   },
   {
     "project": "frontend",
-    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/shares/shareTags.ts",
-    "relativePath": "src/features/shares/shareTags.ts",
+    "path": "/Users/mainto/Documents/Codex/2026-09-30/https-chatgpt-com-share-6abcced2-9a98/demand-workbench/src/features/notes/noteTags.ts",
+    "relativePath": "src/features/notes/noteTags.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -869,7 +869,7 @@
     "relativePath": "src/shared/identity/memberPresentation.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -878,7 +878,7 @@
     "relativePath": "src/styles.css",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -887,7 +887,7 @@
     "relativePath": "src/tailwind.css",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -896,7 +896,7 @@
     "relativePath": "src/test/setup.ts",
     "status": "modified",
     "category": "纯格式或模型引用迁移",
-    "reason": "沿现有Prettier规则，不变更业务含义；shares相关类型引用改为shareModels",
+    "reason": "沿现有Prettier规则，不变更业务含义；notes相关类型引用改为shareModels",
     "validation": "typecheck、ESLint、76用例、生产构建"
   },
   {
@@ -1171,8 +1171,8 @@
   },
   {
     "project": "backend",
-    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/application/ShareMediaService.java",
-    "relativePath": "src/main/java/com/demandworkbench/shares/application/ShareMediaService.java",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/notes/application/NoteMediaService.java",
+    "relativePath": "src/main/java/com/demandworkbench/notes/application/NoteMediaService.java",
     "status": "modified",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -1180,8 +1180,8 @@
   },
   {
     "project": "backend",
-    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/application/ShareStorage.java",
-    "relativePath": "src/main/java/com/demandworkbench/shares/application/ShareStorage.java",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/notes/application/NoteStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/notes/application/NoteStorage.java",
     "status": "deleted/moved",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -1189,8 +1189,8 @@
   },
   {
     "project": "backend",
-    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/infrastructure/DeepSeekShareReviewClient.java",
-    "relativePath": "src/main/java/com/demandworkbench/shares/infrastructure/DeepSeekShareReviewClient.java",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/notes/infrastructure/DeepSeekNoteReviewClient.java",
+    "relativePath": "src/main/java/com/demandworkbench/notes/infrastructure/DeepSeekNoteReviewClient.java",
     "status": "modified",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -1198,8 +1198,8 @@
   },
   {
     "project": "backend",
-    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/shares/infrastructure/PrivateShareStorage.java",
-    "relativePath": "src/main/java/com/demandworkbench/shares/infrastructure/PrivateShareStorage.java",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/main/java/com/demandworkbench/notes/infrastructure/PrivateNoteStorage.java",
+    "relativePath": "src/main/java/com/demandworkbench/notes/infrastructure/PrivateNoteStorage.java",
     "status": "modified",
     "category": "工程配置/代码治理",
     "reason": "对应Q02/Q09/Q10/Q15/Q19/Q20/Q21/Q22，详见报告逐项记录",
@@ -1306,8 +1306,8 @@
   },
   {
     "project": "backend",
-    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/java/com/demandworkbench/shares/ShareIntegrationTest.java",
-    "relativePath": "src/test/java/com/demandworkbench/shares/ShareIntegrationTest.java",
+    "path": "/Users/mainto/javafile/demand-workbench-backend/src/test/java/com/demandworkbench/notes/NoteIntegrationTest.java",
+    "relativePath": "src/test/java/com/demandworkbench/notes/NoteIntegrationTest.java",
     "status": "modified",
     "category": "自动化测试/测试隔离",
     "reason": "覆盖本次职责边界、非法HTTP输入、并发配额；测试不依赖云凭证",

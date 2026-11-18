@@ -7,10 +7,10 @@ import { listCallAudits, type CallAudit, type CallAuditFilters } from '../api/ca
 import './apiKeysPage.css';
 const outcomes = { running: '执行中', success: '成功', error: '失败' };
 const tools = {
-  create_share: '创建分享',
-  search_shares: '搜索分享',
-  get_share: '读取分享',
-  update_share: '更新分享',
+  create_note: '创建笔记',
+  search_notes: '搜索笔记',
+  get_note: '读取笔记',
+  update_note: '更新笔记',
 };
 export default function CallAuditsPage() {
   const access = usePermissions();
@@ -43,7 +43,7 @@ export default function CallAuditsPage() {
         <h2>调用审计</h2>
         <p>
           查看 MCP
-          调用与密钥诊断的执行结果。记录请求编号、工具、耗时和错误码，不保存密钥、分享正文或完整参数。管理后台的操作记录请在「操作审计」查看。
+          调用与密钥诊断的执行结果。记录请求编号、工具、耗时和错误码，不保存密钥、笔记正文或完整参数。管理后台的操作记录请在「操作审计」查看。
         </p>
         {!access.isPending && !access.can('call-audits.view') ? (
           <Alert type="warning" title="没有查看调用审计的权限" />

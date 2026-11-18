@@ -2,8 +2,18 @@ import type { ZodType } from 'zod';
 
 const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8070').replace(/\/$/, '');
 
+/** 仅本机开发对齐回环主机名；Cookie按主机而非端口共享，不复制或透传会话凭证。 */
+export function resolveApiBaseUrl(base: string, pageUrl: string, development: boolean): string {
+  if (!development || !/^https?:\/\//i.test(base)) return base;
+  const target = new URL(base);
+  const page = new URL(pageUrl);
+  const loopback = (hostname: string) => hostname === 'localhost' || hostname === '127.0.0.1';
+  if (loopback(target.hostname) && loopback(page.hostname)) target.hostname = page.hostname;
+  return target.href.replace(/\/$/, '');
+}
+
 export function buildApiUrl(path: string): string {
-  return `${apiBaseUrl}${path}`;
+  return `${resolveApiBaseUrl(apiBaseUrl, window.location.href, import.meta.env.DEV)}${path}`;
 }
 
 export class ApiError extends Error {

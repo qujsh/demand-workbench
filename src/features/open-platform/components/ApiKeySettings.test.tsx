@@ -7,7 +7,7 @@ const key = {
   keyNo: 'KEY-test',
   name: 'Codex',
   prefix: 'dw_sk_example',
-  scopes: ['shares:read'],
+  scopes: ['notes:read'],
   createdAt: '2026-11-06T00:00:00Z',
   expiresAt: '2027-01-01T00:00:00Z',
   revokedAt: null,

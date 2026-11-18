@@ -10,8 +10,8 @@ it('服务端诊断立即清除输入且不回显密钥', async () => {
         success: true,
         msg: {
           keyNo: 'KEY-test',
-          scopes: ['shares:create'],
-          tools: ['create_share'],
+          scopes: ['notes:create'],
+          tools: ['create_note'],
           requestNo: 'CALL-test',
         },
       }),

@@ -57,7 +57,7 @@ function UserView() {
     </>
   );
 }
-function mount(path = '/shares') {
+function mount(path = '/notes') {
   const client = new QueryClient({
     defaultOptions: { queries: { staleTime: 60_000, retry: false }, mutations: { retry: false } },
   });

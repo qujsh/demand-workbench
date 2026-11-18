@@ -76,7 +76,7 @@ export function AuthGate({ children }: PropsWithChildren) {
         onPasswordSaved={passwordSaved}
       />
     );
-  if (publicPaths.includes(location.pathname)) return <Navigate to="/shares" replace />;
+  if (publicPaths.includes(location.pathname)) return <Navigate to="/notes" replace />;
   return (
     <AuthContext.Provider value={{ user, logout: handleLogout }}>{children}</AuthContext.Provider>
   );

@@ -47,7 +47,7 @@ export function McpConnectionGuide() {
       {messageContext}
       <div className="mcp-section-heading">
         <h3>连接 MCP 与诊断</h3>
-        <p>按以下步骤将你的分享连接到 Codex。</p>
+        <p>按以下步骤将你的笔记连接到 Codex。</p>
       </div>
       {endpoint.error ? (
         <Alert type="error" showIcon title={endpoint.error} />
@@ -81,7 +81,7 @@ export function McpConnectionGuide() {
             <li>
               <h4>连接并检查工具</h4>
               <p>
-                重启 Codex，查看可用工具，再尝试搜索或创建分享。账号权限与密钥范围共同决定可用能力。
+                重启 Codex，查看可用工具，再尝试搜索或创建笔记。账号权限与密钥范围共同决定可用能力。
               </p>
               <Button onClick={() => void copy(command, '检查命令')}>复制客户端检查命令</Button>
               <p className="mcp-caption">
@@ -90,14 +90,14 @@ export function McpConnectionGuide() {
             </li>
           </ol>
           <p className="mcp-content-note">
-            新建内容保持私密；公开或待审核分享的修改仅保存编辑草稿，需在网页确认后发布。密钥仅用于
+            新建内容保持私密；公开或待审核笔记的修改仅保存编辑草稿，需在网页确认后发布。密钥仅用于
             MCP，不能登录网页。
           </p>
         </>
       )}
       <div className="mcp-diagnostic">
         <h4>验证本人密钥</h4>
-        <p>检查密钥是否有效及服务端可用工具，不会修改分享内容。</p>
+        <p>检查密钥是否有效及服务端可用工具，不会修改笔记内容。</p>
         <Space.Compact className="mcp-diagnostic-input">
           <Input.Password
             aria-label="待诊断密钥"
