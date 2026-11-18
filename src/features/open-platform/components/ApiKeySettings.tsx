@@ -88,7 +88,7 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
       </div>
       <div className="api-key-toolbar">
         {(permissions === undefined || permissions.includes('call-audits.view')) && (
-          <Button href="/system/call-audits">查看调用记录</Button>
+          <Button href="/#/system/call-audits">查看调用记录</Button>
         )}
         <Button
           type="primary"
