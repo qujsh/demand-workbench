@@ -95,10 +95,16 @@ def fetch(url, html=False):
         return data
 
 
+class DeploymentError(ValueError):
+    """Only controlled messages safe for Actions logs and reports."""
+
+
 class QiniuStorage:
     def __init__(self, bucket, env):
         import qiniu
         import qiniu.config
+        from qiniu.http.regions_provider import get_default_regions_provider
+        from qiniu.http.endpoint import Endpoint
         for key in ("QINIU_ACCESS_KEY", "QINIU_SECRET_KEY"):
             if not env.get(key):
                 raise ValueError(f"缺少 GitHub Secret: {key}")
@@ -107,6 +113,13 @@ class QiniuStorage:
         self.sdk = qiniu
         self.auth = qiniu.Auth(env["QINIU_ACCESS_KEY"], env["QINIU_SECRET_KEY"])
         self.bucket = bucket
+        # A scheme-only LegacyRegion has no UP endpoints. SDK 7.18 treats a
+        # customized default_zone as static, so supply real bucket discovery.
+        self.regions = get_default_regions_provider(
+            query_endpoints_provider=[Endpoint.from_host(host) for host in
+                                      ("https://uc.qiniuapi.com", "https://kodo-config.qiniuapi.com")],
+            access_key=env["QINIU_ACCESS_KEY"], bucket_name=bucket,
+            preferred_scheme="https")
         self.manager = qiniu.BucketManager(self.auth, preferred_scheme="https")
         self.cdn = qiniu.CdnManager(self.auth)
         self.cdn.server = "https://fusion.qiniuapi.com"
@@ -120,20 +133,20 @@ class QiniuStorage:
                     raise ValueError("同一提交已存在不同构建内容；请创建新提交，不能覆盖历史版本")
                 return
             if info.status_code != 612:
-                raise ValueError("读取七牛对象状态失败")
+                raise DeploymentError(f"读取七牛对象状态失败（HTTP {info.status_code}），请核对空间名及 CI 凭据权限")
         policy = {"insertOnly": 1} if immutable else {}
         token = self.auth.upload_token(self.bucket, key, 600, policy)
         mime = {".js": "application/javascript", ".css": "text/css", ".html": "text/html"}.get(
             path.suffix, mimetypes.guess_type(path.name)[0] or "application/octet-stream")
         data, info = self.sdk.put_file_v2(token, key, str(path), mime_type=mime,
-                                           check_crc=True, bucket_name=self.bucket)
+                                           check_crc=True, bucket_name=self.bucket, regions=self.regions)
         if info.status_code != 200 or not data or data.get("hash") != expected:
-            raise ValueError("七牛上传或文件哈希验证失败")
+            raise DeploymentError(f"七牛上传或文件哈希验证失败（HTTP {info.status_code}）")
 
     def refresh(self, urls):
         data, info = self.cdn.refresh_urls(urls)
         if info.status_code != 200 or not data or data.get("code") != 200:
-            raise ValueError("CDN 刷新请求未被接受")
+            raise DeploymentError(f"CDN 刷新请求未被接受（HTTP {info.status_code}）")
 
 
 def publish(config, storage, result, dist=Path("dist")):
@@ -206,6 +219,8 @@ def summary():
         origin = https_origin(report["origin"], "站点地址")
         lines.append(f"- 站点：[打开前端]({origin})")
     lines.append("- 最后阶段：" + report.get("stage", "检查 Actions 失败步骤"))
+    if report.get("reason"):
+        lines.append("- 失败原因：" + report["reason"])
     lines.append("- 模式：" + ("恢复历史版本" if report.get("restore") else "发布新版本"))
     if report.get("entry_may_have_changed") and report.get("status") != "success":
         lines.append("- ⚠️ 入口可能已经更新，缓存/验证未完成；请检查站点，必要时手动恢复保留版本。")
@@ -238,8 +253,14 @@ def main():
     except (Exception, KeyboardInterrupt) as error:
         # SDK/HTTP 异常可能附带 token，禁止直接打印异常及原始响应。
         print("发布未完成：" + result["stage"] + "。请查看 Summary 和配置说明。", file=sys.stderr)
-        if result["stage"] == "检查配置":
-            print(str(error), file=sys.stderr)
+        if result["stage"] == "检查配置" or isinstance(error, DeploymentError):
+            reason = str(error)
+        elif isinstance(error, RuntimeError) and "available endpoint" in str(error):
+            reason = "七牛 SDK 未获取到上传端点，请检查空间区域发现和网络连接"
+        else:
+            reason = "上传或网络请求异常（" + type(error).__name__ + "）；请检查七牛连接及 CI 凭据"
+        result["reason"] = reason
+        print(reason, file=sys.stderr)
         raise SystemExit(1)
     finally:
         REPORT.write_text(json.dumps(result, ensure_ascii=False))
