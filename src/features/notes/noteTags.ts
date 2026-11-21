@@ -5,11 +5,19 @@ import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
 // Tags start at a paragraph/whitespace boundary; URLs and C# stay ordinary text.
 export function tagMatches(text: string) {
-  return [...text.matchAll(/(^|\s)#([^\s#]{1,30})(?=\s|$)/gu)].map((match) => ({
-    name: match[2],
-    from: match.index! + match[1].length,
-    to: match.index! + match[0].length,
-  }));
+  return [...text.matchAll(/(^|\s)#([^\s#]{1,92})(?=\s|$)/gu)]
+    .filter((match) => {
+      const parts = match[2].split('/');
+      return (
+        parts.length <= 3 &&
+        parts.every((part) => Array.from(part).length > 0 && Array.from(part).length <= 30)
+      );
+    })
+    .map((match) => ({
+      name: match[2],
+      from: match.index! + match[1].length,
+      to: match.index! + match[0].length,
+    }));
 }
 export function extractTags(text: string): string[] {
   const seen = new Set<string>();
@@ -22,7 +30,7 @@ export function extractTags(text: string): string[] {
 }
 export function activeTag(text: string, offset: number) {
   const before = text.slice(0, offset);
-  const match = /(?:^|\s)#([^\s#]{0,30})$/u.exec(before);
+  const match = /(?:^|\s)#([^\s#]{0,92})$/u.exec(before);
   if (!match || (text[offset] && !/\s/u.test(text[offset]))) return null;
   return { query: match[1], from: offset - match[1].length - 1, to: offset };
 }

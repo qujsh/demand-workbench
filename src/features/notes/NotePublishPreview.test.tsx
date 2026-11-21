@@ -92,3 +92,50 @@ it('记录详情复用手机预览布局并保留编辑入口与状态', () => {
   expect(mobile().getByLabelText('C 端笔记卡片')).toBeTruthy();
   expect(desktop().getByText(record.body)).toBeTruthy();
 });
+
+it('整条笔记箭头独立命名，边界隐藏且加载期间不能继续切换', () => {
+  const move = vi.fn();
+  const props = {
+    record,
+    detail: true,
+    onClose: vi.fn(),
+    navigation: {
+      previous: false,
+      next: true,
+      loading: false,
+      disabled: false,
+      move,
+    },
+  };
+  const view = render(<NotePublishPreview {...props} />, {
+    wrapper: ({ children }) => (
+      <AuthContext.Provider
+        value={{
+          user: { userNo: 'qa', nickname: '作者', status: 'active' },
+          logout: async () => {},
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    ),
+  });
+  expect(screen.queryByRole('button', { name: '上一条笔记' })).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: '下一条笔记' }));
+  expect(move).toHaveBeenCalledExactlyOnceWith('next');
+  view.rerender(
+    <NotePublishPreview
+      {...props}
+      navigation={{ ...props.navigation, loading: true, disabled: true }}
+    />,
+  );
+  expect(screen.getByRole('button', { name: '下一条笔记' }).hasAttribute('disabled')).toBe(true);
+  expect(
+    screen.getByRole('button', { name: '下一条笔记' }).querySelector('.lucide-chevron-right'),
+  ).toBeTruthy();
+  expect(
+    screen.getByRole('button', { name: '下一条笔记' }).querySelector('.anticon-loading'),
+  ).toBeNull();
+  expect(screen.getByRole('navigation', { name: '切换笔记' }).getAttribute('aria-busy')).toBe(
+    'true',
+  );
+});

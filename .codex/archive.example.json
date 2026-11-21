@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "url": "http://localhost:8070/mcp",
+  "upload_helper": "/Users/mainto/javafile/demand-workbench-backend/scripts/create_mcp_image_note.py",
+  "mode": "assistant"
+}

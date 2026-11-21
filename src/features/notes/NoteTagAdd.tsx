@@ -54,8 +54,8 @@ export function NoteTagAdd({ tags, count, onAdd, onLocate, onStartMerge }: Props
         <Input
           ref={input}
           aria-label="新标签名称"
-          placeholder="输入新标签名称"
-          maxLength={30}
+          placeholder="如：项目/构想台/MCP"
+          maxLength={184}
           value={value}
           onChange={(event) => setValue(event.target.value)}
           onPressEnter={(event) => {
@@ -69,6 +69,10 @@ export function NoteTagAdd({ tags, count, onAdd, onLocate, onStartMerge }: Props
           合并
         </Button>
       </div>
+      <p className="note-tag-empty-hint">
+        使用 / 分隔层级，最多三级，每级最多 30 字，完整路径最多 92
+        字。合并仅作用于完整标签；删除时可选择是否将当前及子标签下的笔记移入回收站。
+      </p>
       {matches.length > 0 && (
         <div className="note-tag-matches" aria-label="已有相似标签">
           <p>{exact ? '标签已存在，无需重复添加' : '可能已有相关标签'}</p>

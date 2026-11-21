@@ -4,6 +4,7 @@ import type { NoteRecord } from './noteModels';
 import { recordDocument, documentImages } from './noteRichTextModel';
 import { RichTextView } from './noteRichText';
 import { NoteReviewStatus } from './NoteReviewStatus';
+import { archiveDisplayBody } from './noteArchiveDisplay';
 
 type Props = {
   record: NoteRecord;
@@ -24,13 +25,14 @@ export function NoteRecordContent({
   onRetry,
 }: Props) {
   const images = [...new Set([...record.images, ...documentImages(record.document)])];
+  const body = archiveDisplayBody(record, true);
   return (
     <>
       <div className={full ? 'note-record-body full' : 'note-record-body'}>
-        {record.document ? (
+        {record.document && body === record.body ? (
           <RichTextView document={recordDocument(record.body, record.document)} />
         ) : (
-          record.body
+          body
         )}
       </div>
       {images.length > 0 && (

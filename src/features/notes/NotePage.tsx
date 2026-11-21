@@ -1,3 +1,4 @@
+import { useNoteDetailNavigation } from './hooks/useNoteDetailNavigation';
 import { useNoteTimeline } from './hooks/useNoteTimeline';
 import { usePermissions } from '../account/hooks/usePermissions';
 import { NotePublishPreview } from './NotePublishPreview';
@@ -38,12 +39,16 @@ import { NoteTagAdd } from './NoteTagAdd';
 import { NoteTagMergeProgress } from './NoteTagMergeProgress';
 import { NoteTagMerge } from './NoteTagMerge';
 import { NoteTagSorter } from './NoteTagSorter';
+import { NoteTagTree } from './NoteTagTree';
+import { NoteEmptyTrashModal } from './NoteEmptyTrashModal';
+import { NotePurgeModal } from './NotePurgeModal';
+import { NoteTagDeleteModal } from './NoteTagDeleteModal';
 import { NoteFloating } from './NoteFloating';
 import { useFloatingRecords } from './hooks/useFloatingRecords';
 import './notes.css';
 
 export default function NotePage() {
-  const { message, modal } = App.useApp();
+  const { message } = App.useApp();
   const access = usePermissions();
   const [locateTag, setLocateTag] = useState<{ name: string } | null>(null);
   const [period, setPeriod] = useState('');
@@ -54,20 +59,30 @@ export default function NotePage() {
   const floating = useFloatingRecords();
   const [keyword, setKeyword] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const filter = searchParams.get('view') === 'trash' ? '回收站'
-    : searchParams.get('view') === 'drafts' ? '草稿' : '全部笔记';
+  const filter =
+    searchParams.get('view') === 'trash'
+      ? '回收站'
+      : searchParams.get('view') === 'drafts'
+        ? '草稿'
+        : '全部笔记';
   function setFilter(value: string) {
-    setSearchParams(current => {
-      const next = new URLSearchParams(current);
-      if (value === '回收站') next.set('view', 'trash');
-      else if (value === '草稿') next.set('view', 'drafts');
-      else next.delete('view');
-      return next;
-    }, { replace: true });
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        if (value === '回收站') next.set('view', 'trash');
+        else if (value === '草稿') next.set('view', 'drafts');
+        else next.delete('view');
+        return next;
+      },
+      { replace: true },
+    );
   }
   const [tag, setTag] = useState('');
   const [visibility, setVisibility] = useState('all');
   const [tagManager, setTagManager] = useState(false);
+  const [emptyingTrash, setEmptyingTrash] = useState(false);
+  const [purgingRecord, setPurgingRecord] = useState<NoteRecord | null>(null);
+  const [deletingTag, setDeletingTag] = useState<{ name: string; tagNo: string } | null>(null);
   const [mergingTags, setMergingTags] = useState(false);
   const [mergeSelection, setMergeSelection] = useState<string[]>([]);
   const [addedTag, setAddedTag] = useState('');
@@ -120,6 +135,13 @@ export default function NotePage() {
     setFilter(record.draft ? '草稿' : '全部笔记');
     clearFilters();
   });
+  const detailNavigation = useNoteDetailNavigation(
+    detail,
+    records,
+    data.records,
+    setDetail,
+    reportError,
+  );
   const mergeTask = data.mergeTask.data?.task;
   const tagsLocked = Boolean(mergeTask && mergeTask.status !== 'COMPLETED');
   const observedMerge = useRef<string | null>(null);
@@ -282,6 +304,16 @@ export default function NotePage() {
                 </small>
               </span>
               <div className="note-time-actions">
+                {status === 'TRASH' && (
+                  <Button
+                    danger
+                    icon={<Trash2 size={14} />}
+                    disabled={!access.can('notes.delete') || data.emptyTrash.isPending}
+                    onClick={() => setEmptyingTrash(true)}
+                  >
+                    清空回收站
+                  </Button>
+                )}
                 <Popover
                   trigger="click"
                   title="定位时间（可上下连续浏览）"
@@ -486,19 +518,31 @@ export default function NotePage() {
                           </span>
                           <div className="note-record-actions" role="group" aria-label="记录操作">
                             {record.deleted ? (
-                              <Button
-                                type="text"
-                                size="small"
-                                disabled={!access.can('notes.delete')}
-                                icon={<Check size={14} />}
-                                onClick={() => {
-                                  void data.change
-                                    .mutateAsync({ record, restore: true })
-                                    .catch(reportError);
-                                }}
-                              >
-                                恢复记录
-                              </Button>
+                              <>
+                                <Button
+                                  type="text"
+                                  size="small"
+                                  disabled={!access.can('notes.delete')}
+                                  icon={<Check size={14} />}
+                                  onClick={() => {
+                                    void data.change
+                                      .mutateAsync({ record, restore: true })
+                                      .catch(reportError);
+                                  }}
+                                >
+                                  恢复记录
+                                </Button>
+                                <Button
+                                  type="text"
+                                  size="small"
+                                  danger
+                                  icon={<Trash2 size={14} />}
+                                  disabled={!access.can('notes.delete')}
+                                  onClick={() => setPurgingRecord(record)}
+                                >
+                                  彻底删除
+                                </Button>
+                              </>
                             ) : (
                               <>
                                 <Button
@@ -598,10 +642,7 @@ export default function NotePage() {
                 管理标签
               </Button>
             </div>
-            <button
-              className={`note-tag-row ${!tag ? 'selected' : ''}`}
-              onClick={() => setTag('')}
-            >
+            <button className={`note-tag-row ${!tag ? 'selected' : ''}`} onClick={() => setTag('')}>
               <Hash size={16} />
               <span>全部笔记</span>
               <small>{data.tags.data?.recordCount ?? 0}</small>
@@ -621,27 +662,14 @@ export default function NotePage() {
                 }
               />
             )}
-            <div className="note-tag-list-heading">全部标签 · {tags.length}</div>
-            <div
-              className={`note-home-tags${tags.length > 16 ? ' is-two-columns' : ''}`}
-              style={
-                tags.length > 16
-                  ? { gridTemplateRows: `repeat(${Math.ceil(tags.length / 2)}, auto)` }
-                  : undefined
-              }
-            >
-              {tags.map((name) => (
-                <button
-                  className={`note-tag-row ${tag === name ? 'selected' : ''}`}
-                  key={name}
-                  onClick={() => setTag(name)}
-                >
-                  <Hash size={15} />
-                  <span>{name}</span>
-                  <small>{counts(name)}</small>
-                </button>
-              ))}
-            </div>
+            <NoteTagTree
+              paths={(data.tags.data?.paths ?? []).map((path) => ({
+                ...path,
+                recordCount: counts(path.name),
+              }))}
+              selected={tag}
+              onSelect={setTag}
+            />
             <NoteFloating
               floating={floating}
               openIds={openFloats}
@@ -684,9 +712,9 @@ export default function NotePage() {
       )}
       {detail && (
         <NotePublishPreview
-          key={detail.id}
           record={detail}
           detail
+          navigation={detailNavigation}
           onClose={() => setDetail(null)}
           onOpenReference={openFloat}
           actions={
@@ -819,23 +847,81 @@ export default function NotePage() {
                   if (!data.tagWrite.isPending)
                     void writeTag({ kind: 'order', names }).catch(() => undefined);
                 }}
-                onDelete={(name) =>
-                  modal.confirm({
-                    title: `删除标签「${name}」？`,
-                    content: '只移除标签，不会删除任何记录。',
-                    okText: '删除标签',
-                    cancelText: '取消',
-                    onOk: async () => {
-                      await writeTag({ kind: 'delete', name });
-                      if (tag === name) setTag('');
-                    },
-                  })
-                }
+                onDelete={(name) => {
+                  const current = data.tags.data?.tags.find((item) => item.name === name);
+                  if (current) setDeletingTag({ name, tagNo: current.tagNo });
+                }}
               />
             </div>
           </>
         )}
       </Drawer>
+      {emptyingTrash && (
+        <NoteEmptyTrashModal
+          pending={data.emptyTrash.isPending}
+          onCancel={() => setEmptyingTrash(false)}
+          onConfirm={async (fingerprint) => {
+            try {
+              const result = await data.emptyTrash.mutateAsync(fingerprint);
+              setEmptyingTrash(false);
+              void message.success(
+                result.imageCleanupQueuedCount
+                  ? `已清空 ${result.clearedRecordCount} 条笔记，文件图片正在清理`
+                  : `已清空 ${result.clearedRecordCount} 条笔记`,
+              );
+            } catch (error) {
+              reportError(error);
+              throw error;
+            }
+          }}
+        />
+      )}
+      {purgingRecord && (
+        <NotePurgeModal
+          record={purgingRecord}
+          pending={data.purge.isPending}
+          onCancel={() => setPurgingRecord(null)}
+          onConfirm={async () => {
+            try {
+              const result = await data.purge.mutateAsync(purgingRecord);
+              setOpenFloats((ids) => ids.filter((id) => id !== purgingRecord.id));
+              setPurgingRecord(null);
+              void message.success(
+                result.imageCleanupQueuedCount
+                  ? '笔记已彻底删除，文件图片正在清理'
+                  : '笔记已彻底删除',
+              );
+            } catch (error) {
+              reportError(error);
+            }
+          }}
+        />
+      )}
+      {deletingTag && (
+        <NoteTagDeleteModal
+          tag={deletingTag}
+          canDeleteRecords={access.can('notes.delete')}
+          onCancel={() => setDeletingTag(null)}
+          onDelete={async (impact) => {
+            await writeTag({
+              kind: 'delete',
+              name: deletingTag.name,
+              ...(impact
+                ? {
+                    expectedOrderVersion: impact.orderVersion,
+                    expectedRecordCount: impact.affectedRecordCount,
+                  }
+                : {}),
+            });
+            if (tag === deletingTag.name || (impact && tag.startsWith(deletingTag.name + '/')))
+              setTag('');
+            setDeletingTag(null);
+            void message.success(
+              impact ? '标签已删除，相关笔记已移入回收站' : '标签已删除，笔记已保留',
+            );
+          }}
+        />
+      )}
     </main>
   );
 }

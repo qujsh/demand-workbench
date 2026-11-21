@@ -54,14 +54,16 @@ export const noteReviewSchema = z.object({
 /** 历史展示数据只带公开状态，没有实际审核任务；不作为可轮询或重试的任务。 */
 const recordReviewSchema = z.union([
   noteReviewSchema,
-  z.object({
-    taskNo: z.null(),
-    status: z.literal('approved'),
-    completedCount: z.literal(0),
-    totalCount: z.literal(0),
-    message: z.string(),
-    policyVersion: z.string(),
-  }).transform(() => null),
+  z
+    .object({
+      taskNo: z.null(),
+      status: z.literal('approved'),
+      completedCount: z.literal(0),
+      totalCount: z.literal(0),
+      message: z.string(),
+      policyVersion: z.string(),
+    })
+    .transform(() => null),
 ]);
 const summarySchema = z.object({
   location: noteLocationSchema.nullable().optional(),
@@ -100,6 +102,7 @@ const detailSchema = summarySchema.extend({
     .nullable(),
 });
 export const noteTagsSchema = z.object({
+  paths: z.array(z.object({ name: z.string(), recordCount: z.number() })).default([]),
   orderVersion: z.number(),
   tags: z.array(tagSchema),
   recordCount: z.number(),
@@ -109,6 +112,7 @@ export type NoteFilters = {
   status: 'SAVED' | 'DRAFT' | 'TRASH';
   keyword: string;
   tagNo: string;
+  tagPath?: string;
   visibility: string;
   period: string;
   anchorDate?: string;
@@ -241,6 +245,40 @@ export function saveNote(record: NoteRecord) {
     body,
   );
 }
+export function getTrashPreview(signal?: AbortSignal) {
+  return requestJson(
+    '/api/v1/notes/records/trash-preview',
+    apiResponseSchema(
+      z.object({
+        recordCount: z.number().int().nonnegative(),
+        fingerprint: z.string(),
+      }),
+    ),
+    { signal },
+  );
+}
+export function emptyTrash(expectedFingerprint: string) {
+  return post(
+    'records/empty-trash',
+    z.object({
+      clearedRecordCount: z.number(),
+      imageCleanupQueuedCount: z.number(),
+    }),
+    { expectedFingerprint },
+  );
+}
+export function purgeNote(record: NoteRecord) {
+  return post(
+    `records/purge?${query({ recordNo: record.id })}`,
+    z.object({
+      recordNo: z.string(),
+      purged: z.literal(true),
+      imageCleanupQueuedCount: z.number(),
+      retainedSharedImageCount: z.number(),
+    }),
+    { expectedVersion: record.version },
+  );
+}
 export function changeRecord(record: NoteRecord, restore: boolean) {
   return post(
     `records/${restore ? 'restore' : 'trash'}?${query({ recordNo: record.id })}`,
@@ -294,11 +332,31 @@ export function mergeTags(sourceTagNo: string, targetTagNo: string, expectedOrde
     expectedOrderVersion,
   });
 }
-export function deleteTag(tagNo: string, expectedOrderVersion: number) {
+export const tagDeleteImpactSchema = z.object({
+  tagNo: z.string(),
+  name: z.string(),
+  orderVersion: z.number(),
+  affectedRecordCount: z.number(),
+  savedRecordCount: z.number(),
+  draftRecordCount: z.number(),
+});
+export type TagDeleteImpact = z.infer<typeof tagDeleteImpactSchema>;
+export function getTagDeleteImpact(tagNo: string, signal?: AbortSignal) {
+  return requestJson(
+    `/api/v1/notes/tags/delete-preview?${query({ tagNo })}`,
+    apiResponseSchema(tagDeleteImpactSchema),
+    { signal },
+  );
+}
+export function deleteTag(
+  tagNo: string,
+  expectedOrderVersion: number,
+  expectedRecordCount?: number,
+) {
   return post(
-    `tags/delete?${query({ tagNo })}`,
+    `tags/${expectedRecordCount === undefined ? 'delete' : 'delete-with-records'}?${query({ tagNo })}`,
     z.object({ tagNo: z.string(), orderVersion: z.number(), affectedRecordCount: z.number() }),
-    { expectedOrderVersion },
+    { expectedOrderVersion, ...(expectedRecordCount === undefined ? {} : { expectedRecordCount }) },
   );
 }
 export async function uploadNoteImage(file: File) {

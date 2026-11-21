@@ -11,6 +11,8 @@ const tools = {
   search_notes: '搜索笔记',
   get_note: '读取笔记',
   update_note: '更新笔记',
+  prepare_note_image_upload: '申请图片上传',
+  complete_note_image_upload: '确认图片上传',
 };
 export default function CallAuditsPage() {
   const access = usePermissions();

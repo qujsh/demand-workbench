@@ -28,3 +28,6 @@ design-reference/
 /output/
 
 
+
+# Codex归档本机开关与路径（凭据存系统钥匙串）
+.codex/archive.local.json

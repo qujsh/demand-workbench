@@ -7,6 +7,7 @@ import { avatarUrl } from '../auth';
 import { useNoteGalleryDrag } from './hooks/useNoteGalleryDrag';
 import type { NoteRecord } from './noteModels';
 import type { ReactNode } from 'react';
+import { archiveDisplayBody } from './noteArchiveDisplay';
 
 interface Props {
   record: NoteRecord;
@@ -150,7 +151,9 @@ export function NotePreview({
           </div>
         </header>
         {record.title.trim() && <h1>{record.title}</h1>}
-        <div className="note-publish-body">{record.body || '暂无正文'}</div>
+        <div className="note-publish-body">
+          {archiveDisplayBody(record, Boolean(status)) || '暂无正文'}
+        </div>
         {!!record.references?.length && (
           <section className="note-publish-references">
             <h3>关联笔记</h3>

@@ -2,7 +2,12 @@ import { z } from 'zod';
 import { requestJson } from '../../../shared/api/httpClient';
 import { apiResponseSchema } from '../../../shared/api/apiResponseSchema';
 
-export const keyScopeSchema = z.enum(['notes:read', 'notes:create', 'notes:update']);
+export const keyScopeSchema = z.enum([
+  'notes:read',
+  'notes:create',
+  'notes:update',
+  'notes:upload',
+]);
 export const apiKeySchema = z.object({
   keyNo: z.string(),
   name: z.string(),

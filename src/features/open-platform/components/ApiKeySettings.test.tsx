@@ -94,3 +94,29 @@ it('永久密钥在列表简洁展示，编号和完整时间放入详情弹窗'
   expect(within(dialog).getByText('永久有效')).toBeTruthy();
   expect(within(dialog).getByText('最近使用')).toBeTruthy();
 });
+
+it('没有附件上传权限时不能选择图片范围，具备上传和写入权限时可选择', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve(new Response(JSON.stringify({ success: true, msg: [] }))),
+      ),
+  );
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const view = render(
+    <QueryClientProvider client={client}>
+      <ApiKeySettings permissions={['notes.use', 'notes.create']} />
+    </QueryClientProvider>,
+  );
+  fireEvent.click(screen.getByRole('button', { name: '创建 API 密钥' }));
+  const upload = await screen.findByRole('checkbox', { name: '上传笔记图片' });
+  expect((upload as HTMLInputElement).disabled).toBe(true);
+  view.rerender(
+    <QueryClientProvider client={client}>
+      <ApiKeySettings permissions={['notes.use', 'notes.create', 'files.upload']} />
+    </QueryClientProvider>,
+  );
+  expect((upload as HTMLInputElement).disabled).toBe(false);
+});

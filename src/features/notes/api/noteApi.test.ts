@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   getNote,
+  deleteTag,
+  purgeNote,
   listNotes,
   saveNote,
   getFloating,
@@ -219,28 +221,62 @@ describe('笔记API持久化边界', () => {
 
 describe('回收站历史记录兼容', () => {
   const historicalReview = {
-    taskNo: null, status: 'approved', completedCount: 0, totalCount: 0,
-    message: '旧展示数据未执行审核', policyVersion: 'local-preview-fixture-v1',
+    taskNo: null,
+    status: 'approved',
+    completedCount: 0,
+    totalCount: 0,
+    message: '旧展示数据未执行审核',
+    policyVersion: 'local-preview-fixture-v1',
   };
   const filters = { status: 'TRASH' as const, keyword: '', tagNo: '', visibility: '', period: '' };
   const trashed = { ...detail, deletedAt: '2026-11-11T15:34:34Z', review: historicalReview };
-  const page = (record: unknown) => ({ items: [record], matchedCount: 1, hasMore: false, nextCursor: null });
+  const page = (record: unknown) => ({
+    items: [record],
+    matchedCount: 1,
+    hasMore: false,
+    nextCursor: null,
+  });
   it('有内容的回收站能读取无真实审核任务的历史记录，并保留恢复所需编号和版本', async () => {
     const fetcher = vi.fn(async () => new Response(JSON.stringify(envelope(page(trashed)))));
     vi.stubGlobal('fetch', fetcher);
     const result = await listNotes(filters, '');
     expect(result.matchedCount).toBe(1);
-    expect(result.items[0]).toMatchObject({ id: detail.recordNo, deleted: true, version: 3,
-      timelineDate: trashed.deletedAt, review: null, visibility: 'public' });
+    expect(result.items[0]).toMatchObject({
+      id: detail.recordNo,
+      deleted: true,
+      version: 3,
+      timelineDate: trashed.deletedAt,
+      review: null,
+      visibility: 'public',
+    });
   });
-  it.each(['queued', 'running', 'failed'])('无任务编号和任务数的%s记录仍报告协议错误', async status => {
-    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(envelope(page({
-      ...trashed, review: { ...historicalReview, status },
-    }))))));
-    await expect(listNotes(filters, '')).rejects.toMatchObject({ code: 'INVALID_API_RESPONSE' });
-  });
+  it.each(['queued', 'running', 'failed'])(
+    '无任务编号和任务数的%s记录仍报告协议错误',
+    async (status) => {
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(
+          async () =>
+            new Response(
+              JSON.stringify(
+                envelope(
+                  page({
+                    ...trashed,
+                    review: { ...historicalReview, status },
+                  }),
+                ),
+              ),
+            ),
+        ),
+      );
+      await expect(listNotes(filters, '')).rejects.toMatchObject({ code: 'INVALID_API_RESPONSE' });
+    },
+  );
   it('历史展示元数据不能混入真实审核任务列表', async () => {
-    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(envelope([historicalReview])))));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(JSON.stringify(envelope([historicalReview])))),
+    );
     await expect(getNoteReviews()).rejects.toMatchObject({ code: 'INVALID_API_RESPONSE' });
   });
 });
@@ -340,4 +376,48 @@ it('待审核记录按实际私密展示，编辑时恢复公开申请，审核�
   expect(String(fetch.mock.calls.at(-1)?.[0])).toContain(
     'records/review/retry?recordNo=SHARE-one&taskNo=REVIEW-test',
   );
+});
+
+it('只删标签与连同笔记删除使用独立接口，零笔记数量也保留批量语义', async () => {
+  const fetcher = vi
+    .fn()
+    .mockImplementation(
+      () =>
+        new Response(
+          JSON.stringify(envelope({ tagNo: 'TAG-one', orderVersion: 6, affectedRecordCount: 0 })),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        ),
+    );
+  vi.stubGlobal('fetch', fetcher);
+  await deleteTag('TAG-one', 5);
+  expect(fetcher.mock.calls[0][0]).toContain('/tags/delete?');
+  expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({ expectedOrderVersion: 5 });
+  await deleteTag('TAG-one', 5, 0);
+  expect(fetcher.mock.calls[1][0]).toContain('/tags/delete-with-records?');
+  expect(JSON.parse(fetcher.mock.calls[1][1].body)).toEqual({
+    expectedOrderVersion: 5,
+    expectedRecordCount: 0,
+  });
+});
+
+it('彻底删除通过独立接口传入编号和版本，并保留图片清理结果', async () => {
+  const fetcher = vi.fn(
+    async (_url: string, _init?: RequestInit) =>
+      new Response(
+        JSON.stringify(
+          envelope({
+            recordNo: 'NOTE-one',
+            purged: true,
+            imageCleanupQueuedCount: 1,
+            retainedSharedImageCount: 0,
+          }),
+        ),
+        { status: 200 },
+      ),
+  );
+  vi.stubGlobal('fetch', fetcher);
+  const result = await purgeNote({ id: 'NOTE-one', version: 3 } as Parameters<typeof purgeNote>[0]);
+  expect(fetcher.mock.calls[0][0]).toContain('/records/purge?recordNo=NOTE-one');
+  expect(JSON.parse(fetcher.mock.calls[0][1]!.body as string)).toEqual({ expectedVersion: 3 });
+  expect(result.imageCleanupQueuedCount).toBe(1);
 });

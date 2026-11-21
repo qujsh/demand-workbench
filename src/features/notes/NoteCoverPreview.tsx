@@ -3,6 +3,7 @@ import { Heart } from 'lucide-react';
 import { avatarUrl } from '../auth';
 import type { NoteRecord } from './noteModels';
 import './noteCoverPreview.css';
+import { archiveDisplayBody } from './noteArchiveDisplay';
 
 interface Props {
   record: NoteRecord;
@@ -17,7 +18,7 @@ export function NoteCoverPreview({ record, images, author, avatarMediaNo }: Prop
   const [failed, setFailed] = useState(false);
   const [avatarFailed, setAvatarFailed] = useState(false);
   const hasImage = Boolean(images[0]) && !failed;
-  const summary = record.body.slice(0, 160);
+  const summary = archiveDisplayBody(record).slice(0, 160);
   const titleIsExcerpt = !record.title.trim();
   const title = record.title.trim() || summary.slice(0, 40) || '图片笔记';
   const palette = [...record.id].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 3;

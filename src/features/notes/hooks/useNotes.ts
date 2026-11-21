@@ -6,10 +6,7 @@ import type { NoteRecord } from '../noteModels';
 /** 服务端数据只保留在Query缓存；编辑器维护独立本地草稿。 */
 export function useNotes(filters: api.NoteFilters) {
   const client = useQueryClient();
-  const invalidate = useCallback(
-    () => client.invalidateQueries({ queryKey: ['notes'] }),
-    [client],
-  );
+  const invalidate = useCallback(() => client.invalidateQueries({ queryKey: ['notes'] }), [client]);
   const mergeTask = useQuery({
     queryKey: ['notes', 'tag-merge-task'],
     queryFn: ({ signal }) => api.getTagMergeTask(signal),
@@ -57,9 +54,11 @@ export function useNotes(filters: api.NoteFilters) {
     queryKey: ['notes', 'tags'],
     queryFn: ({ signal }) => api.getTags(signal),
   });
+  const selectedTag = tags.data?.tags.find((tag) => tag.name === filters.tagNo);
   const resolvedFilters = {
     ...filters,
-    tagNo: tags.data?.tags.find((tag) => tag.name === filters.tagNo)?.tagNo ?? filters.tagNo,
+    tagNo: selectedTag?.tagNo ?? '',
+    tagPath: filters.tagNo && !selectedTag ? filters.tagNo : '',
   };
   const records = useInfiniteQuery({
     queryKey: ['notes', 'records', resolvedFilters],
@@ -82,6 +81,8 @@ export function useNotes(filters: api.NoteFilters) {
     onSuccess: invalidate,
     onError: invalidate,
   });
+  const emptyTrash = useMutation({ mutationFn: api.emptyTrash, onSettled: invalidate });
+  const purge = useMutation({ mutationFn: api.purgeNote, onSettled: invalidate });
   const change = useMutation({
     mutationFn: ({ record, restore }: { record: NoteRecord; restore: boolean }) =>
       api.changeRecord(record, restore),
@@ -91,7 +92,12 @@ export function useNotes(filters: api.NoteFilters) {
     mutationFn: async (
       action:
         | { kind: 'add'; name: string }
-        | { kind: 'delete'; name: string }
+        | {
+            kind: 'delete';
+            name: string;
+            expectedRecordCount?: number;
+            expectedOrderVersion?: number;
+          }
         | { kind: 'merge'; source: string; target: string }
         | { kind: 'order'; names: string[] },
     ) => {
@@ -112,7 +118,12 @@ export function useNotes(filters: api.NoteFilters) {
         return task;
       }
       if (action.kind === 'add') return api.addTag(action.name, current.orderVersion);
-      if (action.kind === 'delete') return api.deleteTag(no(action.name), current.orderVersion);
+      if (action.kind === 'delete')
+        return api.deleteTag(
+          no(action.name),
+          action.expectedOrderVersion ?? current.orderVersion,
+          action.expectedRecordCount,
+        );
       return api.reorderTags(action.names.map(no), current.orderVersion);
     },
     onMutate: async (action) => {
@@ -136,6 +147,8 @@ export function useNotes(filters: api.NoteFilters) {
     periods,
     save,
     change,
+    purge,
+    emptyTrash,
     tagWrite,
     mergeTask,
     retryMerge,

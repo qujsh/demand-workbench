@@ -16,6 +16,7 @@ import {
   Tooltip,
 } from 'antd';
 import { McpConnectionGuide } from './McpConnectionGuide';
+import { ArchiveSkillGuide } from './ArchiveSkillGuide';
 import { useApiKeys } from '../hooks/useApiKeys';
 import type { ApiKey, CreateKey } from '../api/apiKeyApi';
 import './apiKeys.css';
@@ -24,6 +25,7 @@ const scopeNames = {
   'notes:read': '读取笔记',
   'notes:create': '创建笔记',
   'notes:update': '更新笔记',
+  'notes:upload': '上传笔记图片',
 };
 const status = (key: ApiKey) =>
   key.revokedAt
@@ -262,6 +264,7 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
         )}
         <p className="api-key-detail-note">完整密钥仅在创建时展示，无法从详情中恢复。</p>
       </Modal>
+      <ArchiveSkillGuide />
       <McpConnectionGuide />
       <Modal
         title={secret ? '保存你的 API 密钥' : '创建 API 密钥'}
@@ -319,7 +322,12 @@ export function ApiKeySettings({ permissions }: { permissions?: string[] }) {
                       ? !permissions.includes('notes.create')
                       : value === 'notes:update'
                         ? !permissions.includes('notes.edit')
-                        : false),
+                        : value === 'notes:upload'
+                          ? !permissions.includes('files.upload') ||
+                            !permissions.some((permission) =>
+                              ['notes.create', 'notes.edit'].includes(permission),
+                            )
+                          : false),
                 }))}
               />
             </Form.Item>

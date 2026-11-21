@@ -2,6 +2,20 @@ import { describe, expect, it } from 'vitest';
 import { activeTag, extractTags, matchingTags } from './noteTags';
 
 describe('正文标签规则', () => {
+  it('支持92字三级路径并按每级30字校验，包含Unicode字符', () => {
+    const path = ['项'.repeat(30), '目'.repeat(30), '聊'.repeat(30)].join('/');
+    expect(path.length).toBe(92);
+    expect(extractTags('#' + path)).toEqual([path]);
+    const emoji = ['😀'.repeat(30), '😁'.repeat(30), '😃'.repeat(30)].join('/');
+    expect(extractTags('#' + emoji)).toEqual([emoji]);
+    expect(extractTags('#父/' + '长'.repeat(31))).toEqual([]);
+    expect(activeTag('#' + path, path.length + 1)?.query).toBe(path);
+  });
+  it('识别三级路径并拒绝空层级或超过三级', () => {
+    expect(extractTags('#项目/构想台/MCP #一//二 #一/二/三/四 #/一 #一/')).toEqual([
+      '项目/构想台/MCP',
+    ]);
+  });
   it('区分标签、语言名称和网址片段，并识别末尾未加空格的标签', () => {
     expect(extractTags('C# https://example.com/#part #工作 正文\n#摄影')).toEqual(['工作', '摄影']);
   });

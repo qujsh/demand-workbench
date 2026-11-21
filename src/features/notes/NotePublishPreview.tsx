@@ -2,11 +2,19 @@ import type { NoteLocation } from './api/amapSdk';
 import { useRef, type ReactNode } from 'react';
 import { NotePreview } from './NotePreview';
 import { NoteMobilePreview } from './NoteMobilePreview';
-import { Modal } from 'antd';
+import { Button, Modal } from 'antd';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { documentImages } from './noteRichTextModel';
 import type { NoteRecord } from './noteModels';
 
 interface Props {
+  navigation?: {
+    previous: boolean;
+    next: boolean;
+    loading: boolean;
+    disabled: boolean;
+    move: (direction: 'previous' | 'next') => Promise<void>;
+  };
   record: NoteRecord;
   location?: NoteLocation;
   onClose: () => void;
@@ -25,6 +33,7 @@ export function NotePublishPreview({
   actions,
   status,
   onOpenReference,
+  navigation,
 }: Props) {
   const panel = useRef<HTMLDivElement>(null);
   const images = [...new Set([...record.images, ...documentImages(record.document)])];
@@ -42,8 +51,9 @@ export function NotePublishPreview({
       title={null}
       aria-label={detail ? '记录详情' : 'C 端展示预览'}
       footer={null}
-      width={1540}
+      width={navigation ? 'min(1540px, calc(100vw - 128px))' : 1540}
       styles={{
+        mask: navigation ? { backgroundColor: 'rgba(0, 0, 0, 0.72)' } : undefined,
         container: {
           padding: 0,
           overflow: 'hidden',
@@ -57,10 +67,43 @@ export function NotePublishPreview({
       style={{ top: 24, outline: 'none' }}
     >
       <header className="note-preview-original-heading note-publish-detail-heading">
+        {detail && navigation && (
+          <nav
+            aria-label="切换笔记"
+            aria-busy={navigation.loading}
+            className="note-detail-navigation"
+          >
+            {navigation.previous && (
+              <Button
+                type="text"
+                aria-label="上一条笔记"
+                title="上一条笔记"
+                className="note-detail-arrow note-detail-arrow-previous"
+                disabled={navigation.disabled}
+                icon={<ChevronLeft size={56} strokeWidth={1.8} />}
+                onClick={() => void navigation.move('previous')}
+              />
+            )}
+            {navigation.next && (
+              <Button
+                type="text"
+                aria-label="下一条笔记"
+                title="下一条笔记"
+                className="note-detail-arrow note-detail-arrow-next"
+                disabled={navigation.disabled}
+                icon={<ChevronRight size={56} strokeWidth={1.8} />}
+                onClick={() => void navigation.move('next')}
+              />
+            )}
+          </nav>
+        )}
         <span>{detail ? '记录详情' : 'C 端展示预览'}</span>
         {detail && actions}
       </header>
-      <div className="note-preview-workspace">
+      <div
+        key={record.id}
+        className={`note-preview-workspace${detail && navigation ? ' note-detail-content' : ''}`}
+      >
         <div className="note-preview-desktop">
           <NotePreview
             location={location}

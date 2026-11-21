@@ -2800,3 +2800,233 @@
   outline: 2px solid var(--blue, #4268f6);
   outline-offset: 3px;
 }
+
+.note-tag-tree-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0 10px;
+  color: #95a0b0;
+  font-size: 12px;
+}
+.note-tag-tree-heading .ant-btn {
+  color: #8b98ae;
+  font-size: 12px;
+}
+.note-tag-branches,
+.note-tag-children {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.note-tag-children {
+  margin-left: 13px;
+  padding-left: 13px;
+  border-left: 1px solid #dce1e7;
+}
+.note-tag-branch-row {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  border-radius: 5px;
+  color: #48515d;
+}
+.note-tag-branch-row:hover {
+  background: #edf1f7;
+}
+.note-tag-branch-row.is-selected {
+  background: #eaf0ff;
+  color: var(--blue);
+}
+.note-tag-branch-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+  padding: 9px 3px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.note-tag-branch-label svg {
+  flex-shrink: 0;
+}
+.note-tag-branch-label span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+.note-tag-branch-count {
+  flex-shrink: 0;
+  margin-left: 5px;
+  margin-right: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.note-tag-branch-row .ant-btn {
+  flex-shrink: 0;
+  width: 22px;
+  min-width: 22px;
+  color: #a0a7af;
+}
+.note-tag-branch-row .is-collapsed {
+  transform: rotate(-90deg);
+}
+.note-tag-chevron-space {
+  width: 22px;
+  flex-shrink: 0;
+}
+.note-tag-empty-hint {
+  margin: 10px 2px 0;
+  color: #95a0b0;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.note-record-tags button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.note-tag-delete-name {
+  overflow-wrap: anywhere;
+  color: #68758a;
+}
+.note-tag-delete-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 12px 0 18px;
+}
+.note-tag-delete-options .ant-radio-wrapper {
+  align-items: flex-start;
+}
+.note-tag-delete-options p {
+  margin: 5px 0 0;
+  color: #8b98ae;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.note-tag-delete-hint {
+  color: #8b98ae;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 12px 0 0;
+}
+
+.note-purge-body p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+/* 独立于图片轮播的整条笔记导航，桌面两侧为按钮预留空间。 */
+.note-detail-navigation {
+  margin: 0;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.note-detail-arrow.ant-btn {
+  position: fixed;
+  pointer-events: auto;
+  top: 50dvh;
+  width: 56px;
+  height: 88px;
+  transform: translateY(-50%);
+  border: 0;
+  padding: 0;
+  border-radius: 0;
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0.9;
+  transition: opacity 120ms ease;
+  filter: drop-shadow(0 1px 3px #0005);
+}
+.note-detail-arrow.ant-btn:not(:disabled):hover,
+.note-detail-arrow.ant-btn:not(:disabled):focus-visible {
+  color: #fff;
+  background: transparent;
+  opacity: 1;
+}
+.note-detail-arrow.ant-btn:disabled {
+  color: #fff;
+  background: transparent;
+  opacity: 0.9;
+  cursor: wait;
+}
+.note-detail-arrow-previous {
+  left: max(4px, calc((100vw - 1540px) / 2 - 70px));
+}
+.note-detail-arrow-next {
+  right: max(4px, calc((100vw - 1540px) / 2 - 70px));
+}
+@media (max-width: 700px) {
+  .note-publish-preview:has(.note-detail-navigation) {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px);
+  }
+  .note-publish-preview:has(.note-detail-navigation) .note-publish-detail-heading {
+    position: relative;
+    padding-right: 64px;
+    padding-left: 64px;
+    min-height: 64px;
+  }
+  .note-detail-arrow.ant-btn {
+    position: absolute;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    box-shadow: none;
+    color: var(--muted);
+    background: transparent;
+    filter: none;
+  }
+  .note-detail-arrow.ant-btn:disabled {
+    color: var(--muted);
+    background: transparent;
+  }
+  .note-detail-arrow.ant-btn svg {
+    width: 32px;
+    height: 32px;
+  }
+  .note-detail-arrow.ant-btn:not(:disabled):hover,
+  .note-detail-arrow.ant-btn:not(:disabled):focus-visible {
+    color: var(--primary);
+  }
+  .note-detail-arrow-previous {
+    left: 16px;
+  }
+  .note-detail-arrow-next {
+    right: 16px;
+  }
+}
+
+/* 只过渡笔记内容，弹窗、遮罩和切换按钮保持稳定。 */
+.note-detail-content > * {
+  animation: note-detail-content-enter 220ms ease-out;
+}
+@keyframes note-detail-content-enter {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .note-detail-content > * {
+    animation: none;
+  }
+}

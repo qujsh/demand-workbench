@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
 import { createPortal } from 'react-dom';
-import { Button, Checkbox } from 'antd';
+import { Button, Checkbox, Tooltip } from 'antd';
 import { GripVertical, X } from 'lucide-react';
 
 const ROW_HEIGHT = 52;
@@ -186,7 +186,9 @@ export function NoteTagSorter({
                 <GripVertical size={16} />
               </button>
             )}
-            <span className="note-sort-name"># {name}</span>
+            <Tooltip title={`# ${name}`} mouseEnterDelay={0}>
+              <span className="note-sort-name"># {name}</span>
+            </Tooltip>
             <span className="note-sort-count">{count(name)} 条记录</span>
             {selection?.includes(name) && (
               <span className="note-sort-merge-role">
